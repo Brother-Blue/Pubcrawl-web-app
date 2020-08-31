@@ -1,0 +1,15 @@
+{
+  "vetur.validation.template": false,
+  "vetur.format.enable":true,
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      // Prettier option here
+      "semi": false,
+      "singleQuote": true
+    }
+  },
+  "eslint.validate": ["vue", "html", "javascript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}

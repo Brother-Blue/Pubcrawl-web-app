@@ -1,0 +1,9 @@
+{
+  "name": "backend-frontend",
+  "version": "0.1.0",
+  "description": "This collection package integrates the server and client for deployment.",
+  "main": "server/app.js",
+  "scripts": {
+    "postinstall": "npm install --prefix server && npm install --prefix client && npm install --only=dev --prefix client && npm run build --prefix client"
+  }
+}

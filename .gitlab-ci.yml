@@ -1,0 +1,52 @@
+image: node:10-alpine
+
+# Cache modules in between jobs per-branch
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - server/node_modules/
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - docker
+  script:
+    - cd server
+    - npm install
+
+test:
+  stage: test
+  tags:
+    - docker
+  services:
+    - name: mvertes/alpine-mongo:latest
+      alias: mongo
+  variables:
+    MONGODB_URI: "mongodb://mongo:27017/serverTestDB"
+  script:
+    - cd server
+    - npm run ci-test
+
+deploy:
+  stage: deploy
+  tags:
+    - docker
+  image: ruby:alpine
+  script:
+    - apk update && apk add git curl
+    - gem install dpl
+    - dpl --provider=heroku --app=$HEROKU_APP_NAME --api-key=$HEROKU_API_KEY
+  environment:
+    name: production
+    url: https://$HEROKU_APP_NAME.herokuapp.com/
+  only:
+    refs:
+      - master
+    variables:
+      - $HEROKU_APP_NAME
+      - $HEROKU_API_KEY
