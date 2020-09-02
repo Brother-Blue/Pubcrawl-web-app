@@ -66,8 +66,12 @@ Our system will provide information about local bars based on the user location 
 
 ### Pages
 
-* Home: 1-3 sentences describing what the page displays and what a user can do
-* Shopping cart: ...
+
+
+
+- Homepage will display relevant information about bars, options for the user to register and change view.
+- akp and joke page will display apk information and potential joke and or pun.
+- User page will display relevant information of the users reviews, preferences and options to delete/edit user account.
 
 ### Entity-Relationship (ER) Diagram
 
