@@ -48,17 +48,24 @@ let userSchema = new mongoose.Schema({
 });
 
 // Compile user model from user schema
-var User = mongoose.model('user', userSchema);
+var User = mongoose.model('users', userSchema);
 
 // Get all users
-app.use("/user", function(req, res, next) {
+app.get('/users', function(req, res, next) {
     User.find(function(err, users) {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err); }
         res.json({"users": users});
     });
 });
+
+// Create new user
+app.post('/user', function(req, res, next) {
+    var user = new User(req.body);
+    user.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(user);
+    })
+})
 
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
