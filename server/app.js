@@ -50,13 +50,14 @@ let userSchema = new mongoose.Schema({
 // Compile user model from user schema
 var User = mongoose.model('users', userSchema);
 
-// Get all users
-app.get('/users', function(req, res, next) {
-    User.find(function(err, users) {
+// Create new user
+app.post('/user', function(req, res, next) {
+    var user = new User(req.body);
+    user.save(function(err) {
         if (err) { return next(err); }
-        res.json({"users": users});
-    });
-});
+        res.status(201).json(user);
+    })
+})
 
 // Create new user
 app.post('/user', function(req, res, next) {
@@ -66,6 +67,27 @@ app.post('/user', function(req, res, next) {
         res.status(201).json(user);
     })
 })
+
+// Get all users
+app.get('/users', function(req, res, next) {
+    User.find(function(err, users) {
+        if (err) { return next(err); }
+        res.json({"users": users});
+    });
+});
+
+// Find user by username
+app.get('/users/:username', function(req, res, next) {
+    var id = req.params.username;
+    User.findById(req.params.id, function(err, user) {
+        if (err) { return next(err); }
+        if (user == null) {
+            return res.status(404).json(
+                {"message": "User not found"});
+        }
+        res.json(user);
+    });
+});
 
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
