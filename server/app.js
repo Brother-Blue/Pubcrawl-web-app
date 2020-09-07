@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator'); // TODO: install this in server directory, "npm install mongoose-unique-validator"
 var Schema = mongoose.Schema;
 var morgan = require('morgan');
 var path = require('path');
@@ -43,12 +44,15 @@ app.use('/api/*', function (req, res) {
 
 // Create user schema
 let userSchema = new Schema({
-    email: {type: String},
-    username: {type: String},
-    password: {type: String}
+    email: {type: String, unique: true, required: true },
+    username: {type: String, unique: true, required: true },
+    password: {type: String, required: true }
 }, {
     versionKey: false // For now we're skipping the moongoose versionkey
 });
+
+// Validates if new schema is unique
+userSchema.plugin(uniqueValidator);
 
 // Compile model from user schema
 var User = mongoose.model('users', userSchema);
@@ -96,8 +100,8 @@ app.patch('/users/:id', function(req, res, next) {
     });
 });
 
-// Delete user TODO: doesn't work
-app.delete('users/:id', function(req, res, next) {
+// Delete user
+app.delete('/users/:id', function(req, res, next) {
     var id = req.params.id;
     User.findByIdAndDelete({_id: id}, function(err, user) {
         if (err) { return next(err); }
