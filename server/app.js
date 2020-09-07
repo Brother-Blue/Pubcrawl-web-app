@@ -40,6 +40,26 @@ app.use('/api/*', function (req, res) {
     res.status(404).json({ 'message': 'Not Found' });
 });
 
+// Create user schema
+let userSchema = new mongoose.Schema({
+    email: {type: String},
+    username: {type: String},
+    password: {type: String}
+});
+
+// Compile user model from user schema
+var User = mongoose.model('user', userSchema);
+
+// Get all users
+app.use("/user", function(req, res, next) {
+    User.find(function(err, users) {
+        if (err) {
+            return next(err);
+        }
+        res.json({"users": users});
+    });
+});
+
 // Configuration for serving frontend in production mode
 // Support Vuejs HTML 5 history mode
 app.use(history());
