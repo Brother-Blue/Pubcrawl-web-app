@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
@@ -41,7 +42,7 @@ app.use('/api/*', function (req, res) {
 });
 
 // Create user schema
-let userSchema = new mongoose.Schema({
+let userSchema = new Schema({
     email: {type: String},
     username: {type: String},
     password: {type: String}
@@ -49,7 +50,7 @@ let userSchema = new mongoose.Schema({
     versionKey: false // For now we're skipping the moongoose versionkey
 });
 
-// Compile user model from user schema
+// Compile model from user schema
 var User = mongoose.model('users', userSchema);
 
 // Create new user
@@ -61,7 +62,7 @@ app.post('/users', function(req, res, next) {
     })
 })
 
-// Get all users
+// Get users
 app.get('/users', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
@@ -69,10 +70,36 @@ app.get('/users', function(req, res, next) {
     });
 });
 
-// Find user by username
-app.get('/users/:username', function(req, res, next) {
-    var id = req.params.username;
+// Find user
+app.get('/users/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
+        if (err) { return next(err); }
+        if (user == null) {
+            return res.status(404).json(
+                {"message": "User not found"});
+        }
+        res.json(user);
+    });
+});
+
+// Change user password
+app.patch('/users/:id', function(req, res, next) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) { return next(err); }
+        if (user == null) {
+            return res.status(404).json(
+                {"message": "User not found"});
+        }
+        user.password = req.body.password;
+        user.save();
+        res.json(user);
+    });
+});
+
+// Delete user TODO: doesn't work
+app.delete('users/:id', function(req, res, next) {
+    var id = req.params.id;
+    User.findByIdAndDelete({_id: id}, function(err, user) {
         if (err) { return next(err); }
         if (user == null) {
             return res.status(404).json(
