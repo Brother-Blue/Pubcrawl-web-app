@@ -45,22 +45,15 @@ let userSchema = new mongoose.Schema({
     email: {type: String},
     username: {type: String},
     password: {type: String}
+}, {
+    versionKey: false // For now we're skipping the moongoose versionkey
 });
 
 // Compile user model from user schema
 var User = mongoose.model('users', userSchema);
 
 // Create new user
-app.post('/user', function(req, res, next) {
-    var user = new User(req.body);
-    user.save(function(err) {
-        if (err) { return next(err); }
-        res.status(201).json(user);
-    })
-})
-
-// Create new user
-app.post('/user', function(req, res, next) {
+app.post('/users', function(req, res, next) {
     var user = new User(req.body);
     user.save(function(err) {
         if (err) { return next(err); }
