@@ -61,17 +61,14 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-Our system will provide information about local bars based on the user location and search criteria. The user can register to the website and add personal reviews to chosen bars. In addition, there will be an APK (alkohol per krona) page which helps calculate drinks at bars and a joke/pun page for users to read and use.
-
+Our system will provide information about local bars based on the user location and search criteria. The user can register to the website and add personal reviews or change the menu to the chosen bars. In addition, there will be an events page can be viewed and edited by registered users to create an event, such as e.g. a Barcrawl.
 
 ### Pages
 
-
-
-
-- Homepage will display relevant information about bars, options for the user to register and change view.
-- akp and joke page will display apk information and potential joke and or pun.
-- User page will display relevant information of the users reviews, preferences and options to delete/edit user account.
+- **Home** displays a map overlay of local bars, a list of bars that can be sorted for different criterias and give a short description of the displayed bars.
+- **Bar** gives detailed information of the selected bar, let registered users add reviews and add drinks to the menu.
+- **User** let users register, sign in, view and edit their user account.
+- **Event** gives an overview of created events, let registered users create new events and edit their created events.
 
 ### Entity-Relationship (ER) Diagram
 
