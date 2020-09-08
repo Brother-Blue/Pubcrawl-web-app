@@ -92,7 +92,7 @@ var Event = mongoose.model('events', eventSchema);
 
 // Create bar schema
 let barSchema = new Schema({
-    name: String,
+    name: { type: String, required: true },
     latLong: { type: [Number], required: true }
 }, {
     versionKey: false // Skip mongoose-version-key
@@ -137,7 +137,7 @@ app.post('/bars', function(req, res, next) {
     })
 })
 
-// Get all users
+// Read all users
 app.get('/users', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
@@ -145,7 +145,7 @@ app.get('/users', function(req, res, next) {
     });
 });
 
-// Get all reviews
+// Read all reviews
 app.get('/reviews', function(req, res, next) {
     Review.find(function(err, reviews) {
         if (err) { return next(err); }
@@ -153,7 +153,7 @@ app.get('/reviews', function(req, res, next) {
     });
 });
 
-// Get all events
+// Read all events
 app.get('/events', function(req, res, next) {
     Event.find(function(err, events) {
         if (err) { return next(err); }
@@ -161,7 +161,7 @@ app.get('/events', function(req, res, next) {
     });
 });
 
-// Get all bars
+// Read all bars
 app.get('/bars', function(req, res, next) {
     Bar.find(function(err, bars) {
         if (err) { return next(err); }
@@ -169,7 +169,7 @@ app.get('/bars', function(req, res, next) {
     });
 });
 
-// Get specific user
+// Read user
 app.get('/users/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
@@ -181,7 +181,7 @@ app.get('/users/:id', function(req, res, next) {
     });
 });
 
-// Get specific review
+// Read review
 app.get('/reviews/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
@@ -193,7 +193,7 @@ app.get('/reviews/:id', function(req, res, next) {
     });
 });
 
-// Get specific event
+// Read event
 app.get('/events/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
@@ -205,7 +205,7 @@ app.get('/events/:id', function(req, res, next) {
     });
 });
 
-// Get specific bar
+// Read bar
 app.get('/bars/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
@@ -217,7 +217,26 @@ app.get('/bars/:id', function(req, res, next) {
     });
 });
 
-// Edit specific user
+// Update user
+app.put('/users/:id', function(req, res, next) {
+    User.findById(req.params.id, function(err, user) {
+        if (err) { return next(err); }
+        if (user == null) {
+            return res.status(404).json(
+                {"message": "User not found"});
+        }
+        user.email = req.body.email;
+        user.username = req.body.username;
+        user.password = req.body.password;
+        user.isVerified = req.body.isVerified;
+        user.passwordResetToken = req.body.passwordResetToken;
+        user.passwordResetExpires = req.body.passwordResetExpires
+        user.save();
+        res.json(user);
+    });
+});
+
+// Partially update user
 app.patch('/users/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
@@ -225,13 +244,36 @@ app.patch('/users/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "User not found"});
         }
-        user.password = req.body.password;
+        user.email = (req.body.email || user.email);
+        user.username = (req.body.username || user.username);
+        user.password = (req.body.password || user.password);
+        user.isVerified = (req.body.isVerified || user.isVerified);
+        user.passwordResetToken = (req.body.passwordResetToken || user.passwordResetToken);
+        user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
         user.save();
         res.json(user);
     });
 });
 
-// Edit specific review
+// Update review
+app.put('/reviews/:id', function(req, res, next) {
+    Review.findById(req.params.id, function(err, review) {
+        if (err) { return next(err); }
+        if (review == null) {
+            return res.status(404).json(
+                {"message": "Review not found"});
+        }
+        review.rating = req.body.rating;
+        review.comment = req.body.comment;
+        review.created = req.body.created;
+        review.user_id = req.body.user_id;
+        review.bar_id = req.body.bar_id;
+        review.save();
+        res.json(review);
+    });
+});
+
+// Partially update review
 app.patch('/reviews/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
@@ -241,12 +283,34 @@ app.patch('/reviews/:id', function(req, res, next) {
         }
         review.rating = (req.body.rating || review.rating);
         review.comment = (req.body.comment || review.comment);
+        review.created = (req.body.created || review.created);
+        review.user_id = (req.body.user_id || review.user_id);
+        review.bar_id = (req.body.bar_id || review.bar_id);
         review.save();
         res.json(review);
     });
 });
 
-// Edit specific event
+// Update event
+app.put('/events/:id', function(req, res, next) {
+    Event.findById(req.params.id, function(err, event) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "Event not found"});
+        }
+        event.title = req.body.title;
+        event.description = req.body.description;
+        event.startDate = req.body.startDate;
+        event.endDate = req.body.endDate;
+        event.created = req.body.created;
+        event.bar_id = req.body.bar_id;
+        event.save();
+        res.json(event);
+    });
+});
+
+// Partially update event
 app.patch('/events/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
@@ -258,13 +322,29 @@ app.patch('/events/:id', function(req, res, next) {
         event.description = (req.body.description || event.description);
         event.startDate = (req.body.startDate || event.startDate);
         event.endDate = (req.body.endDate || event.endDate);
+        event.created = (req.body.created || event.created);
         event.bar_id = (req.body.bar_id || event.bar_id);
         event.save();
         res.json(event);
     });
 });
 
-// Edit specific bar
+// Update bar
+app.put('/bars/:id', function(req, res, next) {
+    Bar.findById(req.params.id, function(err, bar) {
+        if (err) { return next(err); }
+        if (bar == null) {
+            return res.status(404).json(
+                {"message": "Bar not found"});
+        }
+        bar.name = req.body.name;
+        bar.latLong = req.body.latLong;
+        bar.save();
+        res.json(bar);
+    });
+});
+
+// Partially update bar
 app.patch('/bars/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
@@ -279,7 +359,7 @@ app.patch('/bars/:id', function(req, res, next) {
     });
 });
 
-// Delete specific user
+// Delete user
 app.delete('/users/:id', function(req, res, next) {
     User.findByIdAndDelete({_id: req.params.id}, function(err, user) {
         if (err) { return next(err); }
@@ -291,7 +371,7 @@ app.delete('/users/:id', function(req, res, next) {
     });
 });
 
-// Delete specific review
+// Delete review
 app.delete('/reviews/:id', function(req, res, next) {
     Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
         if (err) { return next(err); }
@@ -303,7 +383,7 @@ app.delete('/reviews/:id', function(req, res, next) {
     });
 });
 
-// Delete specific event
+// Delete event
 app.delete('/events/:id', function(req, res, next) {
     Event.findByIdAndDelete({_id: req.params.id}, function(err, event) {
         if (err) { return next(err); }
@@ -315,7 +395,7 @@ app.delete('/events/:id', function(req, res, next) {
     });
 });
 
-// Delete specific bar
+// Delete bar
 app.delete('/bars/:id', function(req, res, next) {
     Bar.findByIdAndDelete({_id: req.params.id}, function(err, bar) {
         if (err) { return next(err); }
