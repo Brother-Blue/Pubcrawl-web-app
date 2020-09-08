@@ -49,7 +49,8 @@ let userSchema = new Schema({
     password: { type: String, required: true },
     isVerified: { type: Boolean, default: false }, // Stores if user is email verified
     passwordResetToken: String, // Will be used to send password resets
-    passwordResetExpires: Date // Will be used to resend password resets
+    passwordResetExpires: Date, // Will be used to resend password resets
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
 }, {
     versionKey: false // Skip mongoose-version-key
 });
@@ -65,8 +66,8 @@ let reviewSchema = new Schema({
     rating: { type: Array, required: true },
     comment: String,
     created: { type: Date, default: Date.now },
-    user_id: { type: String, required: true },
-    bar_id: { type: String, required: true }
+    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    bar: { type: Schema.Types.ObjectId, required: true, ref: 'Bar' }
 }, {
     versionKey: false // Skip mongoose-version-key
 });
@@ -81,8 +82,8 @@ let eventSchema = new Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     created: { type: Date, default: Date.now },
-    user_id: { type: String, required: true },
-    bar_id: Array
+    user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    bars: [{ type: Schema.Types.ObjectId, ref: 'Bar' }]
 }, {
     versionKey: false // Skip mongoose-version-key
 });
@@ -93,7 +94,8 @@ var Event = mongoose.model('events', eventSchema);
 // Create bar schema
 let barSchema = new Schema({
     name: { type: String, required: true },
-    latLong: { type: [Number], required: true }
+    latLong: { type: [Number], required: true },
+    reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
 }, {
     versionKey: false // Skip mongoose-version-key
 });
