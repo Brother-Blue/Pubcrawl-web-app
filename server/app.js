@@ -44,18 +44,62 @@ app.use('/api/*', function (req, res) {
 
 // Create user schema
 let userSchema = new Schema({
-    email: {type: String, unique: true, required: true },
-    username: {type: String, unique: true, required: true },
-    password: {type: String, required: true }
+    email: { type: String, unique: true, required: true },
+    username: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    isVerified: { type: Boolean, default: false }, // Stores if user is email verified
+    passwordResetToken: String, // Will be used to send password resets
+    passwordResetExpires: Date // Will be used to resend password resets
 }, {
-    versionKey: false // For now we're skipping the moongoose versionkey
+    versionKey: false // Skip mongoose-version-key
 });
 
-// Validates if new schema is unique
+// Validates if new userSchema is unique
 userSchema.plugin(uniqueValidator);
 
-// Compile model from user schema
+// Compile model from userSchema
 var User = mongoose.model('users', userSchema);
+
+// Create review schema
+let reviewSchema = new Schema({
+    rating: { type: Array, required: true },
+    comment: String,
+    created: { type: Date, default: Date.now },
+    user_id: { type: String, required: true },
+    bar_id: { type: String, required: true }
+}, {
+    versionKey: false // Skip mongoose-version-key
+});
+
+// Compile model from reviewSchema
+var Review = mongoose.model('reviews', reviewSchema);
+
+// Create event schema
+let eventSchema = new Schema({
+    title: { type: String, required: true },
+    description: String,
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
+    created: { type: Date, default: Date.now },
+    user_id: { type: String, required: true },
+    bar_id: Array
+}, {
+    versionKey: false // Skip mongoose-version-key
+});
+
+// Compile model from eventSchema
+var Event = mongoose.model('events', eventSchema);
+
+// Create bar schema
+let barSchema = new Schema({
+    name: String,
+    latLong: { type: [Number], required: true }
+}, {
+    versionKey: false // Skip mongoose-version-key
+});
+
+// Compile model from barSchema
+var Bar = mongoose.model('bars', barSchema);
 
 // Create new user
 app.post('/users', function(req, res, next) {
@@ -66,7 +110,34 @@ app.post('/users', function(req, res, next) {
     })
 })
 
-// Get users
+// Create new review
+app.post('/reviews', function(req, res, next) {
+    var review = new Review(req.body);
+    review.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(review);
+    })
+})
+
+// Create new event
+app.post('/events', function(req, res, next) {
+    var event = new Event(req.body);
+    event.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(event);
+    })
+})
+
+// Create new bar
+app.post('/bars', function(req, res, next) {
+    var bar = new Bar(req.body);
+    bar.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(bar);
+    })
+})
+
+// Get all users
 app.get('/users', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
@@ -74,7 +145,31 @@ app.get('/users', function(req, res, next) {
     });
 });
 
-// Find user
+// Get all reviews
+app.get('/reviews', function(req, res, next) {
+    Review.find(function(err, reviews) {
+        if (err) { return next(err); }
+        res.json({"reviews": reviews});
+    });
+});
+
+// Get all events
+app.get('/events', function(req, res, next) {
+    Event.find(function(err, events) {
+        if (err) { return next(err); }
+        res.json({"events": events});
+    });
+});
+
+// Get all bars
+app.get('/bars', function(req, res, next) {
+    Bar.find(function(err, bars) {
+        if (err) { return next(err); }
+        res.json({"bars": bars});
+    });
+});
+
+// Get specific user
 app.get('/users/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
@@ -86,7 +181,43 @@ app.get('/users/:id', function(req, res, next) {
     });
 });
 
-// Change user password
+// Get specific review
+app.get('/reviews/:id', function(req, res, next) {
+    Review.findById(req.params.id, function(err, review) {
+        if (err) { return next(err); }
+        if (review == null) {
+            return res.status(404).json(
+                {"message": "Review not found"});
+        }
+        res.json(review);
+    });
+});
+
+// Get specific event
+app.get('/events/:id', function(req, res, next) {
+    Event.findById(req.params.id, function(err, event) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "Event not found"});
+        }
+        res.json(event);
+    });
+});
+
+// Get specific bar
+app.get('/bars/:id', function(req, res, next) {
+    Bar.findById(req.params.id, function(err, bar) {
+        if (err) { return next(err); }
+        if (bar == null) {
+            return res.status(404).json(
+                {"message": "Bar not found"});
+        }
+        res.json(Bar);
+    });
+});
+
+// Edit specific user
 app.patch('/users/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
@@ -100,16 +231,99 @@ app.patch('/users/:id', function(req, res, next) {
     });
 });
 
-// Delete user
+// Edit specific review
+app.patch('/reviews/:id', function(req, res, next) {
+    Review.findById(req.params.id, function(err, review) {
+        if (err) { return next(err); }
+        if (review == null) {
+            return res.status(404).json(
+                {"message": "Review not found"});
+        }
+        review.rating = (req.body.rating || review.rating);
+        review.comment = (req.body.comment || review.comment);
+        review.save();
+        res.json(review);
+    });
+});
+
+// Edit specific event
+app.patch('/events/:id', function(req, res, next) {
+    Event.findById(req.params.id, function(err, event) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "Event not found"});
+        }
+        event.title = (req.body.title || event.title);
+        event.description = (req.body.description || event.description);
+        event.startDate = (req.body.startDate || event.startDate);
+        event.endDate = (req.body.endDate || event.endDate);
+        event.bar_id = (req.body.bar_id || event.bar_id);
+        event.save();
+        res.json(event);
+    });
+});
+
+// Edit specific bar
+app.patch('/bars/:id', function(req, res, next) {
+    Bar.findById(req.params.id, function(err, bar) {
+        if (err) { return next(err); }
+        if (bar == null) {
+            return res.status(404).json(
+                {"message": "Bar not found"});
+        }
+        bar.name = (req.body.name || bar.name);
+        bar.latLong = (req.body.latLong || bar.latLong);
+        bar.save();
+        res.json(bar);
+    });
+});
+
+// Delete specific user
 app.delete('/users/:id', function(req, res, next) {
-    var id = req.params.id;
-    User.findByIdAndDelete({_id: id}, function(err, user) {
+    User.findByIdAndDelete({_id: req.params.id}, function(err, user) {
         if (err) { return next(err); }
         if (user == null) {
             return res.status(404).json(
                 {"message": "User not found"});
         }
         res.json(user);
+    });
+});
+
+// Delete specific review
+app.delete('/reviews/:id', function(req, res, next) {
+    Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
+        if (err) { return next(err); }
+        if (review == null) {
+            return res.status(404).json(
+                {"message": "Review not found"});
+        }
+        res.json(review);
+    });
+});
+
+// Delete specific event
+app.delete('/events/:id', function(req, res, next) {
+    Event.findByIdAndDelete({_id: req.params.id}, function(err, event) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "Event not found"});
+        }
+        res.json(event);
+    });
+});
+
+// Delete specific bar
+app.delete('/bars/:id', function(req, res, next) {
+    Bar.findByIdAndDelete({_id: req.params.id}, function(err, bar) {
+        if (err) { return next(err); }
+        if (bar == null) {
+            return res.status(404).json(
+                {"message": "Bar not found"});
+        }
+        res.json(bar);
     });
 });
 
