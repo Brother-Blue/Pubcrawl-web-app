@@ -16,7 +16,7 @@ router.post('', function(req, res, next) {
 router.get('', function(req, res, next) {
     Event.find(function(err, events) {
         if (err) { return next(err); }
-        res.json({"events": events});
+        res.status(200).json({"events": events});
     });
 });
 
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
-        res.json(event);
+        res.status(200).json(event);
     });
 });
 
@@ -47,7 +47,7 @@ router.put('/:id', function(req, res, next) {
         event.created = req.body.created;
         event.bar_id = req.body.bar_id;
         event.save();
-        res.json(event);
+        res.status(204).json(event);
     });
 });
 
@@ -66,7 +66,7 @@ router.patch('/:id', function(req, res, next) {
         event.created = (req.body.created || event.created);
         event.bar_id = (req.body.bar_id || event.bar_id);
         event.save();
-        res.json(event);
+        res.status(204).json(event);
     });
 });
 
@@ -78,7 +78,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
-        res.json(event);
+        res.status(202).json(event);
     });
 });
 

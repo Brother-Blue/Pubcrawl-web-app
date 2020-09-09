@@ -16,7 +16,7 @@ router.post('', function(req, res, next) {
 router.get('', function(req, res, next) {
     Review.find(function(err, reviews) {
         if (err) { return next(err); }
-        res.json({"reviews": reviews});
+        res.status(200).json({"reviews": reviews});
     });
 });
 
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
-        res.json(review);
+        res.status(200).json(review);
     });
 });
 
@@ -46,7 +46,7 @@ router.put('/:id', function(req, res, next) {
         review.user_id = req.body.user_id;
         review.bar_id = req.body.bar_id;
         review.save();
-        res.json(review);
+        res.status(204).json(review);
     });
 });
 
@@ -64,7 +64,7 @@ router.patch('/:id', function(req, res, next) {
         review.user_id = (req.body.user_id || review.user_id);
         review.bar_id = (req.body.bar_id || review.bar_id);
         review.save();
-        res.json(review);
+        res.status(204).json(review);
     });
 });
 
@@ -76,7 +76,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
-        res.json(review);
+        res.status(202).json(review);
     });
 });
 

@@ -16,7 +16,7 @@ router.post('', function(req, res, next) {
 router.get('', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
-        res.json({"users": users});
+        res.status(200).json({"users": users});
     });
 });
     
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
-        res.json(user);
+        res.status(200).json(user);
     });
 });
 
@@ -47,7 +47,7 @@ router.put('/:id', function(req, res, next) {
         user.passwordResetToken = req.body.passwordResetToken;
         user.passwordResetExpires = req.body.passwordResetExpires
         user.save();
-        res.json(user);
+        res.status(204).json(user);
     });
 });
 
@@ -66,7 +66,7 @@ router.patch('/:id', function(req, res, next) {
         user.passwordResetToken = (req.body.passwordResetToken || user.passwordResetToken);
         user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
         user.save();
-        res.json(user);
+        res.status(204).json(user);
     });
 });
 
@@ -78,7 +78,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
-        res.json(user);
+        res.status(202).json(user);
     });
 });
 

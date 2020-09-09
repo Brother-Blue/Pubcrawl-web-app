@@ -16,7 +16,7 @@ router.post('', function(req, res, next) {
 router.get('', function(req, res, next) {
     Bar.find(function(err, bars) {
         if (err) { return next(err); }
-        res.json({"bars": bars});
+        res.status(200).json({"bars": bars});
     });
 });
 
@@ -28,7 +28,7 @@ router.get('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
-        res.json(bar);
+        res.status(200).json(bar);
     });
 });
 
@@ -44,7 +44,7 @@ router.put('/:id', function(req, res, next) {
         bar.latLong = req.body.latLong;
         bar.reviews = req.body.reviews;
         bar.save();
-        res.json(bar);
+        res.status(204).json(bar);
     });
 });
 
@@ -60,7 +60,7 @@ router.patch('/:id', function(req, res, next) {
         bar.latLong = (req.body.latLong || bar.latLong);
         bar.reviews = (req.body.reviews || bar.reviews);
         bar.save();
-        res.json(bar);
+        res.status(204).json(bar);
     });
 });
 
@@ -72,7 +72,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
-        res.json(bar);
+        res.status(202).json(bar);
     });
 });
 

@@ -37,7 +37,7 @@ app.use(cors());
 app.use('/api', router);
 
 app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
+    res.status(200).json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
 });
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
@@ -55,7 +55,7 @@ var client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-// TODO: loot at this later (error handling for different environments)
+// TODO: look at this later (error handling for different environments)
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     var err_res = {
