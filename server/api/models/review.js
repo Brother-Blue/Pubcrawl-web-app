@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 // Create review schema
 let reviewSchema = new Schema({
     rating: { type: Array, required: true, min: 0, max: 5 },
-    comment: String, max: 140, // TODO: add profanity filter
+    comment: { type: String, max: 140 }, // TODO: add profanity filter
     created: { type: Date, default: Date.now },
     user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     bar: { type: Schema.Types.ObjectId, required: true, ref: 'Bar' }
