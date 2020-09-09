@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 // Create event schema
 let eventSchema = new Schema({
-    title: { type: String, required: true, max: 30 },
-    description: { type: String, max: 280 },
+    title: { type: String, required: true, maxlength: [30, 'Max allowed characters is 30'] },
+    description: { type: String, maxlength: [280, 'Max allowed character is 280'] },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     created: { type: Date, default: Date.now },
