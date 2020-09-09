@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 // Create bar schema
 let barSchema = new Schema({
-    name: { type: String, required: true },
+    name: { type: String, required: true, min: 1, max: 25 },
     latLong: { type: [Number], required: true },
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }]
 }, {
