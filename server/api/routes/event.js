@@ -1,7 +1,7 @@
 var Event = require('../models/event');
 var express = require('express');
 
-var router = express();
+var router = express.Router();
 
 // Create new event
 router.post('', function(req, res, next) {
@@ -10,10 +10,9 @@ router.post('', function(req, res, next) {
         if (err) { return next(err); }
         res.status(201).json(event);
     })
-})
+});
 
 // Read all events
-// TODO: Doesn't work, fix
 router.get('', function(req, res, next) {
     Event.find(function(err, events) {
         if (err) { return next(err); }
@@ -22,7 +21,6 @@ router.get('', function(req, res, next) {
 });
 
 // Read event
-// TODO: Doesn't work, fix
 router.get('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }

@@ -2,9 +2,9 @@ var review = require('./review');
 var user = require('./user');
 var event = require('./event');
 var bar = require('./bar');
-var express = require('express')
+var express = require('express');
 
-var router = express();
+var router = express.Router();
 
 // Endpoint APIs
 router.use('/users', user);

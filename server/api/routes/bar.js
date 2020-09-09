@@ -1,7 +1,7 @@
 var Bar = require('../models/bar');
 var express = require('express');
 
-var router = express();
+var router = express.Router();
 
 // Create new bar
 router.post('', function(req, res, next) {
@@ -10,10 +10,9 @@ router.post('', function(req, res, next) {
         if (err) { return next(err); }
         res.status(201).json(bar);
     })
-})
+});
 
 // Read all bars
-// TODO: Doesn't work, fix
 router.get('', function(req, res, next) {
     Bar.find(function(err, bars) {
         if (err) { return next(err); }
@@ -22,7 +21,6 @@ router.get('', function(req, res, next) {
 });
 
 // Read bar
-// TODO: Doesn't work, fix
 router.get('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }

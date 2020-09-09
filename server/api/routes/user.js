@@ -1,7 +1,7 @@
 var User = require('../models/user');
 var express = require('express');
 
-var router = express();
+var router = express.Router();
 
 // Create new user
 router.post('', function(req, res, next) {
@@ -10,10 +10,9 @@ router.post('', function(req, res, next) {
         if (err) { return next(err); }
         res.status(201).json(user);
     })
-})  
+});  
 
 // Read all users 
-// TODO: Doesn't work, fix
 router.get('', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
@@ -22,7 +21,6 @@ router.get('', function(req, res, next) {
 });
     
 // Read user
-// TODO: Doesn't work, fix
 router.get('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }

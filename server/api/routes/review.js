@@ -1,7 +1,7 @@
 var Review = require('../models/review');
 var express = require('express');
 
-var router = express();
+var router = express.Router();
 
 // Create new review
 router.post('', function(req, res, next) {
@@ -13,7 +13,6 @@ router.post('', function(req, res, next) {
 })
 
 // Read all reviews
-// TODO: Doesn't work, fix
 router.get('', function(req, res, next) {
     Review.find(function(err, reviews) {
         if (err) { return next(err); }
@@ -22,7 +21,6 @@ router.get('', function(req, res, next) {
 });
 
 // Read review
-// TODO: Doesn't work, fix
 router.get('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }

@@ -33,14 +33,17 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
-// Import routes
+// Use API routes
+app.use('/api', router);
+
 app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
+    res.json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
 });
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
-    res.status(404).json({ 'message': 'Not Found' });
+    console.log('L43 req', req);
+    res.status(404).json({'message': 'Not Found'});
 });
 
 // Configuration for serving frontend in production mode
@@ -52,26 +55,20 @@ var client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-var env = app.get('env');
-// eslint-disable-next-line no-unused-vars
+// TODO: loot at this later (error handling for different environments)
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     var err_res = {
         'message': err.message,
         'error': {}
     };
-    if (env === 'development') {
-        err_res['error'] = err;
-    }
     res.status(err.status || 500);
     res.json(err_res);
 });
 
-app.use('/', router);
-
 app.listen(port, function(err) {
     if (err) throw err;
-    console.log(`Express server listening on port ${port}, in ${env} mode`);
+    console.log(`Express server listening on port ${port}`);
     console.log(`Backend: http://localhost:${port}/api/`);
     console.log(`Frontend (production): http://localhost:${port}/`);
 });
