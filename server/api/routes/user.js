@@ -32,6 +32,18 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Read all users reviews
+router.get('/:id/reviews', function(req, res, next) {
+    User.findById(req.params.id).populate('reviews').exec(function(err, user) {
+        if (err) { return next(err); }
+        if (user == null) {
+            return res.status(404).json(
+                {"message": "user not found"});
+        }
+        res.status(200).json(user.reviews);
+    })
+});
+
 // Update user
 router.put('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
