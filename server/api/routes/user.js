@@ -9,7 +9,7 @@ router.post('', function(req, res, next) {
     user.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(user);
-    })
+    });
 });  
 
 // Read all users 
