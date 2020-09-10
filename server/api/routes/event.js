@@ -82,4 +82,15 @@ router.delete('/:id', function(req, res, next) {
     });
 });
 
+// Delete all events
+router.delete('', function(req, res, next) {
+    Event.deleteMany({}, function(err, event) {
+        if (err) { return next(err)};
+        if (event == null) { 
+            return res.status(404).json({ message: 'No events found.'});
+        }
+        res.status(202).json({message: 'All events have been deleted.'});
+    });
+})
+
 module.exports = router;

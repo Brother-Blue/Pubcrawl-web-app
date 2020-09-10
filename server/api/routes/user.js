@@ -82,23 +82,6 @@ router.patch('/:id', function(req, res, next) {
     });
 });
 
-// Update all users TODO: method runs but users are not updated. To be fixed.
-router.patch('', function (req, res, next) {
-    User.updateMany({}, function (err, user) {
-        if (err) {return next(err)};
-        if (user == null) {
-            return res.status(404).json({ message: 'User not found.'});
-        };
-        user.email = (req.body.email || user.email);
-        user.username = (req.body.username || user.username);
-        user.password = (req.body.password || user.password);
-        user.isVerified = (req.body.isVerified || user.isVerified);
-        user.passwordResetToken = (req.body.passwordResetToken || user.passwordResetToken);
-        user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
-        res.status(204).json(user);
-    });
-});
-
 // Delete user
 router.delete('/:id', function(req, res, next) {
     User.findByIdAndDelete({_id: req.params.id}, function(err, user) {

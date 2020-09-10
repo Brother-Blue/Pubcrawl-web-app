@@ -76,4 +76,15 @@ router.delete('/:id', function(req, res, next) {
     });
 });
 
+// Delete all bars
+router.delete('', function(req, res, next) {
+    Bar.deleteMany({}, function(err, bar) {
+        if (err) { return next(err)};
+        if (bar == null) { 
+            return res.status(404).json({ message: 'No bars found.'});
+        }
+        res.status(202).json({message: 'All bars have been deleted.'});
+    });
+});
+
 module.exports = router;
