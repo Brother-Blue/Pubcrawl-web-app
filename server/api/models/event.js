@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+
 var Schema = mongoose.Schema;
 
 // Create event schema
-let eventSchema = new Schema({
+let EventSchema = new Schema({
     title: { type: String, required: true, maxlength: [30, 'Max allowed characters is 30'] },
     description: { type: String, maxlength: [280, 'Max allowed character is 280'] },
     startDate: { type: Date, required: true },
@@ -14,5 +15,5 @@ let eventSchema = new Schema({
     versionKey: false // Skip mongoose-version-key
 });
 
-// Compile model from eventSchema
-module.exports = mongoose.model('events', eventSchema);
+// Compile model from EventSchema
+module.exports = mongoose.model('events', EventSchema);

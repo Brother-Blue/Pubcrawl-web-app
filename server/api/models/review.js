@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+
 var Schema = mongoose.Schema;
 
 // Create review schema
-let reviewSchema = new Schema({
+let ReviewSchema = new Schema({
     rating: { type: Array, required: true, min: 0, max: 5 },
     comment: { type: String, maxlength: [140, 'Max allowed characters is 140'] }, // TODO: add profanity filter
     created: { type: Date, default: Date.now },
@@ -12,5 +13,5 @@ let reviewSchema = new Schema({
     versionKey: false // Skip mongoose-version-key
 });
 
-// Compile model from reviewSchema
-module.exports = mongoose.model('reviews', reviewSchema);
+// Compile model from ReviewSchema
+module.exports = mongoose.model('reviews', ReviewSchema);
