@@ -1,6 +1,5 @@
 var User = require('../models/user');
 var express = require('express');
-var authenticator = require('../controllers/auth');
 
 var router = express.Router();
 
@@ -12,6 +11,8 @@ router.post('', function(req, res, next) {
         res.status(201).json(user);
     });
 });  
+
+router.post('/login', passport.authenticat)
 
 // Read all users 
 router.get('', function(req, res, next) {
