@@ -12,8 +12,6 @@ router.post('', function(req, res, next) {
     });
 });  
 
-router.post('/login', passport.authenticat)
-
 // Read all users 
 router.get('', function(req, res, next) {
     User.find(function(err, users) {
