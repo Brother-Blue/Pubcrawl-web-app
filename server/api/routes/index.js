@@ -3,6 +3,7 @@ var user = require('./user');
 var event = require('./event');
 var bar = require('./bar');
 var express = require('express');
+var authenticator = require('../controllers/auth')
 
 var router = express.Router();
 

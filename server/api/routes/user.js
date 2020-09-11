@@ -1,5 +1,6 @@
 var User = require('../models/user');
 var express = require('express');
+var authenticator = require('../controllers/auth');
 
 var router = express.Router();
 
