@@ -7,8 +7,8 @@ let EventSchema = new mongoose.Schema({
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     createdAt: { required: true, type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-    bars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bar' }]
+    users: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
+    bars: [{ type: mongoose.Schema.Types.ObjectId, ref: 'bars' }]
 }, {
     versionKey: false // Skip mongoose-version-key
 });
