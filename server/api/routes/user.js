@@ -32,7 +32,7 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-// Read all users reviews
+// Read all user reviews
 router.get('/:id/reviews', function(req, res, next) {
     User.findById(req.params.id).populate('reviews').exec(function(err, user) {
         if (err) { return next(err); }

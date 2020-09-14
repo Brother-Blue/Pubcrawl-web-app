@@ -32,6 +32,18 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Read all bar reviews
+router.get('/:id/reviews', function(req, res, next) {
+    Bar.findById(req.params.id).populate('reviews').exec(function(err, bar) {
+        if (err) { return next(err); }
+        if (bar == null) {
+            return res.status(404).json(
+                {"message": "bar not found"});
+        }
+        res.status(200).json(bar.reviews);
+    })
+});
+
 // Update bar
 router.put('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {

@@ -32,8 +32,6 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-
-
 // Update review
 router.put('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
