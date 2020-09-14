@@ -32,6 +32,30 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Read all event bars
+router.get('/:id/bars', function(req, res, next) {
+    Event.findById(req.params.id).populate('bars').exec(function(err, event) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "event not found"});
+        }
+        res.status(200).json(event.bars);
+    })
+});
+
+// Read event user
+router.get('/:id/users', function(req, res, next) {
+    Event.findById(req.params.id).populate('users').exec(function(err, event ) {
+        if (err) { return next(err); }
+        if (event == null) {
+            return res.status(404).json(
+                {"message": "event not found"});
+        }
+        res.status(200).json(event.users);
+    })
+});
+
 // Update event
 router.put('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
