@@ -81,13 +81,13 @@ router.delete('/:id', function(req, res, next) {
 });
 
 // Delete all reviews
-router.delete('/:id', function(req, res, next) {
-    Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
-        if (err) { return next(err); }
-        if (review == null) {
-            return res.status(404).json({message: "No reviews found"});
+router.delete('', function(req, res, next) {
+    Review.deleteMany({}, function(err, review) {
+        if (err) { return next(err)};
+        if (review == null) { 
+            return res.status(404).json({ message: 'No reviews found.'});
         }
-        res.status(202).json("All reviews have been deleted.");
+        res.status(202).json({message: 'All reviews have been deleted.'});
     });
 });
 
