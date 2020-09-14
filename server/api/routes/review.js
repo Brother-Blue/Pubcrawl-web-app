@@ -32,6 +32,20 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// TODO: Populate users
+// TODO: Populate bars
+
+router.get('', function(req, res) {
+    var filter = req.query.drinkQuality;
+    if(filter) {
+        res.json(reviews.filter(function (e) {
+            return filter === e.drinkQuality;
+        }));
+    } else {
+        res.json(reviews);
+    }
+});
+
 // Update review
 router.put('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {

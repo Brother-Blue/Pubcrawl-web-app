@@ -26,7 +26,7 @@ ReviewSchema.pre('save', function(next) {
     if(review.atmosphere) { divide++; review.averageRating += review.atmosphere; };
 
     review.averageRating /= divide;
-    parseFloat(review.averageRating.toFixed(1)); // Fix this chris you nerd
+    review.averageRating = Number(review.averageRating.toFixed(1)); // Stores 1 decimal
     next();
 });
 
