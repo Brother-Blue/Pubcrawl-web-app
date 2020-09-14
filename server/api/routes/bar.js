@@ -24,7 +24,7 @@ router.get('', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
-        if (bar == null) {
+        if (!bar) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
@@ -32,44 +32,19 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-// Filter by bar drinkQuality reviews
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.drinkQuality;
-    console.log('Hello from pong'+filter);
-    Bar.findById(req.params.id).populate('reviews').exec(function(err, bar) {
-        if (err) { return next(err); }
-        if (bar == null) {
-            return res.status(404).json(
-                {"message": "bar not found"});
-        }
-        if (filter) {
-            res.json(bar.filter(function (e) {
-                console.log('Pong!');
-                return filter === e.drinkQuality;
-            }));
-        } else {
-            res.status(200).json(bar.reviews);
-        }
-    })
-});
+// TODO: Filter by bar name
 
-// TODO: Filter by bar averageRating reviews
-// TODO: Filter by bar drinkPrice reviews
-// TODO: Filter by bar foodQuality reviews
-// TODO: Filter by bar atmosphere reviews
-
-// TODO: Sort by bar averageRating reviews
-// TODO: Sort by bar drinkPrice reviews
-// TODO: Sort by bar foodQuality reviews
-// TODO: Sort by bar atmosphere reviews
-
-// TODO: Search by bar name
+// TODO: Sort by bar name
+// TODO: Sort by averageRating
+// TODO: Sort by drinkPrice
+// TODO: Sort by foodQuality
+// TODO: Sort by atmosphere
 
 // Read all bar reviews
 router.get('/:id/reviews', function(req, res, next) {
     Bar.findById(req.params.id).populate('reviews').exec(function(err, bar) {
         if (err) { return next(err); }
-        if (bar == null) {
+        if (!bar) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
@@ -81,7 +56,7 @@ router.get('/:id/reviews', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
-        if (bar == null) {
+        if (!bar) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
@@ -97,7 +72,7 @@ router.put('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
-        if (bar == null) {
+        if (!bar) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
@@ -113,7 +88,7 @@ router.patch('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
     Bar.findByIdAndDelete({_id: req.params.id}, function(err, bar) {
         if (err) { return next(err); }
-        if (bar == null) {
+        if (!bar) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
@@ -125,7 +100,7 @@ router.delete('/:id', function(req, res, next) {
 router.delete('', function(req, res, next) {
     Bar.deleteMany({}, function(err, bar) {
         if (err) { return next(err)};
-        if (bar == null) { 
+        if (!bar) { 
             return res.status(404).json({ message: 'No bars found.'});
         }
         res.status(202).json({message: 'All bars have been deleted.'});

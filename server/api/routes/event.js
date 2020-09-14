@@ -24,7 +24,7 @@ router.get('', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -36,7 +36,7 @@ router.get('/:id', function(req, res, next) {
 router.get('/:id/bars', function(req, res, next) {
     Event.findById(req.params.id).populate('bars').exec(function(err, event) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -48,7 +48,7 @@ router.get('/:id/bars', function(req, res, next) {
 router.get('/:id/users', function(req, res, next) {
     Event.findById(req.params.id).populate('users').exec(function(err, event ) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -56,11 +56,15 @@ router.get('/:id/users', function(req, res, next) {
     })
 });
 
+// TODO: Filter by startDate
+
+// TODO: Sort by startDate
+
 // Update event
 router.put('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -69,7 +73,8 @@ router.put('/:id', function(req, res, next) {
         event.startDate = req.body.startDate;
         event.endDate = req.body.endDate;
         event.created = req.body.created;
-        event.bar_id = req.body.bar_id;
+        event.bars = req.body.bars;
+        event.users = req.body.users;
         event.save();
         res.status(204).json(event);
     });
@@ -79,7 +84,7 @@ router.put('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -88,7 +93,8 @@ router.patch('/:id', function(req, res, next) {
         event.startDate = (req.body.startDate || event.startDate);
         event.endDate = (req.body.endDate || event.endDate);
         event.created = (req.body.created || event.created);
-        event.bar_id = (req.body.bar_id || event.bar_id);
+        event.bars = (req.body.bars || event.bars);
+        event.users = (req.body.users || event.users);
         event.save();
         res.status(204).json(event);
     });
@@ -98,7 +104,7 @@ router.patch('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
     Event.findByIdAndDelete({_id: req.params.id}, function(err, event) {
         if (err) { return next(err); }
-        if (event == null) {
+        if (!event) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
@@ -110,7 +116,7 @@ router.delete('/:id', function(req, res, next) {
 router.delete('', function(req, res, next) {
     Event.deleteMany({}, function(err, event) {
         if (err) { return next(err)};
-        if (event == null) { 
+        if (!event) { 
             return res.status(404).json({ message: 'No events found.'});
         }
         res.status(202).json({message: 'All events have been deleted.'});

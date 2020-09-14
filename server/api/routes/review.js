@@ -24,7 +24,7 @@ router.get('', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
-        if (review == null) {
+        if (!review) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
@@ -32,9 +32,36 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-// TODO: Populate users
-// TODO: Populate bars
+// Read review user
+router.get(':id/users', function(req, res, next) {
+    Review.findById(req.params.id).populate('users').exec(function(err, review){
+        if (err) { return next(err); }
+        if (!review) {
+            return res.status(404).json( 
+                {"message": "review not found"});
+        }
+        res.status(200).json(review.users);
+    });
+});
 
+// Read review bar
+router.get(':id/bars', function(req, res, next){
+    Review.findById(req.params.id).populate('bars').exec(function(err,review){
+        if (err) { return next(err); }
+        if (!review) {
+            return res.status(404).json(
+                {"message": "review not found"}
+            )
+        }
+        res.status(200).json(review.bars);
+    });
+});
+
+// TODO: Sort by averageRating
+
+router.get(':')
+
+// TODO: WHAT IS THIS CHRIS FFS
 router.get('', function(req, res) {
     var filter = req.query.drinkQuality;
     if(filter) {
@@ -50,15 +77,15 @@ router.get('', function(req, res) {
 router.put('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
-        if (review == null) {
+        if (!review) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
         review.rating = req.body.rating;
         review.comment = req.body.comment;
         review.created = req.body.created;
-        review.user_id = req.body.user_id;
-        review.bar_id = req.body.bar_id;
+        review.users = req.body.users;
+        review.bars = req.body.bars;
         review.save();
         res.status(204).json(review);
     });
@@ -68,15 +95,15 @@ router.put('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
-        if (review == null) {
+        if (!review) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
         review.rating = (req.body.rating || review.rating);
         review.comment = (req.body.comment || review.comment);
         review.created = (req.body.created || review.created);
-        review.user_id = (req.body.user_id || review.user_id);
-        review.bar_id = (req.body.bar_id || review.bar_id);
+        review.users = (req.body.users || review.users);
+        review.bars = (req.body.bars || review.bars);
         review.save();
         res.status(204).json(review);
     });
@@ -86,7 +113,7 @@ router.patch('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
     Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
         if (err) { return next(err); }
-        if (review == null) {
+        if (!review) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
@@ -98,7 +125,7 @@ router.delete('/:id', function(req, res, next) {
 router.delete('', function(req, res, next) {
     Review.deleteMany({}, function(err, review) {
         if (err) { return next(err)};
-        if (review == null) { 
+        if (!review) { 
             return res.status(404).json({ message: 'No reviews found.'});
         }
         res.status(202).json({message: 'All reviews have been deleted.'});

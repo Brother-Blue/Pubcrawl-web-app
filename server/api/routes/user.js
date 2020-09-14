@@ -24,7 +24,7 @@ router.get('', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
-        if (user == null) {
+        if (!user) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
@@ -36,7 +36,7 @@ router.get('/:id', function(req, res, next) {
 router.get('/:id/reviews', function(req, res, next) {
     User.findById(req.params.id).populate('reviews').exec(function(err, user) {
         if (err) { return next(err); }
-        if (user == null) {
+        if (!user) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
@@ -44,11 +44,13 @@ router.get('/:id/reviews', function(req, res, next) {
     })
 });
 
+// TODO: Sort by username
+
 // Update user
 router.put('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
-        if (user == null) {
+        if (!user) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
@@ -57,7 +59,8 @@ router.put('/:id', function(req, res, next) {
         user.password = req.body.password;
         user.isVerified = req.body.isVerified;
         user.passwordResetToken = req.body.passwordResetToken;
-        user.passwordResetExpires = req.body.passwordResetExpires
+        user.passwordResetExpires = req.body.passwordResetExpires;
+        user.reviews = req.body.reviews;
         user.save();
         res.status(204).json(user);
     });
@@ -67,7 +70,7 @@ router.put('/:id', function(req, res, next) {
 router.patch('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
-        if (user == null) {
+        if (!user) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
@@ -77,6 +80,7 @@ router.patch('/:id', function(req, res, next) {
         user.isVerified = (req.body.isVerified || user.isVerified);
         user.passwordResetToken = (req.body.passwordResetToken || user.passwordResetToken);
         user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
+        user.reviews = (req.body.reviews || user.reviews);
         user.save();
         res.status(204).json(user);
     });
@@ -86,7 +90,7 @@ router.patch('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
     User.findByIdAndDelete({_id: req.params.id}, function(err, user) {
         if (err) { return next(err); }
-        if (user == null) {
+        if (!user) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
@@ -98,7 +102,7 @@ router.delete('/:id', function(req, res, next) {
 router.delete('', function(req, res, next) {
     User.deleteMany({}, function(err, user) {
         if (err) { return next(err)};
-        if (user == null) { 
+        if (!user) { 
             return res.status(404).json({ message: 'No users found.'});
         }
         res.status(202).json({message: 'All users have been deleted.'});
