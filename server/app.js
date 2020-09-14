@@ -55,13 +55,17 @@ var client = path.join(root, 'client', 'dist');
 app.use(express.static(client));
 
 // Error handler (i.e., when exception is thrown) must be registered last
-// TODO: look at this later (error handling for different environments)
+var env = app.get('env');
+// eslint-disable-next-line no-unused-vars
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     var err_res = {
         'message': err.message,
         'error': {}
     };
+    if (env === 'development') {
+        err_res['error'] = err;
+    }
     res.status(err.status || 500);
     res.json(err_res);
 });
