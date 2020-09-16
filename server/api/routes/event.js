@@ -24,6 +24,38 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Read all events and partially filter by title
+router.get('', function(req, res, next) {   
+    if (!req.query.title){return next();}
+    Event.find({
+        title: { $regex: req.query.title, $options: "i" }
+    },
+        function(err, events) {
+            if (err) { return next(err); }
+            if (!events) { return res.status(404).json(
+                {"message": "no events found"});
+            }
+        res.status(200).json(events);
+    });
+});
+
+// Read all events and partially filter by description
+router.get('', function(req, res, next) {   
+    if (!req.query.description){return next();}
+    Event.find({
+        description: { $regex: req.query.description, $options: "i" }
+    },
+        function(err, events) {
+            if (err) { return next(err); }
+            if (!events) { return res.status(404).json(
+                {"message": "no events found"});
+            }
+        res.status(200).json(events);
+    });
+});
+
+// TODO: Sort by startDate
+
 // Read all events
 router.get('', function(req, res, next) {
     Event.find(function(err, events) {
@@ -55,10 +87,6 @@ router.get('/:id/users', function(req, res, next) {
         res.status(200).json(event.users);
     })
 });
-
-// TODO: Filter by startDate
-
-// TODO: Sort by startDate
 
 // Update event
 router.put('/:id', function(req, res, next) {
