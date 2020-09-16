@@ -33,19 +33,19 @@ router.get('/:id', function(req, res, next) {
 });
 
 // Read review user
-router.get(':id/users', function(req, res, next) {
-    Review.findById(req.params.id).populate('users').exec(function(err, review){
+router.get('/:id/users', function(req, res, next) {
+    Review.findById(req.params.id).populate('users').exec(function(err, review) {
         if (err) { return next(err); }
         if (!review) {
-            return res.status(404).json( 
+            return res.status(404).json(
                 {"message": "review not found"});
         }
         res.status(200).json(review.users);
-    });
+    })
 });
 
 // Read review bar
-router.get(':id/bars', function(req, res, next){
+router.get('/:id/bars', function(req, res, next){
     Review.findById(req.params.id).populate('bars').exec(function(err,review){
         if (err) { return next(err); }
         if (!review) {
@@ -84,7 +84,7 @@ router.put('/:id', function(req, res, next) {
         review.rating = req.body.rating;
         review.comment = req.body.comment;
         review.created = req.body.created;
-        review.users = req.body.users;
+        review.reviews = req.body.reviews;
         review.bars = req.body.bars;
         review.save();
         res.status(204).json(review);
@@ -102,7 +102,7 @@ router.patch('/:id', function(req, res, next) {
         review.rating = (req.body.rating || review.rating);
         review.comment = (req.body.comment || review.comment);
         review.created = (req.body.created || review.created);
-        review.users = (req.body.users || review.users);
+        review.reviews = (req.body.reviews || review.reviews);
         review.bars = (req.body.bars || review.bars);
         review.save();
         res.status(204).json(review);
