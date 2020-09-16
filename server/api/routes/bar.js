@@ -43,107 +43,60 @@ router.get('', function(req, res, next) {
 
 // TODO: Filter by bar name
 
-// Read all bar reviews and filter by drinkQuality
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.drinkQuality;
+router.get('/:id/reviews', function (req, res, next) {
+    var drinkQualityFilter = req.query.drinkQuality;
+    var drinkPriceFilter = req.query.drinkPrice;
+    var foodQualityFilter = req.query.foodQuality;
+    var atmosphereFilter = req.query.atmosphere;
     var barID = mongoose.Types.ObjectId(req.params.id);
-    Review.find({
-        drinkQuality: filter, 
-        bars: barID
-    }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); 
-        }
-        if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
-        }
-        res.status(200).json(reviews);
-    });
-});
-
-// Read all bar reviews and filter by drinkPrice
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.drinkPrice;
-    var barID = mongoose.Types.ObjectId(req.params.id);
-    Review.find({
-        drinkPrice: filter, 
-        bars: barID
-    }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); 
-        }
-        if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
-        }
-        res.status(200).json(reviews);
-    });
-});
-
-// Read all bar reviews and filter by foodQuality
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.foodQuality;
-    var barID = mongoose.Types.ObjectId(req.params.id);
-    Review.find({
-        foodQuality: filter, 
-        bars: barID
-    }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); 
-        }
-        if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
-        }
-        res.status(200).json(reviews);
-    });
-});
-
-// Read all bar reviews and filter by atmosphere
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.atmosphere;
-    var barID = mongoose.Types.ObjectId(req.params.id);
-    Review.find({
-        atmosphere: filter, 
-        bars: barID
-    }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); 
-        }
-        if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
-        }
-        res.status(200).json(reviews);
-    });
-});
-
-// Read all bar reviews and filter by averageRating
-router.get('/:id/reviews', function(req, res, next) {
-    var filter = req.query.averageRating;
-    var barID = mongoose.Types.ObjectId(req.params.id);
-    Review.find({
-        averageRating: filter, 
-        bars: barID
-    }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); 
-        }
-        if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
-        }
-        res.status(200).json(reviews);
-    });
-});
-
-// Read all bar reviews
-router.get('/:id/reviews', function(req, res, next) {
-    Bar.findById(req.params.id).populate('reviews').exec(function(err, bar) {
-        if (err) { return next(err); }
-        if (!bar) {
-            return res.status(404).json(
-                {"message": "bar not found"});
-        }
-        res.status(200).json(bar.reviews);
-    })
-});
+    
+    if (drinkQualityFilter) { // Filter reviews by drink quality rating
+        Review.find({
+            drinkQuality: drinkQualityFilter,
+            bars: barID
+        }, function (err, reviews) {
+            if (err) { return res.status(500).json({'message': `Send this message to the dev team ${err.message}`}); }
+            if (!reviews) { return res.status(404).json({'message': 'reviews not found'}); }
+            res.status(200).json({'reviews': reviews});
+        });
+    } else if (drinkPriceFilter) { // Filter reviews by drink price rating
+        Review.find({
+            drinkPrice: drinkPriceFilter,
+            bars: barID
+        }, function (err, reviews) {
+            if (err) { return res.status(500).json({'message': `Send this message to the dev team ${err.message}`}); }
+            if (!reviews) { return res.status(404).json({'message': 'reviews not found'}); }
+            res.status(200).json({'reviews': reviews});
+        });
+    } else if (foodQualityFilter) { // Filter reviews by food quality rating
+        Review.find({
+            foodQuality: foodQualityFilter,
+            bars: barID
+        }, function (err, reviews) {
+            if (err) { return res.status(500).json({'message': `Send this message to the dev team ${err.message}`}); }
+            if (!reviews) { return res.status(404).json({'message': 'reviews not found'}); }
+            res.status(200).json({'reviews': reviews});
+        });
+    } else if (atmosphereFilter) { // Filter reviews by atmosphere rating
+        Review.find({
+            atmosphereFilter: atmosphereFilter,
+            bars: barID
+        }, function (err, reviews) {
+            if (err) { return res.status(500).json({'message': `Send this message to the dev team ${err.message}`}); }
+            if (!reviews) { return res.status(404).json({'message': 'reviews not found'}); }
+            res.status(200).json({'reviews': reviews});
+        });
+    } else {
+        Bar.findById(req.params.id).populate('reviews').exec(function(err, bar) { // If no filter return all reviews
+            if (err) { return next(err); }
+            if (!bar) {
+                return res.status(404).json(
+                    {"message": "bar not found"});
+            }
+            res.status(200).json(bar.reviews);
+        })
+    }
+})
 
 // Update bar
 router.put('/:id', function(req, res, next) {
