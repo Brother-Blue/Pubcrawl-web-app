@@ -7,7 +7,7 @@ let ReviewSchema = new mongoose.Schema({
     foodQuality: { type: Number, min: 1, max: 5 },
     atmosphere: { type: Number, min: 1, max: 5 },
     averageRating: { type: Number, default: 0 },
-    comment: { type: String, maxlength: [140, 'Max allowed characters is 140'] }, // TODO: add profanity filter
+    comment: { type: String, maxlength: [140, 'Max allowed characters is 140'] },
     createdAt: { required: true, type: Date, default: Date.now },
     users: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'users' },
     bars: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'bars' }
@@ -19,14 +19,15 @@ let ReviewSchema = new mongoose.Schema({
 ReviewSchema.pre('save', function(next) {
     var review = this;
     var divide = 0;
+    var average = 0;
 
-    if(review.drinkQuality) { divide++; review.averageRating += review.drinkQuality; };
-    if(review.drinkPrice) { divide++; review.averageRating += review.drinkPrice; };
-    if(review.foodQuality) { divide++; review.averageRating += review.foodQuality; };
-    if(review.atmosphere) { divide++; review.averageRating += review.atmosphere; };
+    if(review.drinkQuality) { divide++; average += review.drinkQuality; };
+    if(review.drinkPrice) { divide++; average += review.drinkPrice; };
+    if(review.foodQuality) { divide++; average += review.foodQuality; };
+    if(review.atmosphere) { divide++; average += review.atmosphere; };
 
-    review.averageRating /= divide;
-    review.averageRating = Number(review.averageRating.toFixed(1)); // Stores 1 decimal
+    average /= divide;
+    review.averageRating = Number(average.toFixed(1)); // Stores 1 decimal
     next();
 });
 
