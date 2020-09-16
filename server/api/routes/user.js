@@ -3,7 +3,7 @@ var express = require('express');
 
 var router = express.Router();
 
-// Create new user
+// Create user
 router.post('', function(req, res, next) {
     var user = new User(req.body);
     user.save(function(err) {
@@ -12,14 +12,6 @@ router.post('', function(req, res, next) {
     });
 });  
 
-// Read all users 
-router.get('', function(req, res, next) {
-    User.find(function(err, users) {
-        if (err) { return next(err); }
-        res.status(200).json({"users": users});
-    });
-});
-    
 // Read user
 router.get('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
@@ -29,6 +21,14 @@ router.get('/:id', function(req, res, next) {
                 {"message": "user not found"});
         }
         res.status(200).json(user);
+    });
+});
+
+// Read all users 
+router.get('', function(req, res, next) {
+    User.find(function(err, users) {
+        if (err) { return next(err); }
+        res.status(200).json({"users": users});
     });
 });
 
@@ -66,7 +66,7 @@ router.put('/:id', function(req, res, next) {
     });
 });
 
-// Partially update user
+// Update user partially
 router.patch('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
@@ -103,9 +103,11 @@ router.delete('', function(req, res, next) {
     User.deleteMany({}, function(err, user) {
         if (err) { return next(err)};
         if (!user) { 
-            return res.status(404).json({ message: 'No users found.'});
+            return res.status(404).json(
+                {"message": "no users found"});
         }
-        res.status(202).json({message: 'All users have been deleted.'});
+        res.status(202).json(
+            {"message": "all users have been deleted"});
     });
 });
 

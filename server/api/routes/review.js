@@ -3,7 +3,7 @@ var express = require('express');
 
 var router = express.Router();
 
-// Create new review
+// Create review
 router.post('', function(req, res, next) {
     var review = new Review(req.body);
     review.save(function(err) {
@@ -11,14 +11,6 @@ router.post('', function(req, res, next) {
         res.status(201).json(review);
     })
 })
-
-// Read all reviews
-router.get('', function(req, res, next) {
-    Review.find(function(err, reviews) {
-        if (err) { return next(err); }
-        res.status(200).json({"reviews": reviews});
-    });
-});
 
 // Read review
 router.get('/:id', function(req, res, next) {
@@ -29,6 +21,14 @@ router.get('/:id', function(req, res, next) {
                 {"message": "review not found"});
         }
         res.status(200).json(review);
+    });
+});
+
+// Read all reviews
+router.get('', function(req, res, next) {
+    Review.find(function(err, reviews) {
+        if (err) { return next(err); }
+        res.status(200).json({"reviews": reviews});
     });
 });
 
@@ -81,17 +81,22 @@ router.put('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
-        review.rating = req.body.rating;
+        review.drinkQuality = req.body.drinkQuality;
+        review.drinkPrice = req.body.drinkPrice;
+        review.drinkQuality = req.body.drinkQuality;
+        review.foodQuality = req.body.foodQuality;
+        review.atmosphere = req.body.atmosphere;
+        review.averageRating = req.body.averageRating;
         review.comment = req.body.comment;
-        review.created = req.body.created;
-        review.reviews = req.body.reviews;
+        review.createdAt = req.body.createdAt;
+        review.users = req.body.users;
         review.bars = req.body.bars;
         review.save();
         res.status(204).json(review);
     });
 });
 
-// Partially update review
+// Update review partially
 router.patch('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
@@ -99,10 +104,15 @@ router.patch('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
-        review.rating = (req.body.rating || review.rating);
+        review.drinkQuality = (req.body.drinkQuality || review.drinkQuality);
+        review.drinkPrice = (req.body.drinkPrice || review.drinkPrice);
+        review.drinkQuality = (req.body.drinkQuality || review.drinkQuality);
+        review.foodQuality = (req.body.foodQuality || review.foodQuality);
+        review.atmosphere = (req.body.atmosphere || review.atmosphere);
+        review.averageRating = (req.body.averageRating || review.averageRating);
         review.comment = (req.body.comment || review.comment);
-        review.created = (req.body.created || review.created);
-        review.reviews = (req.body.reviews || review.reviews);
+        review.bars = (req.body.bars || review.createdAt);
+        review.users = (req.body.users || review.users);
         review.bars = (req.body.bars || review.bars);
         review.save();
         res.status(204).json(review);
@@ -126,9 +136,11 @@ router.delete('', function(req, res, next) {
     Review.deleteMany({}, function(err, review) {
         if (err) { return next(err)};
         if (!review) { 
-            return res.status(404).json({ message: 'No reviews found.'});
+            return res.status(404).json(
+                {"message": "no reviews found"});
         }
-        res.status(202).json({message: 'All reviews have been deleted.'});
+        res.status(202).json(
+            {"message": "all reviews have been deleted"});
     });
 });
 

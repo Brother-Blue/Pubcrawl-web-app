@@ -3,21 +3,13 @@ var express = require('express');
 
 var router = express.Router();
 
-// Create new bar
+// Create bar
 router.post('', function(req, res, next) {
     var bar = new Bar(req.body);
     bar.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(bar);
     })
-});
-
-// Read all bars
-router.get('', function(req, res, next) {
-    Bar.find(function(err, bars) {
-        if (err) { return next(err); }
-        res.status(200).json({"bars": bars});
-    });
 });
 
 // Read bar
@@ -29,6 +21,14 @@ router.get('/:id', function(req, res, next) {
                 {"message": "bar not found"});
         }
         res.status(200).json(bar);
+    });
+});
+
+// Read all bars
+router.get('', function(req, res, next) {
+    Bar.find(function(err, bars) {
+        if (err) { return next(err); }
+        res.status(200).json({"bars": bars});
     });
 });
 
@@ -68,7 +68,7 @@ router.put('/:id', function(req, res, next) {
     });
 });
 
-// Partially update bar
+// Update bar partially
 router.patch('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
@@ -101,9 +101,11 @@ router.delete('', function(req, res, next) {
     Bar.deleteMany({}, function(err, bar) {
         if (err) { return next(err)};
         if (!bar) { 
-            return res.status(404).json({ message: 'No bars found.'});
+            return res.status(404).json(
+                {"message": "no bars found"});
         }
-        res.status(202).json({message: 'All bars have been deleted.'});
+        res.status(202).json(
+            {"message": "all bars have been deleted"});
     });
 });
 

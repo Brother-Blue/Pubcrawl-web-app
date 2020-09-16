@@ -3,21 +3,13 @@ var express = require('express');
 
 var router = express.Router();
 
-// Create new event
+// Create event
 router.post('', function(req, res, next) {
     var event = new Event(req.body);
     event.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(event);
     })
-});
-
-// Read all events
-router.get('', function(req, res, next) {
-    Event.find(function(err, events) {
-        if (err) { return next(err); }
-        res.status(200).json({"events": events});
-    });
 });
 
 // Read event
@@ -29,6 +21,14 @@ router.get('/:id', function(req, res, next) {
                 {"message": "event not found"});
         }
         res.status(200).json(event);
+    });
+});
+
+// Read all events
+router.get('', function(req, res, next) {
+    Event.find(function(err, events) {
+        if (err) { return next(err); }
+        res.status(200).json({"events": events});
     });
 });
 
@@ -80,7 +80,7 @@ router.put('/:id', function(req, res, next) {
     });
 });
 
-// Partially update event
+// Update event partially
 router.patch('/:id', function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
@@ -117,9 +117,11 @@ router.delete('', function(req, res, next) {
     Event.deleteMany({}, function(err, event) {
         if (err) { return next(err)};
         if (!event) { 
-            return res.status(404).json({ message: 'No events found.'});
+            return res.status(404).json(
+                {"message": "no events found"});
         }
-        res.status(202).json({message: 'All events have been deleted.'});
+        res.status(202).json(
+            {"message": "all events have been deleted"});
     });
 })
 
