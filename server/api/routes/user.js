@@ -24,6 +24,21 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Read user and filter by username
+router.get('', function(req, res, next) {   
+    if (!req.query.username){return next();}
+    User.find({
+        name: req.query.username
+    },
+        function(err, users) {
+            if (err) { return next(err); }
+            if (!users) { return res.status(404).json(
+                {"message": "no reviews found"});
+            }
+        res.status(200).json(users);
+    });
+});
+
 // Read all users 
 router.get('', function(req, res, next) {
     User.find(function(err, users) {

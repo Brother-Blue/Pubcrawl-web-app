@@ -33,16 +33,14 @@ router.get('/:id', function(req, res, next) {
 // TODO: Sort by bar atmosphere
 // TODO: Sort by bar averageRating
 
-// Read bar and filter by name
+// Read all bars and filter by name
 router.get('', function(req, res, next) {   
     if (!req.query.name){return next();}
     Bar.find({
         name: req.query.name
     },
         function(err, bars) {
-            if (err) { return res.status(500).json(
-                {"message": `send this to the devs: ${err.message}`}); 
-            }
+            if (err) { return next(err); }
             if (!bars) { return res.status(404).json(
                 {"message": "no reviews found"});
             }
@@ -65,9 +63,7 @@ router.get('/:id/reviews', function(req, res, next) {
         drinkQuality: req.query.drinkQuality, 
         bars: mongoose.Types.ObjectId(req.params.id)
     }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": `send this to the devs: ${err.message}`}); 
-        }
+        if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
             {"message": "no reviews found"});
         }
@@ -82,9 +78,7 @@ router.get('/:id/reviews', function(req, res, next) {
         drinkPrice: req.query.drinkPrice, 
         bars: mongoose.Types.ObjectId(req.params.id)
     }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": `send this to the devs: ${err.message}`}); 
-        }
+        if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
             {"message": "no reviews found"});
         }
@@ -99,9 +93,7 @@ router.get('/:id/reviews', function(req, res, next) {
         foodQuality: req.query.foodQuality, 
         bars: mongoose.Types.ObjectId(req.params.id)
     }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": `send this to the devs: ${err.message}`}); 
-        }
+        if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
             {"message": "no reviews found"});
         }
@@ -116,9 +108,7 @@ router.get('/:id/reviews', function(req, res, next) {
         atmosphere: req.query.atmosphere, 
         bars: mongoose.Types.ObjectId(req.params.id)
     }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": `send this to the devs: ${err.message}`}); 
-        }
+        if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
             {"message": "no reviews found"});
         }
@@ -133,9 +123,7 @@ router.get('/:id/reviews', function(req, res, next) {
         averageRating: req.query.averageRating, 
         bars: mongoose.Types.ObjectId(req.params.id)
     }, function(err, reviews) {
-        if (err) { return res.status(500).json(
-            {"message": `send this to the devs: ${err.message}`}); 
-        }
+        if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
             {"message": "no reviews found"});
         }
