@@ -12,14 +12,6 @@ passport.use(new LocalStrategy(
     }
 ));
 
-
-
-
-
-
-
-
-
-
-
-
+// TODO: Add function to register user
+// TODO: Add function to verify user email
+// TODO: Add function for forgot-password

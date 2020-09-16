@@ -57,8 +57,6 @@ router.get('/:id/bars', function(req, res, next){
     });
 });
 
-// TODO: Filter by user
-
 // Update review
 router.put('/:id', function(req, res, next) {
     Review.findById(req.params.id, function(err, review) {
