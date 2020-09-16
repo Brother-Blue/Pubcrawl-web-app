@@ -57,21 +57,7 @@ router.get('/:id/bars', function(req, res, next){
     });
 });
 
-// TODO: Sort by averageRating
-
-router.get(':')
-
-// TODO: WHAT IS THIS CHRIS FFS
-router.get('', function(req, res) {
-    var filter = req.query.drinkQuality;
-    if(filter) {
-        res.json(reviews.filter(function (e) {
-            return filter === e.drinkQuality;
-        }));
-    } else {
-        res.json(reviews);
-    }
-});
+// TODO: Filter by user
 
 // Update review
 router.put('/:id', function(req, res, next) {

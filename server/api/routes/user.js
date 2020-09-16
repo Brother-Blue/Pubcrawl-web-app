@@ -44,7 +44,7 @@ router.get('/:id/reviews', function(req, res, next) {
     })
 });
 
-// TODO: Sort by username
+// TODO: Filter by username
 
 // Update user
 router.put('/:id', function(req, res, next) {
