@@ -1,4 +1,5 @@
 var Bar = require('../models/bar');
+var Review = require('../models/review');
 var express = require('express');
 
 var router = express.Router();
