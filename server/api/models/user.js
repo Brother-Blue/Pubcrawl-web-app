@@ -8,8 +8,8 @@ var SALT_WORK_FACTOR = 10;
 // Create user schema
 let UserSchema = new mongoose.Schema({
     email: { type: String, unique: true, required: true, trim: true, lowercase: true, match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'] },
-    username: { type: String, unique: true, required: true, minlength: [4, 'Minimum allowed characters is 4'], maxlength: [128, 'Max allowed characters is 128'], trim: true, lowercase: true},
-    password: { type: String, required: true, minlength: [6, 'Minimum allowed characters is 6'], maxlength: [12, 'Max allowed characters is 12'], trim: true },
+    username: { type: String, unique: true, required: true, minlength: [4, 'Minimum allowed characters is 4'], maxlength: [15, 'Max allowed characters is 15'], trim: true, lowercase: true},
+    password: { type: String, required: true, minlength: [6, 'Minimum allowed characters is 6'], maxlength: [128, 'Max allowed characters is 128'], trim: true },
     createdAt: { required: true, type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false }, // Stores if user is email verified
     passwordResetToken: String, // Will be used to send password resets
