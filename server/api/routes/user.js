@@ -24,16 +24,16 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-// Read user and filter by username
+// Read all users and partially filter by username
 router.get('', function(req, res, next) {   
     if (!req.query.username){return next();}
     User.find({
-        name: req.query.username
+        username: { $regex: req.query.username, $options: "i" }
     },
         function(err, users) {
             if (err) { return next(err); }
             if (!users) { return res.status(404).json(
-                {"message": "no reviews found"});
+                {"message": "no users found"});
             }
         res.status(200).json(users);
     });
@@ -58,8 +58,6 @@ router.get('/:id/reviews', function(req, res, next) {
         res.status(200).json(user.reviews);
     })
 });
-
-// TODO: Filter by username
 
 // Update user
 router.put('/:id', function(req, res, next) {

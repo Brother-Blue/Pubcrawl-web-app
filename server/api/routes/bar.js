@@ -37,7 +37,7 @@ router.get('/:id', function(req, res, next) {
 router.get('', function(req, res, next) {   
     if (!req.query.name){return next();}
     Bar.find({
-        name: req.query.name
+        name: { $regex: req.query.name, $options: "i" }
     },
         function(err, bars) {
             if (err) { return next(err); }
