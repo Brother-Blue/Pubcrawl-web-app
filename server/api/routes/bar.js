@@ -27,8 +27,34 @@ router.get('/:id', function(req, res, next) {
 });
 
 // TODO: Sort by bar name
+router.get('', function(req, res, next) {
+    if (!req.query.sortByName){return next();}
+    Bar.find({}).sort({name: req.query.sortByName}).exec(function(err,results){
+        if(err) { return next(err)}
+            if(!results) {return res.status(404).json({"message": "no reviews found"})}
+        res.status(200).json(bars);
+    })
+});
 // TODO: Sort by bar drinkQuality
+router.get('', function(req, res, next) {
+    if (!req.query.sortByDrinkQuality) { return next();}
+    Review.find({}).sort({
+        drinkQuality: req.query.sortByDrinkQuality}).exec(function(err,results){
+            if(err) { return next(err)}
+            if(!results) {return res.status(404).json({"message": "no reviews found"})}
+            res.status(200).json(reviews)
+        });
+})
 // TODO: Sort by bar drinkPrice
+router.get('', function(req, res, next) {
+    if (!req.query.sortByDrinkPrice){return next();}
+    Review.find({}).sort({
+        drinkPrice: req.query.sortByDrinkPrice}).exec(function(err,results){
+            if(err) { return next(err)}
+            if(!results) {return res.status(404).json({"message": "no reviews found"})}
+            res.status(200).json(reviews)
+        });
+})
 // TODO: Sort by bar foodQuality
 // TODO: Sort by bar atmosphere
 // TODO: Sort by bar averageRating
