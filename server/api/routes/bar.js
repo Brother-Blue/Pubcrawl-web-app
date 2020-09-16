@@ -1,6 +1,7 @@
 var Bar = require('../models/bar');
 var Review = require('../models/review');
 var express = require('express');
+var mongoose = require('mongoose');
 
 var router = express.Router();
 
@@ -51,9 +52,11 @@ router.get('/:id/reviews', function(req, res, next) {
         bars: barID
     }, function(err, reviews) {
         if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); }
+            {"message": "send this to the devs: ${err.message}"}); 
+        }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});}
+            {"message": "no reviews found"});
+        }
         res.status(200).json(reviews);
     });
 });
@@ -67,9 +70,11 @@ router.get('/:id/reviews', function(req, res, next) {
         bars: barID
     }, function(err, reviews) {
         if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); }
+            {"message": "send this to the devs: ${err.message}"}); 
+        }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});}
+            {"message": "no reviews found"});
+        }
         res.status(200).json(reviews);
     });
 });
@@ -83,9 +88,11 @@ router.get('/:id/reviews', function(req, res, next) {
         bars: barID
     }, function(err, reviews) {
         if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); }
+            {"message": "send this to the devs: ${err.message}"}); 
+        }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});}
+            {"message": "no reviews found"});
+        }
         res.status(200).json(reviews);
     });
 });
@@ -99,9 +106,11 @@ router.get('/:id/reviews', function(req, res, next) {
         bars: barID
     }, function(err, reviews) {
         if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); }
+            {"message": "send this to the devs: ${err.message}"}); 
+        }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});}
+            {"message": "no reviews found"});
+        }
         res.status(200).json(reviews);
     });
 });
@@ -115,9 +124,11 @@ router.get('/:id/reviews', function(req, res, next) {
         bars: barID
     }, function(err, reviews) {
         if (err) { return res.status(500).json(
-            {"message": "send this to the devs: ${err.message}"}); }
+            {"message": "send this to the devs: ${err.message}"}); 
+        }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});}
+            {"message": "no reviews found"});
+        }
         res.status(200).json(reviews);
     });
 });
