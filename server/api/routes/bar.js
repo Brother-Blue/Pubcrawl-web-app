@@ -32,13 +32,94 @@ router.get('', function(req, res, next) {
     });
 });
 
+// TODO: Sort by bar name
+// TODO: Sort by bar drinkQuality
+// TODO: Sort by bar drinkPrice
+// TODO: Sort by bar foodQuality
+// TODO: Sort by bar atmosphere
+// TODO: Sort by bar averageRating
+
 // TODO: Filter by bar name
 
-// TODO: Sort by bar name
-// TODO: Sort by averageRating
-// TODO: Sort by drinkPrice
-// TODO: Sort by foodQuality
-// TODO: Sort by atmosphere
+// Read all bar reviews and filter by drinkQuality
+router.get('/:id/reviews', function(req, res, next) {
+    var filter = req.query.drinkQuality;
+    var barID = mongoose.Types.ObjectId(req.params.id);
+    Review.find({
+        drinkQuality: filter, 
+        bars: barID
+    }, function(err, reviews) {
+        if (err) { return res.status(500).json(
+            {"message": "send this to the devs: ${err.message}"}); }
+        if (!reviews) { return res.status(404).json(
+            {"message": "no reviews found"});}
+        res.status(200).json(reviews);
+    });
+});
+
+// Read all bar reviews and filter by drinkPrice
+router.get('/:id/reviews', function(req, res, next) {
+    var filter = req.query.drinkPrice;
+    var barID = mongoose.Types.ObjectId(req.params.id);
+    Review.find({
+        drinkPrice: filter, 
+        bars: barID
+    }, function(err, reviews) {
+        if (err) { return res.status(500).json(
+            {"message": "send this to the devs: ${err.message}"}); }
+        if (!reviews) { return res.status(404).json(
+            {"message": "no reviews found"});}
+        res.status(200).json(reviews);
+    });
+});
+
+// Read all bar reviews and filter by foodQuality
+router.get('/:id/reviews', function(req, res, next) {
+    var filter = req.query.foodQuality;
+    var barID = mongoose.Types.ObjectId(req.params.id);
+    Review.find({
+        foodQuality: filter, 
+        bars: barID
+    }, function(err, reviews) {
+        if (err) { return res.status(500).json(
+            {"message": "send this to the devs: ${err.message}"}); }
+        if (!reviews) { return res.status(404).json(
+            {"message": "no reviews found"});}
+        res.status(200).json(reviews);
+    });
+});
+
+// Read all bar reviews and filter by atmosphere
+router.get('/:id/reviews', function(req, res, next) {
+    var filter = req.query.atmosphere;
+    var barID = mongoose.Types.ObjectId(req.params.id);
+    Review.find({
+        atmosphere: filter, 
+        bars: barID
+    }, function(err, reviews) {
+        if (err) { return res.status(500).json(
+            {"message": "send this to the devs: ${err.message}"}); }
+        if (!reviews) { return res.status(404).json(
+            {"message": "no reviews found"});}
+        res.status(200).json(reviews);
+    });
+});
+
+// Read all bar reviews and filter by averageRating
+router.get('/:id/reviews', function(req, res, next) {
+    var filter = req.query.averageRating;
+    var barID = mongoose.Types.ObjectId(req.params.id);
+    Review.find({
+        averageRating: filter, 
+        bars: barID
+    }, function(err, reviews) {
+        if (err) { return res.status(500).json(
+            {"message": "send this to the devs: ${err.message}"}); }
+        if (!reviews) { return res.status(404).json(
+            {"message": "no reviews found"});}
+        res.status(200).json(reviews);
+    });
+});
 
 // Read all bar reviews
 router.get('/:id/reviews', function(req, res, next) {
