@@ -29,37 +29,39 @@ router.get('/:id', function(req, res, next) {
 // Sort by bar name
 router.get('', function(req, res, next) {
     if (!req.query.sortByName){return next();}
-    Bar.find({}).sort({name: req.query.sortByName}).exec(function(err,results){
+    Bar.find({}).sort({
+        name: req.query.sortByName
+    }).exec(function(err,results){
         if(err) { return next(err)}
-            if(!results) {return res.status(404).json({"message": "no reviews found"})}
-        res.status(200).json(bars);
+        if(!results) {return res.status(404).json({"message": "no reviews found"})}
+        res.status(200).json(results);
     })
 });
 // Sort by bar drinkQuality
-router.get('', function(req, res, next) {
+router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkQuality) { return next();}
     Review.find({}).sort({
-        drinkQuality: req.query.sortByDrinkQuality}).exec(function(err,results){
+        drinkQuality: req.query.sortByDrinkQuality}).exec(function(err, results){
             if(err) { return next(err)}
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
-            res.status(200).json(reviews)
+            res.status(200).json(results)
         });
 })
 // Sort by bar drinkPrice
-router.get('', function(req, res, next) {
+router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkPrice){return next();}
     Review.find({}).sort({
-        drinkPrice: req.query.sortByDrinkPrice}).exec(function(err,results){
+        drinkPrice: req.query.sortByDrinkPrice}).exec(function(err, results){
             if(err) { return next(err)}
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
-            res.status(200).json(reviews)
+            res.status(200).json(results)
         });
 })
 // Sort by bar foodQuality
 router.get('/:id/reviews', function (req, res, next) {
-    if (!req.query.sortFoodQuality) { return next();}
+    if (!req.query.sortByFoodQuality) { return next();}
     Review.find().sort({
-        averageRating: req.query.sortFoodQuality
+        averageRating: req.query.sortByFoodQuality
     }).exec(function (err, results) {
         if (err) { return next(err); }
         if (!results) { return res.status(404).json({"message": "no reviews found"}); }
@@ -69,9 +71,9 @@ router.get('/:id/reviews', function (req, res, next) {
 
 // Sort by bar atmosphere
 router.get('/:id/reviews', function (req, res, next) {
-    if (!req.query.sortAtmosphere) { return next();}
+    if (!req.query.sortByAtmosphere) { return next();}
     Review.find().sort({
-        averageRating: req.query.sortAtmosphere
+        averageRating: req.query.sortByAtmosphere
     }).exec(function (err, results) {
         if (err) { return next(err); }
         if (!results) { return res.status(404).json({"message": "no reviews found"}); }
@@ -81,9 +83,9 @@ router.get('/:id/reviews', function (req, res, next) {
 
 // Sort by bar averageRating
 router.get('/:id/reviews', function (req, res, next) {
-    if (!req.query.sortAverageRating) { return next();}
+    if (!req.query.sortByAverageRating) { return next();}
     Review.find().sort({
-        averageRating: req.query.sortAverageRating
+        averageRating: req.query.sortByAverageRating
     }).exec(function (err, results) {
         if (err) { return next(err); }
         if (!results) { return res.status(404).json({"message": "no reviews found"}); }

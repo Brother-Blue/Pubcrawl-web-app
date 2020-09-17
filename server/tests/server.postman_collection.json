@@ -1,77 +1,5 @@
 {
 	"info": {
-		"_postman_id": "b5dcc897-afb6-4329-90f9-a72590f15f29",
-		"name": "g20-pubcrawl",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "get-all-users",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "0c8b3844-c65f-4a65-b6ec-fd6c353e6cc1",
-						"exec": [
-							"pm.test(\"Get all users\", function() {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Get all users under 150ms\", function() {",
-							"    pm.expect(pm.response.responseTime).to.be.below(150);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}users",
-					"host": [
-						"{{host}}users"
-					]
-				}
-			},
-			"response": []
-		}
-	],
-
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"id": "05864cff-5cba-4070-bac3-a59328954ebf",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		},
-		{
-			"listen": "test",
-			"script": {
-				"id": "e9c319be-3306-4fc5-ba34-fcf64391213a",
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
-		{
-			"id": "cd185905-a834-4211-8030-583d17702534",
-			"key": "host",
-			"value": "http://localhost:3000",
-			"type": "string"
-		}
-	],
-	"protocolProfileBehavior": {},
-
-	"info": {
 		"_postman_id": "1b4057c9-542a-4587-a6c4-89aa89538538",
 		"name": "g20-pubcrawl",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -146,7 +74,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"test-bar-123\",\r\n    \"latLong\": [12.345, 54.321]\r\n}",
+							"raw": "{\r\n    \"name\": \"ZZtest-bar-123\",\r\n    \"latLong\": [12.345, 54.321]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -177,7 +105,7 @@
 									"pm.test(\"Add a test review\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(201);\r",
-									"    pm.expect(response.drinkQuality).to.eql(5);\r",
+									"    pm.expect(response.drinkQuality).to.eql(4);\r",
 									"    pm.expect(response.comment).to.be.a('String');\r",
 									"    pm.globals.set('test-review-id', response._id);\r",
 									"});"
@@ -191,7 +119,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"drinkQuality\": 5,\r\n    \"drinkPrice\": 4,\r\n    \"comment\": \"This comment is just a test comment. Nothing fancy. Chris O'Neill is pretty cool.\"\r\n}",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"drinkQuality\": 4,\r\n    \"drinkPrice\": 4,\r\n    \"comment\": \"This comment is just a test comment. Nothing fancy. Chris O'Neill is pretty cool.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -378,7 +306,7 @@
 									"pm.test(\"Get bar by ID\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response.name).to.eql('test-bar-123');\r",
+									"    pm.expect(response.name).to.eql('ZZtest-bar-123');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -675,6 +603,681 @@
 								"events",
 								"{{test-event-id}}",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-low-review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a9f2c71c-1e33-4d97-ae3f-39412bc8a290",
+								"exec": [
+									"pm.test(\"Create low rating review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"    pm.globals.set('test-low-review', response._id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"drinkQuality\": 1,\r\n    \"drinkPrice\": 1,\r\n    \"atmosphere\": 3,\r\n    \"comment\": \"I'm angry and give this bar low reviews. >:(\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-avg-review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f120d7ba-0856-42b8-9a56-7d116a62a9ca",
+								"exec": [
+									"pm.test(\"Create mid rating review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"    pm.globals.set('test-mid-review', response._id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"drinkQuality\": 3,\r\n    \"drinkPrice\": 4,\r\n    \"atmosphere\": 3,\r\n    \"foodQuality\": 3,\r\n    \"comment\": \"I enjoyed my time here, nice and chill.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-high-review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4782aa95-4e0f-4c9e-8a86-47e1b38dee36",
+								"exec": [
+									"pm.test(\"Create high rating review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"    pm.globals.set('test-high-review', response._id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"drinkQuality\": 5,\r\n    \"drinkPrice\": 5,\r\n    \"atmosphere\": 4,\r\n    \"foodQuality\": 4,\r\n    \"comment\": \"Practically got free stuff when I told them I was American and would sing any song. 10/10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/reviews",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "filter-and-sort-reviews",
+			"item": [
+				{
+					"name": "filter-by-name-asc",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4e5315fb-59e1-489e-a2c1-6bfceec839cb",
+								"exec": [
+									"pm.test(\"Sort bars by name aA-zZ\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[response.length-1].name).to.eql('ZZtest-bar-123');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars?sortByName=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars"
+							],
+							"query": [
+								{
+									"key": "sortByName",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter-by-name-desc",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "faa00e51-a2a9-4996-a0e7-d5910e2da612",
+								"exec": [
+									"pm.test(\"Sort bars by name Zz-Aa\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0].name).to.eql('ZZtest-bar-123');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars?sortByName=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars"
+							],
+							"query": [
+								{
+									"key": "sortByName",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-drink-quality",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "422a4413-992d-4af0-bd7c-b8f1fbf1fc46",
+								"exec": [
+									"pm.test(\"Get highest drink quality review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-high-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByDrinkQuality=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByDrinkQuality",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-drink-price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f65934e6-757c-4500-9902-85ad374c9eec",
+								"exec": [
+									"pm.test(\"Get highest drink price review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-high-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByDrinkPrice=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByDrinkPrice",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-food-quality",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b58b4854-fecc-4649-b95c-06ced1253df8",
+								"exec": [
+									"pm.test(\"Get highest food quality review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-high-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByFoodQuality=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByFoodQuality",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-atmosphere",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "69b01216-6e4d-462b-bc4d-9025b9e8934d",
+								"exec": [
+									"pm.test(\"Get highest atmosphere review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-high-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByAtmosphere=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByAtmosphere",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-average-rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b9dd9ea4-8ce1-4b66-a3d4-3ad58e1a2cab",
+								"exec": [
+									"pm.test(\"Get highest average rating review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-high-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByAverageRating=desc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByAverageRating",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-drink-quality-lowest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d9fcc8fd-1b0c-4e78-b3d5-6052dffa51b2",
+								"exec": [
+									"pm.test(\"Get lowest drink quality review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-low-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByDrinkQuality=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByDrinkQuality",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-drink-price-lowest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1d62b4a9-a922-4467-a99c-800248df5a3d",
+								"exec": [
+									"pm.test(\"Get lowest drink price review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-low-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByDrinkPrice=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByDrinkPrice",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-food-quality-lowest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d07feeab-6a7f-4ab9-a038-a8f92334cf1a",
+								"exec": [
+									"pm.test(\"Get lowest food quality review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-low-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByFoodQuality=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByFoodQuality",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-atmosphere-lowest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "781dee45-6c53-4052-9d96-257aab39b555",
+								"exec": [
+									"pm.test(\"Get lowest atmosphere review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-low-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByAtmosphere=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByAtmosphere",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sort-by-average-rating-lowest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "228a8c9c-8960-411d-8592-a7d862a2199f",
+								"exec": [
+									"pm.test(\"Get lowest average rating review\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-low-review'));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews?sortByAverageRating=asc",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "sortByAverageRating",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter-bar-by-partial-name",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "48a0c4cc-1946-4105-9f0e-87e7d67b3973",
+								"exec": [
+									"pm.test(\"Filter bar by partial name\", function() {\r",
+									"    const response = pm.response.json();\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"    pm.expect(response[0].name).to.eql('ZZtest-bar-123');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars?name=123",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "123"
+								}
 							]
 						}
 					},
@@ -1128,6 +1731,69 @@
 								"api",
 								"users",
 								"{{test-user-id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "cleanup",
+			"item": [
+				{
+					"name": "delete-low-review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/reviews/{{test-low-review}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"{{test-low-review}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-mid-review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/reviews/{{test-mid-review}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"{{test-mid-review}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-high-review",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/reviews/{{test-high-review}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"{{test-high-review}}"
 							]
 						}
 					},
