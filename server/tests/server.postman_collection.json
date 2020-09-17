@@ -38,7 +38,7 @@
 			"response": []
 		}
 	],
-<<<<<<< HEAD
+
 	"event": [
 		{
 			"listen": "prerequest",
@@ -320,7 +320,5 @@
 			"protocolProfileBehavior": {}
 		}
 	],
-=======
->>>>>>> postman-tests
 	"protocolProfileBehavior": {}
 }
