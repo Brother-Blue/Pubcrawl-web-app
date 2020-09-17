@@ -80,224 +80,246 @@
 	},
 	"item": [
 		{
-			"name": "get-all-users",
-			"event": [
+			"name": "user-tests",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "0c8b3844-c65f-4a65-b6ec-fd6c353e6cc1",
-						"exec": [
-							"pm.test(\"Get all users\", function() {",
-							"    pm.expect(pm.response).to.have.status(200);",
-							"});",
-							"",
-							"pm.test(\"Get all users under 150ms\", function() {",
-							"    pm.expect(pm.response.responseTime).to.be.below(150);",
-							"})"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "{{host}}users",
-					"host": [
-						"{{host}}users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "add-test-user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "b230a62a-20fc-408b-876a-4dab4f2b0ab2",
-						"exec": [
-							"pm.test(\"Successfully add user\", function() {",
-							"    pm.expect(pm.response).to.be.status(201);",
-							"    const response = pm.response.json();",
-							"    pm.globals.set(\"test-user-id\", response._id);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"testuser123\",\n    \"password\": \"password1234\",\n    \"email\": \"test@pubcrawl.se\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "get-all-users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0c8b3844-c65f-4a65-b6ec-fd6c353e6cc1",
+								"exec": [
+									"pm.test(\"Get all users\", function() {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Get all users under 150ms\", function() {",
+									"    pm.expect(pm.response.responseTime).to.be.below(150);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "{{host}}users",
-					"host": [
-						"{{host}}users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-test-user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "5a26677a-36ad-41a0-ae5e-f08e75fd53a1",
-						"exec": [
-							"pm.test(\"Get test user\", function() {",
-							"    const response = pm.response.json();",
-							"    pm.expect(pm.response).to.have.status(200);",
-							"    pm.expect(pm.response.responseTime).to.be.below(100);",
-							"    pm.expect(response.username).to.eql('testuser123');",
-							"    pm.expect(response.email).to.eql('test@pubcrawl.se');",
-							"    pm.expect(response.isVerified).to.eql(false);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}users/{{test-user-id}}",
-					"host": [
-						"{{host}}users"
 					],
-					"path": [
-						"{{test-user-id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "update-test-user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "ae965211-bacf-43c8-8729-f29a732ed5a9",
-						"exec": [
-							"pm.test(\"Update test user username\", function() {",
-							"    pm.expect(pm.response).to.have.status(204);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"new-username\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}users/{{test-user-id}}",
-					"host": [
-						"{{host}}users"
-					],
-					"path": [
-						"{{test-user-id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "get-updated-user",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"id": "410d50ec-bb66-433f-b739-5febe57ab6ee",
-						"exec": [
-							"pm.test(\"Get test user\", function() {",
-							"    const response = pm.response.json();",
-							"    pm.expect(pm.response).to.have.status(200);",
-							"    pm.expect(pm.response.responseTime).to.be.below(100);",
-							"    pm.expect(response.username).to.eql('new-username');",
-							"});"
-						],
-						"type": "text/javascript"
-					}
+					"name": "add-test-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b230a62a-20fc-408b-876a-4dab4f2b0ab2",
+								"exec": [
+									"pm.test(\"Successfully add user\", function() {",
+									"    pm.expect(pm.response).to.be.status(201);",
+									"    const response = pm.response.json();",
+									"    pm.globals.set(\"test-user-id\", response._id);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser123\",\n    \"password\": \"password1234\",\n    \"email\": \"test@pubcrawl.se\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-test-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5a26677a-36ad-41a0-ae5e-f08e75fd53a1",
+								"exec": [
+									"pm.test(\"Get test user\", function() {",
+									"    const response = pm.response.json();",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"    pm.expect(response.username).to.eql('testuser123');",
+									"    pm.expect(response.email).to.eql('test@pubcrawl.se');",
+									"    pm.expect(response.isVerified).to.eql(false);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-test-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ae965211-bacf-43c8-8729-f29a732ed5a9",
+								"exec": [
+									"pm.test(\"Update test user username\", function() {",
+									"    pm.expect(pm.response).to.have.status(204);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"new-username\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-updated-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "410d50ec-bb66-433f-b739-5febe57ab6ee",
+								"exec": [
+									"pm.test(\"Get test user\", function() {",
+									"    const response = pm.response.json();",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"    pm.expect(pm.response.responseTime).to.be.below(100);",
+									"    pm.expect(response.username).to.eql('new-username');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-test-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f0f668c7-dddc-479f-a2fd-7fff15e86540",
+								"exec": [
+									"pm.test(\"Delete test user\", function() {",
+									"    const response = pm.response.json();",
+									"    pm.expect(pm.response).to.have.status(202);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{host}}users/{{test-user-id}}",
-					"host": [
-						"{{host}}users"
-					],
-					"path": [
-						"{{test-user-id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "delete-test-user",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "f0f668c7-dddc-479f-a2fd-7fff15e86540",
-						"exec": [
-							"pm.test(\"Delete test user\", function() {",
-							"    const response = pm.response.json();",
-							"    pm.expect(pm.response).to.have.status(202);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{host}}users/{{test-user-id}}",
-					"host": [
-						"{{host}}users"
-					],
-					"path": [
-						"{{test-user-id}}"
-					]
-				}
-			},
-			"response": []
+			"protocolProfileBehavior": {}
 		}
 	],
 	"protocolProfileBehavior": {}
