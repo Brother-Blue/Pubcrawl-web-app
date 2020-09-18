@@ -1,13 +1,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 var morgan = require('morgan');
 var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
+var mongoose = require('mongoose');
+
+// API endpoint
+var router = require('./api/routes/index');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
+var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://g20admin:12345@cluster0.mw6yd.mongodb.net/pubcrawl?retryWrites=true&w=majority';
 var port = process.env.PORT || 3000;
 
 // Connect to MongoDB
@@ -30,14 +33,17 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
-// Import routes
+// Use API routes
+app.use('/api', router);
+
 app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to your DIT341 backend ExpressJS project!'});
+    res.status(200).json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
 });
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
-    res.status(404).json({ 'message': 'Not Found' });
+    console.log('L43 req', req);
+    res.status(404).json({'message': 'Not Found'});
 });
 
 // Configuration for serving frontend in production mode
@@ -66,7 +72,7 @@ app.use(function(err, req, res, next) {
 
 app.listen(port, function(err) {
     if (err) throw err;
-    console.log(`Express server listening on port ${port}, in ${env} mode`);
+    console.log(`Express server listening on port ${port}`);
     console.log(`Backend: http://localhost:${port}/api/`);
     console.log(`Frontend (production): http://localhost:${port}/`);
 });
