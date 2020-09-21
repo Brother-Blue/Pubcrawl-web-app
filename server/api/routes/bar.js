@@ -38,6 +38,7 @@ router.get('', function(req, res, next) {
         res.status(200).json(results);
     })
 });
+
 // Sort by bar drinkQuality
 router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkQuality) { return next();}
@@ -47,7 +48,8 @@ router.get('/:id/reviews', function(req, res, next) {
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
             res.status(200).json(results)
         });
-})
+});
+
 // Sort by bar drinkPrice
 router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkPrice){return next();}
@@ -57,7 +59,8 @@ router.get('/:id/reviews', function(req, res, next) {
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
             res.status(200).json(results)
         });
-})
+});
+
 // Sort by bar foodQuality
 router.get('/:id/reviews', function (req, res, next) {
     if (!req.query.sortByFoodQuality) { return next();}

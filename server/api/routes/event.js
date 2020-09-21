@@ -24,6 +24,18 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
+// Sort by event startDate
+router.get('', function(req, res, next) {
+    if (!req.query.sortByStartDate){return next();}
+    Event.find({}).sort({
+        startDate: req.query.sortByStartDate
+    }).exec(function(err,results){
+        if(err) { return next(err)}
+        if(!results) {return res.status(404).json({"message": "no events found"})}
+        res.status(200).json(results);
+    })
+});
+
 // Read all events and partially filter by title
 router.get('', function(req, res, next) {   
     if (!req.query.title){return next();}
@@ -53,8 +65,6 @@ router.get('', function(req, res, next) {
         res.status(200).json(events);
     });
 });
-
-// TODO: Sort by startDate
 
 // Read all events
 router.get('', function(req, res, next) {
