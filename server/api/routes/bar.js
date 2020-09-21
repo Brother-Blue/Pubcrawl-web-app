@@ -1,5 +1,6 @@
 var Bar = require('../models/bar');
 var Review = require('../models/review');
+var Event = require('../models/event');
 var express = require('express');
 var mongoose = require('mongoose');
 
@@ -89,6 +90,18 @@ router.get('/:id/reviews', function (req, res, next) {
     }).exec(function (err, results) {
         if (err) { return next(err); }
         if (!results) { return res.status(404).json({"message": "no reviews found"}); }
+        res.status(200).json(results);
+    })
+});
+
+// Sort by bar event startDate
+router.get('/:id/events', function (req, res, next) {
+    if (!req.query.sortByStartDate) { return next();}
+    Event.find().sort({
+        startDate: req.query.sortByStartDate
+    }).exec(function (err, results) {
+        if (err) { return next(err); }
+        if (!results) { return res.status(404).json({"message": "no events found"}); }
         res.status(200).json(results);
     })
 });
@@ -203,6 +216,18 @@ router.get('/:id/reviews', function(req, res, next) {
     })
 });
 
+// Read all bar events
+router.get('/:id/events', function(req, res, next) {
+    Bar.findById(req.params.id).populate('events').exec(function(err, bar) {
+        if (err) { return next(err); }
+        if (!bar) {
+            return res.status(404).json(
+                {"message": "bar not found"});
+        }
+        res.status(200).json(bar.events);
+    })
+});
+
 // Update bar
 router.put('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
@@ -214,6 +239,7 @@ router.put('/:id', function(req, res, next) {
         bar.name = req.body.name;
         bar.latLong = req.body.latLong;
         bar.reviews = req.body.reviews;
+        bar.events = req.body.events;
         bar.save();
         res.status(204).json(bar);
     });
@@ -230,6 +256,7 @@ router.patch('/:id', function(req, res, next) {
         bar.name = (req.body.name || bar.name);
         bar.latLong = (req.body.latLong || bar.latLong);
         bar.reviews = (req.body.reviews || bar.reviews);
+        bar.events = (req.body.events || bar.events);
         bar.save();
         res.status(204).json(bar);
     });
