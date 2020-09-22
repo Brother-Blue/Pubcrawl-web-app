@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator'); // TODO: install this in server directory, "npm install mongoose-unique-validator"
+var Review = require('../models/review');
+var Event = require('../models/event');
 
 // Password hashing
 var bcrypt = require('bcrypt'); // TODO: install this in server directory, "npm install bcrypt"
@@ -50,6 +52,21 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
         cb(null, isMatch);
     });
 };
+
+// Cascade delete
+UserSchema.pre('findOneAndDelete', function(next) {
+    var id = this.getQuery()._id;
+    Event.deleteMany(
+        { users: id },
+        { multi: true }
+    ).exec();
+    Review.updateMany(
+        { users: id },
+        { $set: { users: null } },
+        { multi: true }
+    ).exec();
+    next();
+});
 
 // Compile model from UserSchema
 module.exports = mongoose.model('users', UserSchema);
