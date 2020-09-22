@@ -10,7 +10,7 @@ router.post('', function(req, res, next) {
         if (err) { return next(err); }
         res.status(201).json(review);
     })
-})
+});
 
 // Read review
 router.get('/:id', function(req, res, next) {
@@ -76,7 +76,7 @@ router.put('/:id', function(req, res, next) {
         review.users = req.body.users;
         review.bars = req.body.bars;
         review.save();
-        res.status(204).json(review);
+        res.status(200).json(review);
     });
 });
 
@@ -99,7 +99,7 @@ router.patch('/:id', function(req, res, next) {
         review.users = (req.body.users || review.users);
         review.bars = (req.body.bars || review.bars);
         review.save();
-        res.status(204).json(review);
+        res.status(200).json(review);
     });
 });
 
@@ -111,7 +111,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
-        res.status(202).json(review);
+        res.status(200).json(review);
     });
 });
 
@@ -123,7 +123,7 @@ router.delete('', function(req, res, next) {
             return res.status(404).json(
                 {"message": "no reviews found"});
         }
-        res.status(202).json(
+        res.status(200).json(
             {"message": "all reviews have been deleted"});
     });
 });

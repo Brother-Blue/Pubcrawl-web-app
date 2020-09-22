@@ -114,7 +114,7 @@ router.put('/:id', function(req, res, next) {
         event.bars = req.body.bars;
         event.users = req.body.users;
         event.save();
-        res.status(204).json(event);
+        res.status(200).json(event);
     });
 });
 
@@ -134,7 +134,7 @@ router.patch('/:id', function(req, res, next) {
         event.bars = (req.body.bars || event.bars);
         event.users = (req.body.users || event.users);
         event.save();
-        res.status(204).json(event);
+        res.status(200).json(event);
     });
 });
 
@@ -146,7 +146,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
-        res.status(202).json(event);
+        res.status(200).json(event);
     });
 });
 
@@ -158,7 +158,7 @@ router.delete('', function(req, res, next) {
             return res.status(404).json(
                 {"message": "no events found"});
         }
-        res.status(202).json(
+        res.status(200).json(
             {"message": "all events have been deleted"});
     });
 })

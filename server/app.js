@@ -7,7 +7,7 @@ var history = require('connect-history-api-fallback');
 var mongoose = require('mongoose');
 
 // API endpoint
-var router = require('./api/routes/index');
+var router = require('./controllers/index');
 
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://g20admin:12345@cluster0.mw6yd.mongodb.net/pubcrawl?retryWrites=true&w=majority';

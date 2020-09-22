@@ -15,6 +15,15 @@ router.post('', function(req, res, next) {
     })
 });
 
+// Create bar review
+router.post('/:id/reviews', function(req, res, next) {
+    var review = new Review(req.body);
+    review.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(review);
+    })
+})
+
 // Read bar
 router.get('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
@@ -244,7 +253,7 @@ router.put('/:id', function(req, res, next) {
         bar.reviews = req.body.reviews;
         bar.events = req.body.events;
         bar.save();
-        res.status(204).json(bar);
+        res.status(200).json(bar);
     });
 });
 
@@ -261,7 +270,19 @@ router.patch('/:id', function(req, res, next) {
         bar.reviews = (req.body.reviews || bar.reviews);
         bar.events = (req.body.events || bar.events);
         bar.save();
-        res.status(204).json(bar);
+        res.status(200).json(bar);
+    });
+});
+
+// Delete review through bar
+router.delete('/:bar/reviews/:id', function(req, res, next) {
+    Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
+        if (err) { return next(err); }
+        if (!review) {
+            return res.status(404).json(
+                {"message": "review not found"});
+        }
+        res.status(200).json(review);
     });
 });
 
@@ -273,7 +294,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
-        res.status(202).json(bar);
+        res.status(200).json(bar);
     });
 });
 
@@ -285,7 +306,7 @@ router.delete('', function(req, res, next) {
             return res.status(404).json(
                 {"message": "no bars found"});
         }
-        res.status(202).json(
+        res.status(200).json(
             {"message": "all bars have been deleted"});
     });
 });

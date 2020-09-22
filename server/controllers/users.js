@@ -75,7 +75,7 @@ router.put('/:id', function(req, res, next) {
         user.passwordResetExpires = req.body.passwordResetExpires;
         user.reviews = req.body.reviews;
         user.save();
-        res.status(204).json(user);
+        res.status(200).json(user);
     });
 });
 
@@ -95,7 +95,7 @@ router.patch('/:id', function(req, res, next) {
         user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
         user.reviews = (req.body.reviews || user.reviews);
         user.save();
-        res.status(204).json(user);
+        res.status(200).json(user);
     });
 });
 
@@ -107,7 +107,7 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
-        res.status(202).json(user);
+        res.status(200).json(user);
     });
 });
 
