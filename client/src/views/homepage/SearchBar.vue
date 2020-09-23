@@ -22,6 +22,7 @@ export default {
   max-width: 66%;
   min-width: 50%;
   margin-top: 20px;
+  margin-bottom: 30px;
   margin-left: auto;
   margin-right: auto;
 }

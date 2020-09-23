@@ -49,7 +49,7 @@ export default {
 .jumbotron {
   background-color: rgb(50, 50, 80);
   color: darkkhaki;
-  padding-bottom: 10px;
+  padding: 1px;
   margin-bottom: 0px;
   border-radius: 0px;
 }
