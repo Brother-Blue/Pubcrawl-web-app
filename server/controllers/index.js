@@ -1,7 +1,7 @@
-var review = require('./review');
-var user = require('./user');
-var event = require('./event');
-var bar = require('./bar');
+var review = require('./reviews');
+var user = require('./users');
+var event = require('./events');
+var bar = require('./bars');
 var express = require('express');
 
 var router = express.Router();

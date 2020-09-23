@@ -1,4 +1,6 @@
 var User = require('../models/user');
+var Review = require('../models/review');
+var Event = require('../models/event');
 var express = require('express');
 
 var router = express.Router();
@@ -75,7 +77,7 @@ router.put('/:id', function(req, res, next) {
         user.passwordResetExpires = req.body.passwordResetExpires;
         user.reviews = req.body.reviews;
         user.save();
-        res.status(204).json(user);
+        res.status(200).json(user);
     });
 });
 
@@ -95,7 +97,7 @@ router.patch('/:id', function(req, res, next) {
         user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
         user.reviews = (req.body.reviews || user.reviews);
         user.save();
-        res.status(204).json(user);
+        res.status(200).json(user);
     });
 });
 
@@ -107,7 +109,16 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
-        res.status(202).json(user);
+        Event.deleteMany(
+            { users: req.params.id },
+            { multi: true }
+        ).exec();
+        Review.updateMany(
+            { users: req.params.id },
+            { $set: { users: null } },
+            { multi: true }
+        ).exec();
+        res.status(200).json(user);
     });
 });
 
