@@ -15,3 +15,9 @@ export default {
   name: 'searchbar'
 }
 </script>
+
+<style scoped>
+.searchbar {
+  margin-top: 20px;
+}
+</style>
