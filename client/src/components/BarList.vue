@@ -64,9 +64,18 @@ export default {
 </script>
 
 <style scoped>
-.bar-container {
+::-webkit-scrollbar {
+  width: 20px;
+}
+
+.bar-list-container {
   max-width: 50%;
-  min-width: 50%;
+  min-height: 70vh;
+  overflow-y: scroll;
+}
+
+.bar-container {
+  min-width: 100%;
   margin-top: 10px;
   margin-left: 0;
 }
