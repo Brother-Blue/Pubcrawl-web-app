@@ -12,6 +12,8 @@
 </form>
 </template>
 
+<!--  TODO: add sortByBarName method. -->
+
 <script>
 export default {
   name: 'searchbar'
