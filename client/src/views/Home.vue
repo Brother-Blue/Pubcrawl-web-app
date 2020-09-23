@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Header from './Header'
-import SearchBar from './SearchBar'
-import BarList from './BarList'
+import Header from '@/components/Header'
+import SearchBar from '@/components/SearchBar'
+import BarList from '@/components/BarList'
 
 export default {
   name: 'home',
