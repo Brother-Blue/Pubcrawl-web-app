@@ -1,4 +1,5 @@
 var Event = require('../models/event');
+var Bar = require('../models/bar');
 var express = require('express');
 
 var router = express.Router();
@@ -146,6 +147,11 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "event not found"});
         }
+        Bar.updateMany(
+            { },
+            { $pull: { events: req.params.id } },
+            { multi: true }
+        ).exec();
         res.status(200).json(event);
     });
 });

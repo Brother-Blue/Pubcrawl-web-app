@@ -294,6 +294,15 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
+        Review.deleteMany(
+            { bars: req.params.id },
+            { multi: true }
+        ).exec();
+        Event.updateMany(
+            { },
+            { $pull: { bars: req.params.id } },
+            { multi: true }
+        ).exec();
         res.status(200).json(bar);
     });
 });

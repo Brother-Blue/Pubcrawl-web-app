@@ -1,4 +1,6 @@
 var Review = require('../models/review');
+var User = require('../models/user');
+var Bar = require('../models/bar');
 var express = require('express');
 
 var router = express.Router();
@@ -111,6 +113,16 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "review not found"});
         }
+        User.updateMany(
+            { },
+            { $pull: { reviews: req.params.id } },
+            { multi: true }
+        ).exec();
+        Bar.updateMany(
+            { },
+            { $pull: { reviews: req.params.id } },
+            { multi: true }
+        ).exec();
         res.status(200).json(review);
     });
 });

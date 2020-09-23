@@ -1,4 +1,6 @@
 var User = require('../models/user');
+var Review = require('../models/review');
+var Event = require('../models/event');
 var express = require('express');
 
 var router = express.Router();
@@ -107,6 +109,15 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "user not found"});
         }
+        Event.deleteMany(
+            { users: req.params.id },
+            { multi: true }
+        ).exec();
+        Review.updateMany(
+            { users: req.params.id },
+            { $set: { users: null } },
+            { multi: true }
+        ).exec();
         res.status(200).json(user);
     });
 });
