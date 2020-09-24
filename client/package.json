@@ -12,7 +12,9 @@
     "bootstrap": "^4.5.2",
     "bootstrap-vue": "^2.16.0",
     "vue": "^2.6.12",
-    "vue-router": "^3.4.3"
+    "vue-browser-geolocation": "^1.8.0",
+    "vue-router": "^3.4.3",
+    "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-eslint": "^4.5.4",
