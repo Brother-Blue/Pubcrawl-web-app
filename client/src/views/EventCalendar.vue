@@ -13,12 +13,12 @@
     ></b-calendar>
     <div class="event-item" v-for="event in events" :key="event">
         <event-item
-        barName="Placeholder"
         :eventTitle="event[0]"
         :startDate="event[1]"
         :endDate="event[2]"
         :creationDate="event[3]"
-        :userID="event[4]"
+        :barName="event[4]"
+        :bar-modal-id="bar-modal"
         ></event-item>
     </div>
   </div>
@@ -53,20 +53,18 @@ export default {
   },
   methods: {
     getEvents(day) {
-      var barID = []
       Api.get('/events')
         .then(response => {
           var e = response.data.events
           var eArr = []
           for (var i = 0; i < e.length; i++) {
             if (e[i].startDate.substring(0, 10) === day) {
-              barID.push(e[i].bars)
               eArr.push([
                 e[i].title,
                 e[i].startDate.substring(0, 10) + ' @' + e[i].startDate.substring(11, 16) + ' | ',
                 e[i].endDate.substring(0, 10) + ' @' + e[i].endDate.substring(11, 16),
                 e[i].createdAt.substring(0, 10),
-                this.getUserByID(e[i].users)
+                this.getBarsByID(e[i].bars)
               ])
             } else {
               continue
@@ -86,6 +84,19 @@ export default {
         .catch(error => {
           console.error(error)
         })
+    },
+    getBarsByID(ids) {
+      var bars = []
+      for (var i = 0; i < ids.length; i++) {
+        Api.get(`/bars/${ids[i]}`)
+          .then(response => {
+            bars.push(response.data.name)
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      }
+      return bars
     }
   }
 }

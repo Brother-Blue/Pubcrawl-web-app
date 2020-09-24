@@ -1,19 +1,13 @@
 <template>
     <b-modal
-    ref="bar-modal"
-    size="lg"
-    :title="barName"
-    >
-      <div>
-        <p>To be finished :)</p>
-      </div>
-    </b-modal>
+      centered
+      title="Dicks"
+      ></b-modal>
 </template>
 
 <script>
 export default {
-  name: 'bar-modal',
-  props: ['ref', 'bar-name']
+  name: 'bar-modal'
 }
 </script>
 

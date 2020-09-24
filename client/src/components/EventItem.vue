@@ -3,9 +3,9 @@
       <h2>{{barName}}</h2>
       <h3>{{eventTitle}}</h3>
       <p>Begins: {{startDate}}  Ends: {{endDate}}</p><br>
-      <p>Created at {{creationDate}} by: {{userID}}.</p>
-      <b-button @click="openBarModal">View more about {{barName}}</b-button>
-      <bar-modal ref="bar-modal" :bar-name="barName"></bar-modal>
+      <b-button @click="showModal">View more about the event</b-button><br>
+      <p>Created on {{creationDate}}</p>
+      <bar-modal id="bar-modal"></bar-modal>
   </div>
 </template>
 
@@ -19,8 +19,8 @@ export default {
     'bar-modal': BarModal
   },
   methods: {
-    openBarModal() {
-      this.$refs['bar-modal'].show()
+    showModal() {
+      this.$root.$emit('bv::show::modal', 'bar-modal')
     }
   }
 }
