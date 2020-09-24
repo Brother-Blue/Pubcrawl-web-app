@@ -1,31 +1,51 @@
 <template>
   <div>
-<GmapMap
-  :center="{lat:myCoordinates.lat, lng:myCoordinates.lng}"
-  :zoom="zoom"
-  map-type-id="roadmap"
-  style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
-  :options="{
-          zoomControl: false,
-          mapTypeControl: false,
-          scaleControl: false,
-          streetViewControl: false,
-          rotateControl: false,
-          fullscreenControl: false,
-          disableDefaultUi: true,
-          styles: styles}"
->
-</GmapMap>
+
+    <GmapMap
+        :center="{lat:myCoordinates.lat, lng:myCoordinates.lng}"
+        :zoom="zoom"
+        map-type-id="roadmap"
+        style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
+        :options="{
+            zoomControl: false,
+            mapTypeControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: false,
+            disableDefaultUi: true,
+            styles: styles}">
+
+    <GmapMarker
+        v-for="(r, index) in bars"
+        :key="index"
+        :position="{
+            lat:r.latLong[0],
+            lng:r.latLong[1]
+            }"
+        :clickable="true"
+        :draggable="false"
+        :icon="{
+            url: require('./../../../images/toppng.com-aw-root-beer-beer-glasses-beer-stein-free-svg-vector-beer-875x925.png'),
+            size: {width: 60, height: 90, f: 'px', b: 'px'},
+            scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}}"
+        @click="center=r.position"/>
+    </GmapMap>
+
   </div>
 </template>
+
 <script>
+import { Api } from '@/Api'
 export default {
+
   data() {
     return {
       myCoordinates: {
         lat: 57.708870,
         lng: 11.974560
       },
+      bars: [],
       zoom: 13,
       styles: [
         {
@@ -254,7 +274,16 @@ export default {
       ]
     }
   },
+
   created() {
+    // populate map with bars
+    Api.get('/bars')
+      .then(response => {
+        this.bars = response.data.bars
+      })
+      .catch(error => {
+        this.bars = error
+      })
     // get user's coordinates from browser request
     this.$getLocation({})
       .then(coordinates => {
