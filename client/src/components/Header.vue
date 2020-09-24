@@ -8,7 +8,7 @@
     <div class="btn-group">
       <b-button-group>
         <b-button class="btn">
-            <router-link to="/" class="btn-link">Home</router-link>
+            <router-link to="/home" class="btn-link">Home</router-link>
         </b-button>
         <b-button class="btn">
             <router-link to="/events" class="btn-link">Events</router-link>
