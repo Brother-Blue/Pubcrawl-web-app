@@ -7,15 +7,9 @@
     ></b-jumbotron>
     <div class="btn-group">
       <b-button-group>
-        <b-button class="btn">
-            <router-link to="/home" class="btn-link">Home</router-link>
-        </b-button>
-        <b-button class="btn">
-            <router-link to="/events" class="btn-link">Events</router-link>
-        </b-button>
-        <b-button class="btn">
-            <router-link to="#" class="btn-link">{{ message }}</router-link>
-        </b-button>
+        <router-link to="/home" class="btn-link">Home</router-link>
+        <router-link to="/events" class="btn-link">Events</router-link>
+        <router-link to="#" class="btn-link">{{ message }}</router-link>
       </b-button-group>
     </div>
   </div>
@@ -59,22 +53,15 @@ export default {
     margin-top: 0px;
 }
 
-.btn-group * {
-    border-radius: 0px;
-}
-
-@keyframes enlarge-text {
-    from {font-size: 1em;}
-    to {font-size: 1.5em;}
-}
-
-.btn:hover {
-    animation-name: enlarge-text;
-    animation-duration: 1s;
-    animation-fill-mode: forwards;
+.btn-link:hover {
+    background-color: rgb(90, 98, 104);
 }
 
 .btn-link {
+    width: 33.33%;
+    margin-top: 0px;
+    padding: 10px;
+    background-color: rgb(108, 117, 125);
     color: white;
 }
 
