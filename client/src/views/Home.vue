@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Header from './Header'
-import SearchBar from './SearchBar'
+import Header from '@/components/Header'
+import SearchBar from '@/components/SearchBar'
 export default {
   name: 'home',
   components: {
