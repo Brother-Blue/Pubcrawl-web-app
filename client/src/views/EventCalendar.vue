@@ -7,8 +7,8 @@
     hide-header="True"
     start-weekday="1"
     v-model="value"
-    :min-date="minDate"
-    :max-date="maxDate"
+    :min="minDate"
+    :max="maxDate"
     ></b-calendar>
     <!-- <b-button v-on:click="getEvents()">Get events!</b-button>
     <div v-for="event in events" :key="event">
@@ -41,8 +41,8 @@ export default {
     return {
       events: null,
       value: '',
-      minDate: minDate,
-      maxDate: maxDate
+      min: minDate,
+      max: maxDate
     }
   },
   methods: {
