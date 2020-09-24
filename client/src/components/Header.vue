@@ -7,7 +7,7 @@
     ></b-jumbotron>
     <div class="btn-group">
       <b-button-group>
-        <router-link to="/home" class="btn-link">Home</router-link>
+        <router-link to="/" class="btn-link">Home</router-link>
         <router-link to="/events" class="btn-link">Events</router-link>
         <router-link to="#" class="btn-link">{{ message }}</router-link>
       </b-button-group>
