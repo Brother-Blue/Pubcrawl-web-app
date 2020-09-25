@@ -1,6 +1,6 @@
 <template>
   <div class="bar-list-container">
-    <div class="bar-container">
+    <div class="bar-container" v-for="bar in bars" :key="bar">
       <div class="bar-header">
         <b-img
           class="bar-logo"
@@ -9,7 +9,7 @@
           alt="Responsive image"
         ></b-img>
         <h3>
-          {{ barName }}
+          {{ bar.name }}
         </h3>
       </div>
       <hr />
@@ -17,7 +17,7 @@
         <b-list-group horizontal>
           <b-list-group-item class="bar-attr">
             <b-form-rating
-              id="avg-rating"
+              id= "avg-rating"
               icon-empty="blank"
               icon-full="cup"
               inline
@@ -43,12 +43,14 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
   name: 'bar-list',
   data() {
     return {
-      barName: 'Placeholder Bar',
-      avgRating: 4.4,
+      bars: null,
+      avgRating: 10,
       distance: 10,
       numEvents: 2,
       defaultImg: 'https://images-platform.99static.com//sH-Ldum17LQhqqvZfKHJGxb21Jc=/0x0:1500x1500/fit-in/500x500/99designs-contests-attachments/86/86697/attachment_86697480'
@@ -59,6 +61,15 @@ export default {
       // TODO: Calculate distance with Google Maps API
       // Once Hjalle is done paying for Google Cloud subscriptions
     }
+  },
+  created() {
+    Api.get('/bars')
+      .then(response => {
+        this.bars = response.data.bars
+      })
+      .catch(error => {
+        this.bars = error
+      })
   }
 }
 </script>
