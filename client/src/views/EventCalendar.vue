@@ -18,7 +18,7 @@
         :endDate="event[2]"
         :creationDate="event[3]"
         :barName="event[4]"
-        :bar-modal-id="bar-modal"
+        :createdBy="event[5]"
         ></event-item>
     </div>
   </div>
@@ -64,7 +64,8 @@ export default {
                 e[i].startDate.substring(0, 10) + ' @' + e[i].startDate.substring(11, 16) + ' | ',
                 e[i].endDate.substring(0, 10) + ' @' + e[i].endDate.substring(11, 16),
                 e[i].createdAt.substring(0, 10),
-                this.getBarsByID(e[i].bars)
+                this.getBarsByID(e[i].bars),
+                this.getUserByID(e[i].users)
               ])
             } else {
               continue
@@ -77,13 +78,15 @@ export default {
         })
     },
     getUserByID(id) {
+      var name = 'placeholder'
       Api.get(`/users/${id}`)
         .then(response => {
-          return response.data.username
+          name = response.data.username
         })
         .catch(error => {
           console.error(error)
         })
+      return name
     },
     getBarsByID(ids) {
       var bars = []
