@@ -50,6 +50,8 @@ export default {
   data() {
     return {
       bars: null,
+      reviews: null,
+      events: null,
       avgRating: 10,
       distance: 10,
       numEvents: 2,
@@ -60,16 +62,19 @@ export default {
     calcDistance(deviceCoords, destinationCoords) {
       // TODO: Calculate distance with Google Maps API
       // Once Hjalle is done paying for Google Cloud subscriptions
+    },
+    getBars() {
+      Api.get('/bars')
+        .then(response => {
+          this.bars = response.data.bars
+        })
+        .catch(error => {
+          this.bars = error
+        })
     }
   },
-  created() {
-    Api.get('/bars')
-      .then(response => {
-        this.bars = response.data.bars
-      })
-      .catch(error => {
-        this.bars = error
-      })
+  created: function () {
+    this.getBars()
   }
 }
 </script>
