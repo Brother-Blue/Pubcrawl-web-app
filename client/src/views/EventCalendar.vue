@@ -19,7 +19,7 @@
         :endDate="event[2]"
         :creationDate="event[3]"
         :barName="event[4]"
-        :createdBy="event[5]"
+        :createdBy="username"
         ></event-item>
     </div>
   </div>
@@ -46,6 +46,7 @@ export default {
     maxDate.setMonth(today.getMonth() + 2)
     maxDate.setDate(today.getDate())
     return {
+      username: 'If you see this something borked',
       events: null,
       value: '',
       min: minDate,
@@ -79,15 +80,13 @@ export default {
         })
     },
     getUserByID(id) {
-      var name = 'placeholder'
       Api.get(`/users/${id}`)
         .then(response => {
-          name = response.data.username
+          this.username = response.data.username
         })
         .catch(error => {
           console.error(error)
         })
-      return name
     },
     getBarsByID(ids) {
       var bars = []
