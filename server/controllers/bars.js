@@ -275,6 +275,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // Delete review through bar
+// TODO: Check if bar exists, check if review exists for bar, make sure review is deleted for appropriate bar
 router.delete('/:bar/reviews/:id', function(req, res, next) {
     Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
         if (err) { return next(err); }
