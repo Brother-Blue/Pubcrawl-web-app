@@ -38,7 +38,7 @@
 <script>
 import { Api } from '@/Api'
 export default {
-
+  name: 'map-function',
   data() {
     return {
       myCoordinates: {
