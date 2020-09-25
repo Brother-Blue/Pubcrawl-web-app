@@ -1,10 +1,10 @@
 <template>
   <div class="event-item-container">
-      <h2 :moreBars="totalBars(barName)">{{barName[0]}} {{moreBars}}</h2><hr>
+      <h2 class="event-header" :moreBars="totalBars(barName)">{{barName[0]}} {{moreBars}}</h2><hr class="bg-secondary">
       <h3>{{eventTitle}}</h3>
-      <p>Begins: {{startDate}}  Ends: {{endDate}}</p><br>
-      <b-button class="btn footer" @click="modalShow = !modalShow">View more about the event</b-button>
-      <p>Created on {{creationDate}}</p>
+      <p>Begins: {{startDate}}  Ends: {{endDate}}</p>
+      <b-button class="btn btn-block btn-outline-warning" @click="modalShow = !modalShow">View more about the event</b-button><br>
+      <p class="text-muted">Created on {{creationDate}}</p>
 
       <b-modal
       header-bg-variant="dark"
@@ -73,6 +73,12 @@ export default {
 .bar-list {
   padding: 0px;
   text-align: center;
-  list-style-type: none;
+  list-style-type:
+  none;
+}
+
+.btn-block {
+  width: 65%;
+  margin: auto;
 }
 </style>

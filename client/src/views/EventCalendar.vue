@@ -12,7 +12,7 @@
     :max="max"
     @selected="getEvents(value)"
     ></b-calendar>
-    <div class="event-item" v-for="event in events" :key="event">
+    <div class="event-item bg-dark text-light rounded border border-warning" v-for="event in events" :key="event">
         <event-item
         :eventTitle="event[0]"
         :startDate="event[1]"
@@ -107,10 +107,8 @@ export default {
 
 <style scoped>
 .event-item {
-  max-width: 90%;
-  margin: 5%;
-  padding: 20px;
-  border: 10px solid rgb(131, 100, 0);
-  border-radius: 25px;
+  max-width: 70%;
+  margin: 3% 15%;
+  padding-top: 15px;
 }
 </style>
