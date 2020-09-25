@@ -5,7 +5,7 @@
         :center="{lat:myCoordinates.lat, lng:myCoordinates.lng}"
         :zoom="zoom"
         map-type-id="roadmap"
-        style="width: 50%; height: 50%; position: absolute; right:0; bottom:0"
+        style="width: 50%; height: 75%; position: absolute; right:0; bottom:0 top:0"
         :options="{
             zoomControl: false,
             mapTypeControl: false,
