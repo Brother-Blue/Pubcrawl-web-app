@@ -2,6 +2,7 @@
   <div>
     <pubcrawl-jumbotron></pubcrawl-jumbotron>
     <b-calendar
+    class="calendar bg-dark"
     block
     locale="en"
     hide-header="True"
@@ -106,5 +107,11 @@ export default {
 </script>
 
 <style scoped>
-
+.event-item {
+  max-width: 90%;
+  margin: 5%;
+  padding: 20px;
+  border: 10px solid rgb(131, 100, 0);
+  border-radius: 25px;
+}
 </style>

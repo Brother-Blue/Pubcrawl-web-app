@@ -3,14 +3,14 @@
       <h2 :moreBars="totalBars(barName)">{{barName[0]}} {{moreBars}}</h2>
       <h3>{{eventTitle}}</h3>
       <p>Begins: {{startDate}}  Ends: {{endDate}}</p><br>
-      <b-button @click="modalShow = !modalShow">View more about the event</b-button>
+      <b-button class="btn footer" @click="modalShow = !modalShow">View more about the event</b-button>
       <p>Created on {{creationDate}}</p>
 
       <b-modal
       v-model="modalShow"
       :title="barName[0]"
       >
-        <p :createdBy="createdBy">Event created by: {{createdBy}}</p>
+        <p class="createdBy footer" :createdBy="createdBy">Event created by: {{createdBy}}</p>
       </b-modal>
   </div>
 </template>
@@ -42,4 +42,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
