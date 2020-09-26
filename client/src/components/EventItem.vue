@@ -27,9 +27,9 @@
         </p>
         <b-button class="btn btn-outline-warning" v-b-toggle.bar-list-dropdown>View bars for this event</b-button>
         <b-collapse id="bar-list-dropdown">
-          <b-card class="bg-dark text-light">
+          <b-card class="bg-dark text-light border-0">
               <ul class="bar-list" v-for="bar in barName" :key="bar">
-                <li>{{bar}}</li>
+                <li>{{bar}} | 4 stars</li>
               </ul>
           </b-card>
         </b-collapse>
@@ -40,14 +40,14 @@
 </template>
 
 <script>
-
 export default {
   name: 'event-item',
   props: ['bar-name', 'event-title', 'start-date', 'end-date', 'creation-date', 'created-by'],
   data() {
     return {
       modalShow: false,
-      moreBars: ''
+      moreBars: '',
+      barAvgRating: 0
     }
   },
   methods: {

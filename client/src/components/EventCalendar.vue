@@ -1,17 +1,20 @@
 <template>
-  <div>
-    <pubcrawl-jumbotron></pubcrawl-jumbotron>
+  <div class="main bg-dark">
     <b-calendar
+    selected-variant="warning"
+    today-variant="warning"
+    nav-button-variant="primary"
     class="calendar bg-dark"
     block
     locale="en"
-    hide-header="True"
+    hide-header
     start-weekday="1"
     v-model="value"
     :min="min"
     :max="max"
     @selected="getEvents(value)"
     ></b-calendar>
+    <add-event-button></add-event-button>
     <div class="event-item bg-dark text-light rounded border border-warning" v-for="event in events" :key="event">
         <event-item
         :eventTitle="event[0]"
@@ -26,15 +29,15 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
 import EventItem from '@/components/EventItem'
+import AddEventButton from '@/components/AddEventButton'
 import { Api } from '@/Api'
 
 export default {
   name: 'event-calendar',
   components: {
-    'pubcrawl-jumbotron': Header,
-    'event-item': EventItem
+    'event-item': EventItem,
+    'add-event-button': AddEventButton
   },
   data() {
     const date = new Date()
@@ -108,7 +111,16 @@ export default {
 <style scoped>
 .event-item {
   max-width: 70%;
-  margin: 3% 15%;
+  margin: 8% 15%;
   padding-top: 15px;
+  box-shadow: 5px 5px 5px 3px black;
+}
+
+.calendar {
+  box-shadow: 0px 5px 5px 3px black;
+}
+
+.main {
+  overflow: hidden;
 }
 </style>
