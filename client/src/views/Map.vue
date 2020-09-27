@@ -2,36 +2,42 @@
   <div>
 
     <GmapMap
-        :center="{lat:myCoordinates.lat, lng:myCoordinates.lng}"
-        :zoom="zoom"
-        map-type-id="roadmap"
-        style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
-        :options="{
-            zoomControl: false,
-            mapTypeControl: false,
-            scaleControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullscreenControl: false,
-            disableDefaultUi: true,
-            styles: styles}">
+    :center="userCoordinates"
+    :zoom="zoom"
+    style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
+    :options="{
+      zoomControl: true,
+      mapTypeControl: false,
+      streetViewControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      minZoom: 5,
+      gestureHandling: greedy,
+      styles: mapStyles}">
 
-    <GmapMarker
-        v-for="(r, index) in bars"
-        :key="index"
-        :position="{
-            lat:r.latLong[0],
-            lng:r.latLong[1]
-            }"
-        :clickable="true"
-        :draggable="false"
-        :icon="{
-            url: require('./../../../images/toppng.com-aw-root-beer-beer-glasses-beer-stein-free-svg-vector-beer-875x925.png'),
-            size: {width: 60, height: 90, f: 'px', b: 'px'},
-            scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}}"
-        @click="center=r.position"/>
+    <GmapCircle
+    :center="userCoordinates"
+    :radius="10"
+    :options="circleStyles">
+    </GmapCircle>
+
+      <GmapCluster
+      :position="center"
+      :clickable="true"
+      :animation="2">
+
+      <GmapMarker
+      v-for="(r, index) in bars"
+      :key="index"
+      :position="{
+        lat:r.latLong[0],
+        lng:r.latLong[1]}"
+      :clickable="false"
+      :draggable="false"
+      :label="{'text': r.name, 'color': 'white', 'fontWeight': 'bold', 'fontSize': '12px'}"
+      :icon="iconStyles"/>
+      </GmapCluster>
     </GmapMap>
-
   </div>
 </template>
 
@@ -41,13 +47,34 @@ export default {
 
   data() {
     return {
-      myCoordinates: {
+      userCoordinates: {
         lat: 57.708870,
         lng: 11.974560
       },
       bars: [],
       zoom: 13,
-      styles: [
+      circleStyles: {
+        fillColor: 'blue',
+        fillOpacity: 0.7,
+        visible: false,
+        strokeColor: '#FFFFFF',
+        strokeWeight: 3,
+        strokeOpacity: 0.7
+      },
+      iconStyles: {
+        url: require('./../../../images/map_icon.svg'),
+        labelOrigin: {
+          x: 10,
+          y: -10
+        },
+        scaledSize: {
+          width: 40,
+          height: 40,
+          f: 'px',
+          b: 'px'
+        }
+      },
+      mapStyles: [
         {
           elementType: 'geometry',
           stylers: [
@@ -287,8 +314,9 @@ export default {
     // get user's coordinates from browser request
     this.$getLocation({})
       .then(coordinates => {
-        this.myCoordinates = coordinates
+        this.userCoordinates = coordinates
         this.zoom = 16
+        this.circleStyles.visible = true
       })
       .catch(error => alert(error))
   }
