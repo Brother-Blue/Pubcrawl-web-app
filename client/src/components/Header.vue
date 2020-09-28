@@ -9,7 +9,7 @@
       <b-button-group>
         <router-link to="/" class="btn-link">Home</router-link>
         <router-link to="/events" class="btn-link">Events</router-link>
-        <router-link to="#" class="btn-link">{{ message }}</router-link>
+        <router-link to="/login" class="btn-link">{{ message }}</router-link>
       </b-button-group>
     </div>
   </div>
