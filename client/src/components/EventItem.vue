@@ -51,9 +51,6 @@ export default {
     }
   },
   methods: {
-    showModal() {
-      this.$root.$emit('bv::show::modal', 'bar-modal')
-    },
     totalBars(barArr) {
       if (barArr.length === 1) {
         this.moreBars = ''
