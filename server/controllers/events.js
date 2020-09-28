@@ -7,6 +7,16 @@ var router = express.Router();
 // Create event
 router.post('', function(req, res, next) {
     var event = new Event(req.body);
+    for (let i = 0; i < req.body.bars.length; i++) {
+        Bar.findById({_id: req.body.bars[i]}, function(err, bar) {
+            if (err) { return next(err) }
+            if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
+            bar.events.push(event._id);
+            bar.save(function(err) {
+                if(err) { return next(err) }
+            })
+        })
+    }
     event.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(event);
