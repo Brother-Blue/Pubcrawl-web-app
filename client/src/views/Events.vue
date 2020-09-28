@@ -42,7 +42,7 @@ export default {
 }
 
 #calendar {
-  margin-top: 258px;
+  margin-top: 190px;
 }
 
 #jump-button {
