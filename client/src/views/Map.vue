@@ -1,8 +1,19 @@
 <template>
   <div>
+    <b-button variant="outline-primary" @click="focusUser()"><b-icon icon="geo-alt"></b-icon></b-button>
 
+    <label>
+      <gmap-autocomplete
+        placeholder="Skriv in din adress"
+        @place_changed="setPlace">
+      </gmap-autocomplete>
+      <button @click="usePlace">Välj</button>
+    </label>
+
+    <!-- Google map layout -->
     <GmapMap
-    :center="userCoordinates"
+    ref="mapRef"
+    :center="mapCoordinates"
     :zoom="zoom"
     style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
     :options="{
@@ -12,32 +23,41 @@
       rotateControl: false,
       fullscreenControl: false,
       minZoom: 5,
-      gestureHandling: greedy,
       styles: mapStyles}">
 
-    <GmapCircle
-    :center="userCoordinates"
-    :radius="10"
-    :options="circleStyles">
-    </GmapCircle>
+      <GmapInfoWindow
+      :options="infoOptions"
+      :position="infoWindowPos"
+      :opened="infoWinOpen"
+      @closeclick="infoWinOpen=false">
+      </GmapInfoWindow>
 
+      <!-- Bar clustering -->
       <GmapCluster
-      :position="center"
       :clickable="true"
       :animation="2">
 
+      <!-- Bar marker -->
       <GmapMarker
       v-for="(r, index) in bars"
       :key="index"
       :position="{
         lat:r.latLong[0],
         lng:r.latLong[1]}"
+      :clickable="true"
+      :draggable="false"
+      @click="toggleInfoWindow(r,index)"
+      :icon="barStyles"/>
+      </GmapCluster>
+
+      <!-- User marker -->
+      <GmapMarker
+      :position="userCoordinates"
       :clickable="false"
       :draggable="false"
-      :label="{'text': r.name, 'color': 'white', 'fontWeight': 'bold', 'fontSize': '12px'}"
-      :icon="iconStyles"/>
-      </GmapCluster>
+      :icon="userStyles"/>
     </GmapMap>
+
   </div>
 </template>
 
@@ -47,29 +67,39 @@ export default {
 
   data() {
     return {
-      userCoordinates: {
+      mapCoordinates: {
         lat: 57.708870,
         lng: 11.974560
       },
+      userCoordinates: null,
       bars: [],
-      zoom: 13,
-      circleStyles: {
-        fillColor: 'blue',
-        fillOpacity: 0.7,
-        visible: false,
-        strokeColor: '#FFFFFF',
-        strokeWeight: 3,
-        strokeOpacity: 0.7
+      place: null,
+      zoom: 12,
+      infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+
+      infoOptions: {
+        content: '',
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
       },
-      iconStyles: {
+      barStyles: {
         url: require('./../../../images/map_icon.svg'),
-        labelOrigin: {
-          x: 10,
-          y: -10
-        },
         scaledSize: {
           width: 40,
           height: 40,
+          f: 'px',
+          b: 'px'
+        }
+      },
+      userStyles: {
+        url: require('./../../../images/user_icon.jpg'),
+        scaledSize: {
+          width: 60,
+          height: 60,
           f: 'px',
           b: 'px'
         }
@@ -301,24 +331,59 @@ export default {
       ]
     }
   },
-
   created() {
-    // populate map with bars
-    Api.get('/bars')
-      .then(response => {
-        this.bars = response.data.bars
-      })
-      .catch(error => {
-        this.bars = error
-      })
     // get user's coordinates from browser request
     this.$getLocation({})
       .then(coordinates => {
         this.userCoordinates = coordinates
+        this.mapCoordinates = coordinates
         this.zoom = 16
-        this.circleStyles.visible = true
       })
       .catch(error => alert(error))
+
+    // populate map with bars
+    Api.get('/bars')
+      .then(response => {
+        var e = response.data.bars
+        for (var i = 0; i < e.length; i++) {
+          this.bars.push(e[i])
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
+  methods: {
+    focusUser() {
+      this.$refs.mapRef.$mapPromise.then((map) => {
+        map.panTo(this.userCoordinates)
+      })
+    },
+    setPlace(place) {
+      this.place = place
+    },
+    usePlace(place) {
+      if (this.place) {
+        this.userCoordinates = this.place.geometry.location
+        this.focusUser()
+      }
+      this.place = null
+    },
+    toggleInfoWindow: function (bar, idx) {
+      this.infoWindowPos = {
+        lat: bar.latLong[0],
+        lng: bar.latLong[1]
+      }
+      this.infoOptions.content = bar.name
+
+      if (this.currentMidx === idx) {
+        this.infoWinOpen = !this.infoWinOpen
+      } else {
+        this.infoWinOpen = true
+        this.currentMidx = idx
+      }
+    }
   }
 }
+
 </script>
