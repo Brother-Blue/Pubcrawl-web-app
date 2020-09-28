@@ -5,7 +5,7 @@
         </b-button>
         <b-modal
         header-bg-variant="dark"
-        header-text-variant="secondary"
+        header-text-variant="warning"
         body-bg-variant="dark"
         body-text-variant="light"
         footer-bg-variant="dark"
@@ -13,7 +13,7 @@
         v-model="modalShow"
         size="lg"
         centered
-        :title="title"
+        title="Add a new event"
         >
         </b-modal>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="main bg-dark">
+  <div class="bg-dark">
     <b-calendar
     selected-variant="warning"
     today-variant="warning"
@@ -15,13 +15,13 @@
     @selected="getEvents(value)"
     ></b-calendar>
     <add-event-button></add-event-button>
-    <div class="event-item bg-dark text-light rounded border border-warning" v-for="event in events" :key="event">
+    <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
         <event-item
-        :eventTitle="event[0]"
-        :startDate="event[1]"
-        :endDate="event[2]"
-        :creationDate="event[3]"
-        :barName="event[4]"
+        :eventTitle="e[0]"
+        :startDate="e[1]"
+        :endDate="e[2]"
+        :creationDate="e[3]"
+        :barName="e[4]"
         :createdBy="username"
         ></event-item>
     </div>
@@ -120,7 +120,4 @@ export default {
   box-shadow: 0px 5px 5px 3px black;
 }
 
-.main {
-  overflow: hidden;
-}
 </style>
