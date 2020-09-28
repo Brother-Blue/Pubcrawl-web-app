@@ -18,6 +18,14 @@ router.post('', function(req, res, next) {
 // Create bar review
 router.post('/:id/reviews', function(req, res, next) {
     var review = new Review(req.body);
+    Bar.findById({_id: req.params.id}, function(err, bar) {
+        if (err) { return next(err); }
+        if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
+        bar.reviews.push(review._id)
+        bar.save(function(err) {
+            if (err) { return next(err); }
+        })
+    })
     review.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(review);
@@ -275,16 +283,35 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // Delete review through bar
-// TODO: Check if bar exists, check if review exists for bar, make sure review is deleted for appropriate bar
 router.delete('/:bar/reviews/:id', function(req, res, next) {
-    Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
-        if (err) { return next(err); }
-        if (!review) {
-            return res.status(404).json(
-                {"message": "review not found"});
-        }
-        res.status(200).json(review);
-    });
+    var barID, reviewBar, reviewID
+    Bar.findById({_id: req.params.bar}, function(err, bar) {
+        if (err) { return next(err) }
+        if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
+        barID = bar._id;
+        bar.reviews.splice(bar.reviews.indexOf(req.params.id), 1);
+        bar.save(function(err) { 
+            if (err) { return next(err) }
+        })
+    })
+
+    Review.findById({_id: req.params.id}, function(err, review) {
+        if (err) { return next(err)}
+        if(!review) { return res.status(404).json({'message': 'review not found'}) }
+        reviewBar = review.bars;
+        reviewID = review._id;
+    })
+
+    if (barID === reviewBar) {
+        Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
+            if (err) { return next(err); }
+            if (!review) {
+                return res.status(404).json(
+                    {"message": "review not found"});
+            }
+            res.status(200).json({'message': 'review deleted'});
+        });
+    }
 });
 
 // Delete bar
