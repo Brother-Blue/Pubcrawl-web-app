@@ -25,6 +25,10 @@
       minZoom: 5,
       styles: mapStyles}">
 
+      <!-- Bar directions -->
+      <DirectionsRenderer travelMode="WALKING" :origin="origin" :destination="destionation"/>
+
+      <!-- Bar info window -->
       <GmapInfoWindow
       :options="infoOptions"
       :position="infoWindowPos"
@@ -63,7 +67,10 @@
 
 <script>
 import { Api } from '@/Api'
+import DirectionsRenderer from '@/views/components/DirectionsRenderer'
+
 export default {
+  components: { DirectionsRenderer },
 
   data() {
     return {
@@ -78,7 +85,6 @@ export default {
       infoWindowPos: null,
       infoWinOpen: false,
       currentMidx: null,
-
       infoOptions: {
         content: '',
         pixelOffset: {
@@ -86,6 +92,8 @@ export default {
           height: -35
         }
       },
+      start: null,
+      end: null,
       barStyles: {
         url: require('./../../../images/map_icon.svg'),
         scaledSize: {
@@ -338,6 +346,7 @@ export default {
         this.userCoordinates = coordinates
         this.mapCoordinates = coordinates
         this.zoom = 16
+        this.start = JSON.stringify(this.userCoordinates.lat + ',' + this.userCoordinates.lng)
       })
       .catch(error => alert(error))
 
@@ -365,7 +374,9 @@ export default {
     usePlace(place) {
       if (this.place) {
         this.userCoordinates = this.place.geometry.location
-        this.focusUser()
+        this.focusUser() // TODO: Fix so it parse the start from adress correctly
+        this.start = JSON.stringify(this.place.geometry.location.lat)
+        console.log(this.start)
       }
       this.place = null
     },
@@ -374,14 +385,25 @@ export default {
         lat: bar.latLong[0],
         lng: bar.latLong[1]
       }
+      this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
       this.infoOptions.content = bar.name
 
-      if (this.currentMidx === idx) {
+      if (this.currentMidx === idx) { // TODO: Fix so direction closes when info window closes
         this.infoWinOpen = !this.infoWinOpen
       } else {
         this.infoWinOpen = true
         this.currentMidx = idx
       }
+    }
+  },
+  computed: {
+    origin() {
+      if (!this.start) return null
+      return { query: this.start }
+    },
+    destionation() {
+      if (!this.end) return null
+      return { query: this.end }
     }
   }
 }
