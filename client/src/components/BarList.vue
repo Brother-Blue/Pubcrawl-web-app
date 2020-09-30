@@ -27,6 +27,7 @@
               show-value
               >
             </b-form-rating>
+            <p> {{message}} </p>
           </b-list-group-item>
           <b-list-group-item class="bar-attr"
             >Distance: <strong>{{ distance }}km</strong></b-list-group-item
@@ -50,6 +51,7 @@ export default {
   data() {
     return {
       bars: null,
+      message: '',
       distance: 10,
       defaultImg: 'https://images-platform.99static.com//sH-Ldum17LQhqqvZfKHJGxb21Jc=/0x0:1500x1500/fit-in/500x500/99designs-contests-attachments/86/86697/attachment_86697480'
     }
@@ -60,7 +62,7 @@ export default {
       // Once Hjalle is done paying for Google Cloud subscriptionss
     },
     getBars() {
-      var reviews = []
+      var a = []
       var e = []
       Api.get('/bars')
         .then(response => {
@@ -72,22 +74,13 @@ export default {
         })
       Api.get('/reviews')
         .then(response => {
-          reviews = response.data.reviews
-          console.log(this.bars.length + 'bars length')
+          a = response.data.reviews
           for (var i = 0; i < this.bars.length; i++) {
-            if (reviews.length === 0) {
-              console.log('in the if')
-              var avgRating = 2
-              this.bars[i].rating = avgRating
-              console.log(this.bars[i].rating + ' this is the raating of bar, and the name is: ' + this.bars[i].name)
-            }
-            console.log(reviews.length + ' = review length. in 1st for loop')
-            for (var j = 0; j < reviews.length; j++) {
-              console.log('pong2')
-              if (this.bars[i]._id === reviews[j].bars) {
-                console.log('pong1')
-                this.bars[i].rating = reviews.avgRating
-                console.log(this.bars[i].rating + ' this is the rating of bar and the name is: ' + this.bars[i].name)
+            for (var j = 0; j < a.length; j++) {
+              if (this.bars[i]._id === a[j].bars) {
+                this.bars[i].rating = a[j].averageRating
+              } else {
+                this.bars[i].rating = 'No reviews'
               }
             }
           }
