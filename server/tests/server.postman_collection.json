@@ -162,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"title\": \"Get together at Test Bar 123\",\r\n    \"startDate\": \"2020-10-08T20:00:00\",\r\n    \"endDate\": \"2020-10-18T01:00:00\"\r\n}",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": [\"{{test-bar-id}}\"],\r\n    \"title\": \"Get together at Test Bar 123\",\r\n    \"startDate\": \"2020-10-09T20:00:00\",\r\n    \"endDate\": \"2020-10-18T01:00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

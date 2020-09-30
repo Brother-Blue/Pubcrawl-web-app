@@ -1,5 +1,6 @@
 var Bar = require('../models/bar');
 var Review = require('../models/review');
+var Event = require('../models/event');
 var express = require('express');
 var mongoose = require('mongoose');
 
@@ -13,6 +14,23 @@ router.post('', function(req, res, next) {
         res.status(201).json(bar);
     })
 });
+
+// Create bar review
+router.post('/:id/reviews', function(req, res, next) {
+    var review = new Review(req.body);
+    Bar.findById({_id: req.params.id}, function(err, bar) {
+        if (err) { return next(err); }
+        if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
+        bar.reviews.push(review._id)
+        bar.save(function(err) {
+            if (err) { return next(err); }
+        })
+    })
+    review.save(function(err) {
+        if (err) { return next(err); }
+        res.status(201).json(review);
+    })
+})
 
 // Read bar
 router.get('/:id', function(req, res, next) {
@@ -37,6 +55,7 @@ router.get('', function(req, res, next) {
         res.status(200).json(results);
     })
 });
+
 // Sort by bar drinkQuality
 router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkQuality) { return next();}
@@ -46,7 +65,8 @@ router.get('/:id/reviews', function(req, res, next) {
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
             res.status(200).json(results)
         });
-})
+});
+
 // Sort by bar drinkPrice
 router.get('/:id/reviews', function(req, res, next) {
     if (!req.query.sortByDrinkPrice){return next();}
@@ -56,7 +76,8 @@ router.get('/:id/reviews', function(req, res, next) {
             if(!results) {return res.status(404).json({"message": "no reviews found"})}
             res.status(200).json(results)
         });
-})
+});
+
 // Sort by bar foodQuality
 router.get('/:id/reviews', function (req, res, next) {
     if (!req.query.sortByFoodQuality) { return next();}
@@ -89,6 +110,18 @@ router.get('/:id/reviews', function (req, res, next) {
     }).exec(function (err, results) {
         if (err) { return next(err); }
         if (!results) { return res.status(404).json({"message": "no reviews found"}); }
+        res.status(200).json(results);
+    })
+});
+
+// Sort by bar event startDate
+router.get('/:id/events', function (req, res, next) {
+    if (!req.query.sortByStartDate) { return next();}
+    Event.find().sort({
+        startDate: req.query.sortByStartDate
+    }).exec(function (err, results) {
+        if (err) { return next(err); }
+        if (!results) { return res.status(404).json({"message": "no events found"}); }
         res.status(200).json(results);
     })
 });
@@ -203,6 +236,18 @@ router.get('/:id/reviews', function(req, res, next) {
     })
 });
 
+// Read all bar events
+router.get('/:id/events', function(req, res, next) {
+    Bar.findById(req.params.id).populate('events').exec(function(err, bar) {
+        if (err) { return next(err); }
+        if (!bar) {
+            return res.status(404).json(
+                {"message": "bar not found"});
+        }
+        res.status(200).json(bar.events);
+    })
+});
+
 // Update bar
 router.put('/:id', function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
@@ -214,8 +259,9 @@ router.put('/:id', function(req, res, next) {
         bar.name = req.body.name;
         bar.latLong = req.body.latLong;
         bar.reviews = req.body.reviews;
+        bar.events = req.body.events;
         bar.save();
-        res.status(204).json(bar);
+        res.status(200).json(bar);
     });
 });
 
@@ -230,9 +276,42 @@ router.patch('/:id', function(req, res, next) {
         bar.name = (req.body.name || bar.name);
         bar.latLong = (req.body.latLong || bar.latLong);
         bar.reviews = (req.body.reviews || bar.reviews);
+        bar.events = (req.body.events || bar.events);
         bar.save();
-        res.status(204).json(bar);
+        res.status(200).json(bar);
     });
+});
+
+// Delete review through bar
+router.delete('/:bar/reviews/:id', function(req, res, next) {
+    var barID, reviewBar, reviewID
+    Bar.findById({_id: req.params.bar}, function(err, bar) {
+        if (err) { return next(err) }
+        if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
+        barID = bar._id;
+        bar.reviews.splice(bar.reviews.indexOf(req.params.id), 1);
+        bar.save(function(err) { 
+            if (err) { return next(err) }
+        })
+    })
+
+    Review.findById({_id: req.params.id}, function(err, review) {
+        if (err) { return next(err)}
+        if(!review) { return res.status(404).json({'message': 'review not found'}) }
+        reviewBar = review.bars;
+        reviewID = review._id;
+    })
+
+    if (barID === reviewBar) {
+        Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
+            if (err) { return next(err); }
+            if (!review) {
+                return res.status(404).json(
+                    {"message": "review not found"});
+            }
+            res.status(200).json({'message': 'review deleted'});
+        });
+    }
 });
 
 // Delete bar
@@ -243,7 +322,16 @@ router.delete('/:id', function(req, res, next) {
             return res.status(404).json(
                 {"message": "bar not found"});
         }
-        res.status(202).json(bar);
+        Review.deleteMany(
+            { bars: req.params.id },
+            { multi: true }
+        ).exec();
+        Event.updateMany(
+            { },
+            { $pull: { bars: req.params.id } },
+            { multi: true }
+        ).exec();
+        res.status(200).json(bar);
     });
 });
 
@@ -255,7 +343,7 @@ router.delete('', function(req, res, next) {
             return res.status(404).json(
                 {"message": "no bars found"});
         }
-        res.status(202).json(
+        res.status(200).json(
             {"message": "all bars have been deleted"});
     });
 });
