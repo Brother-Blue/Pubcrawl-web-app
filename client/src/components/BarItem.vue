@@ -21,7 +21,7 @@
     ></b-form-rating>
     <p class="text-secondary" v-if="barRating <= 0">No reviews</p>
     </b-list-group-item>
-    <b-list-group-item class="bar-attr bg-dark">Distance: {{distance}}</b-list-group-item>
+    <b-list-group-item class="bar-attr bg-dark">Distance: <strong>{{distance}}</strong></b-list-group-item>
     <b-list-group-item class="bar-attr bg-dark">Events: <b-badge variant="warning">{{numEvents}}</b-badge></b-list-group-item>
   </b-list-group>
   </b-card>
