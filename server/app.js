@@ -6,7 +6,7 @@ var cors = require('cors');
 var history = require('connect-history-api-fallback');
 var mongoose = require('mongoose');
 var session = require("express-session");
-var passport = require('passport')
+var passport = require('passport');
 
 // API endpoint
 var router = require('./controllers/index');
@@ -35,6 +35,7 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+// TODO: add cookie session support
 app.use(session({ secret: 'sea shanty 2 remix' }));
 app.use(passport.initialize());
 app.use(passport.session());
