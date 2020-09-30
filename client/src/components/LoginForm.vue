@@ -9,12 +9,12 @@
             class="text-light"
             id="fieldset-1"
             label="Enter username"
-            label-for="input-1"
+            label-for="username"
             :invalid-feedback="invalidFeedback"
             :valid-feedback="validFeedback"
             >
             <b-form-input
-            id="input-1"
+            id="username"
             v-model="username"
             type="text"
             :state="usernameState"
@@ -28,13 +28,13 @@
             <b-form-group
             class="text-light"
             id="fieldset-1"
-            label="Enter your name"
-            label-for="input-1"
+            label="Enter password"
+            label-for="password"
             :invalid-feedback="invalidFeedback"
             :valid-feedback="validFeedback"
             >
         <b-form-input
-        id="input-1"
+        id="password"
         v-model="password"
         type="password"
         :state="passwordState"
@@ -45,7 +45,7 @@
         </b-form-invalid-feedback>
 
         </b-form-group>
-        <p class="text-light">New user? <a href="#" class="text-warning">Register here.</a></p>
+        <p class="text-light">New user? <router-link to="/register" class="text-warning">Register here</router-link> </p>
         <b-button class="btn" variant="outline-warning">Login</b-button>
       </b-card>
     </div>
