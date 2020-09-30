@@ -51,7 +51,6 @@ export default {
 .bar-attr {
   width: 100%;
   margin-bottom: 0px;
-  padding-top: 20px;
   border: none;
 }
 
