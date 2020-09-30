@@ -4,10 +4,10 @@
 
     <label>
       <gmap-autocomplete
-        placeholder="Type in adress"
+        placeholder="Type in your adress"
         @place_changed="setPlace">
       </gmap-autocomplete>
-      <button @click="usePlace">Välj</button>
+      <button @click="usePlace">Select</button>
     </label>
 
     <!-- Google map layout -->
