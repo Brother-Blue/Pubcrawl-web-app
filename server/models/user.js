@@ -45,10 +45,10 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    bcrypt.compare(candidatePassword, this.password, function(err, match) {
         if (err) return cb(err);
-        cb(null, isMatch);
-    });
+        cb(null, match);
+    })
 };
 
 // Compile model from UserSchema
