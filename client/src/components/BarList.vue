@@ -22,17 +22,17 @@
               icon-full="cup"
               inline
               readonly
-              v-bind:value="avgRating"
+              :value="bar.rating"
               precision="1"
               show-value
-            >
+              >
             </b-form-rating>
           </b-list-group-item>
           <b-list-group-item class="bar-attr"
             >Distance: <strong>{{ distance }}km</strong></b-list-group-item
           >
           <b-list-group-item class="bar-attr"
-            >Events: <strong>{{ numEvents }}</strong></b-list-group-item
+            >Events: <strong>{{ bar.events.length }}</strong></b-list-group-item
           >
         </b-list-group>
       </div>
@@ -50,26 +50,47 @@ export default {
   data() {
     return {
       bars: null,
-      reviews: null,
-      events: null,
-      avgRating: 10,
       distance: 10,
-      numEvents: 2,
       defaultImg: 'https://images-platform.99static.com//sH-Ldum17LQhqqvZfKHJGxb21Jc=/0x0:1500x1500/fit-in/500x500/99designs-contests-attachments/86/86697/attachment_86697480'
     }
   },
   methods: {
     calcDistance(deviceCoords, destinationCoords) {
       // TODO: Calculate distance with Google Maps API
-      // Once Hjalle is done paying for Google Cloud subscriptions
+      // Once Hjalle is done paying for Google Cloud subscriptionss
     },
     getBars() {
+      var reviews = []
+      var e = []
       Api.get('/bars')
         .then(response => {
-          this.bars = response.data.bars
+          e = response.data.bars
+          this.bars = e
         })
         .catch(error => {
-          this.bars = error
+          e = error
+        })
+      Api.get('/reviews')
+        .then(response => {
+          reviews = response.data.reviews
+          console.log(this.bars.length + 'bars length')
+          for (var i = 0; i < this.bars.length; i++) {
+            if (reviews.length === 0) {
+              console.log('in the if')
+              var avgRating = 2
+              this.bars[i].rating = avgRating
+              console.log(this.bars[i].rating + ' this is the raating of bar, and the name is: ' + this.bars[i].name)
+            }
+            console.log(reviews.length + ' = review length. in 1st for loop')
+            for (var j = 0; j < reviews.length; j++) {
+              console.log('pong2')
+              if (this.bars[i]._id === reviews[j].bars) {
+                console.log('pong1')
+                this.bars[i].rating = reviews.avgRating
+                console.log(this.bars[i].rating + ' this is the rating of bar and the name is: ' + this.bars[i].name)
+              }
+            }
+          }
         })
     }
   },

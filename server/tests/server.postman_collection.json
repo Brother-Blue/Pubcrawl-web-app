@@ -162,7 +162,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"title\": \"Get together at Test Bar 123\",\r\n    \"startDate\": \"2020-09-20T20:00:00\",\r\n    \"endDate\": \"2020-09-21T01:00:00\"\r\n}",
+							"raw": "{\r\n    \"users\": \"{{test-user-id}}\",\r\n    \"bars\": \"{{test-bar-id}}\",\r\n    \"title\": \"Get together at Test Bar 123\",\r\n    \"startDate\": \"2020-10-08T20:00:00\",\r\n    \"endDate\": \"2020-10-18T01:00:00\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -609,7 +609,7 @@
 					"response": []
 				},
 				{
-					"name": "add-low-review",
+					"name": "add-low-review-through-bar",
 					"event": [
 						{
 							"listen": "test",
@@ -639,12 +639,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/reviews",
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
+								"bars",
+								"{{test-bar-id}}",
 								"reviews"
 							]
 						}
@@ -1298,7 +1300,7 @@
 								"id": "e10d85ec-017f-4f46-aaa5-3d3063a0b5ca",
 								"exec": [
 									"pm.test(\"Update test user username\", function() {",
-									"    pm.expect(pm.response).to.have.status(204);",
+									"    pm.expect(pm.response).to.have.status(200);",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1340,7 +1342,7 @@
 								"id": "ec06eb39-efd6-40d0-92b5-5233fd8e074d",
 								"exec": [
 									"pm.test(\"Update test bar\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(204);\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1382,7 +1384,7 @@
 								"id": "3d31c18a-0a29-4bde-ad76-b3435068e3ba",
 								"exec": [
 									"pm.test(\"Update review\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(204);\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1424,7 +1426,7 @@
 								"id": "a1b676df-7d53-4772-9a48-4bf9a366073b",
 								"exec": [
 									"pm.test(\"Update test event\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(204);\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1452,6 +1454,48 @@
 								"api",
 								"events",
 								"{{test-event-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f97586c4-564e-4e0f-a2ca-85616cad031a",
+								"exec": [
+									"pm.test(\"Put new password on user\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isVerified\": false,\r\n    \"reviews\": [],\r\n    \"_id\": \"5f6c70112cea2e1fac80129a\",\r\n    \"username\": \"testuser123\",\r\n    \"password\": \"somethingelse\",\r\n    \"email\": \"test@pubcrawl.se\",\r\n    \"createdAt\": \"2020-09-24T10:08:17.250Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
 							]
 						}
 					},
@@ -1602,19 +1646,19 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "delete-all-test-entities",
+			"name": "cleanup",
 			"item": [
 				{
-					"name": "delete-test-event",
+					"name": "delete-low-review-through-bar",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "0f233957-9f83-4f4b-b3b0-4a70772b0b43",
+								"id": "f6e03307-8c5c-4dc9-a4a1-26305b1e3812",
 								"exec": [
-									"pm.test(\"Delete test event\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(202);\r",
-									"});"
+									"pm.test(\"Delete review through bar by id\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"})"
 								],
 								"type": "text/javascript"
 							}
@@ -1624,136 +1668,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/events/{{test-event-id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"events",
-								"{{test-event-id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete-test-review",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "00e91da9-a84b-4393-b87e-7f8bf70ac2fa",
-								"exec": [
-									"pm.test(\"Delete test review\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(202);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/reviews/{{test-review-id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"reviews",
-								"{{test-review-id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete-test-bar",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "3c619e91-c9c8-4469-ac84-b308789298d2",
-								"exec": [
-									"pm.test(\"Delete test bar\", function() {\r",
-									"    pm.expect(pm.response).to.have.status(202);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/bars/{{test-bar-id}}",
+							"raw": "{{host}}/api/bars/{{test-bar-id}}/reviews/{{test-low-review}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"bars",
-								"{{test-bar-id}}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete-test-user",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "14ec3422-16bd-4dae-a71d-56bc66c45eca",
-								"exec": [
-									"pm.test(\"Delete test user\", function() {",
-									"    pm.expect(pm.response).to.have.status(202);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/users/{{test-user-id}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"users",
-								"{{test-user-id}}"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
-			"name": "cleanup",
-			"item": [
-				{
-					"name": "delete-low-review",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/reviews/{{test-low-review}}",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
+								"{{test-bar-id}}",
 								"reviews",
 								"{{test-low-review}}"
 							]
@@ -1794,6 +1716,138 @@
 								"api",
 								"reviews",
 								"{{test-high-review}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-test-event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0f233957-9f83-4f4b-b3b0-4a70772b0b43",
+								"exec": [
+									"pm.test(\"Delete test event\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/events/{{test-event-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"events",
+								"{{test-event-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-test-review",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "00e91da9-a84b-4393-b87e-7f8bf70ac2fa",
+								"exec": [
+									"pm.test(\"Delete test review\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/reviews/{{test-review-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"reviews",
+								"{{test-review-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-test-bar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3c619e91-c9c8-4469-ac84-b308789298d2",
+								"exec": [
+									"pm.test(\"Delete test bar\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-test-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "14ec3422-16bd-4dae-a71d-56bc66c45eca",
+								"exec": [
+									"pm.test(\"Delete test user\", function() {",
+									"    pm.expect(pm.response).to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/users/{{test-user-id}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{test-user-id}}"
 							]
 						}
 					},
