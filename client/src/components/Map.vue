@@ -1,35 +1,67 @@
 <template>
   <div>
+    <b-button variant="outline-primary" @click="focusUser()"><b-icon icon="geo-alt"></b-icon></b-button>
 
+    <label>
+      <gmap-autocomplete
+        placeholder="Type in adress"
+        @place_changed="setPlace">
+      </gmap-autocomplete>
+      <button @click="usePlace">Välj</button>
+    </label>
+
+    <!-- Google map layout -->
     <GmapMap
-        :center="{lat:myCoordinates.lat, lng:myCoordinates.lng}"
-        :zoom="zoom"
-        map-type-id="roadmap"
-        style="width: 50%; height: 75%; position: absolute; right:0; bottom:0 top:0"
-        :options="{
-            zoomControl: false,
-            mapTypeControl: false,
-            scaleControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullscreenControl: false,
-            disableDefaultUi: true,
-            styles: styles}">
+    ref="mapRef"
+    :center="mapCoordinates"
+    :zoom="zoom"
+    style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
+    :options="{
+      zoomControl: true,
+      mapTypeControl: false,
+      streetViewControl: false,
+      rotateControl: false,
+      fullscreenControl: false,
+      minZoom: 5,
+      styles: mapStyles}">
 
-    <GmapMarker
-        v-for="(r, index) in bars"
-        :key="index"
-        :position="{
-            lat:r.latLong[0],
-            lng:r.latLong[1]
-            }"
-        :clickable="true"
-        :draggable="false"
-        :icon="{
-            url: require('./../../../images/toppng.com-aw-root-beer-beer-glasses-beer-stein-free-svg-vector-beer-875x925.png'),
-            size: {width: 60, height: 90, f: 'px', b: 'px'},
-            scaledSize: {width: 30, height: 45, f: 'px', b: 'px'}}"
-        @click="center=r.position"/>
+      <!-- Bar directions -->
+      <DirectionsRenderer travelMode="WALKING" :origin="origin" :destination="destionation"/>
+
+      <!-- Bar info window -->
+      <GmapInfoWindow
+      :options="infoOptions"
+      :position="infoWindowPos"
+      :opened="infoWinOpen"
+      @closeclick="{
+        end = ''
+        infoWinOpen=false}">
+      </GmapInfoWindow>
+
+      <!-- Bar clustering -->
+      <GmapCluster
+      :clickable="true"
+      :animation="2">
+
+      <!-- Bar marker -->
+      <GmapMarker
+      v-for="(r, index) in bars"
+      :key="index"
+      :position="{
+        lat:r.latLong[0],
+        lng:r.latLong[1]}"
+      :clickable="true"
+      :draggable="false"
+      @click="toggleInfoWindow(r,index)"
+      :icon="barStyles"/>
+      </GmapCluster>
+
+      <!-- User marker -->
+      <GmapMarker
+      :position="userCoordinates"
+      :clickable="false"
+      :draggable="false"
+      :icon="userStyles"/>
     </GmapMap>
 
   </div>
@@ -37,17 +69,52 @@
 
 <script>
 import { Api } from '@/Api'
+import DirectionsRenderer from '@/components/DirectionsRenderer'
+
 export default {
-  name: 'map-function',
+  components: { DirectionsRenderer },
+
   data() {
     return {
-      myCoordinates: {
+      mapCoordinates: {
         lat: 57.708870,
         lng: 11.974560
       },
+      userCoordinates: null,
       bars: [],
-      zoom: 13,
-      styles: [
+      place: null,
+      zoom: 12,
+      infoWindowPos: null,
+      infoWinOpen: false,
+      currentMidx: null,
+      infoOptions: {
+        content: '',
+        pixelOffset: {
+          width: 0,
+          height: -35
+        }
+      },
+      start: null,
+      end: null,
+      barStyles: {
+        url: require('./../../../images/map_icon.svg'),
+        scaledSize: {
+          width: 40,
+          height: 40,
+          f: 'px',
+          b: 'px'
+        }
+      },
+      userStyles: {
+        url: require('./../../../images/user_icon.jpg'),
+        scaledSize: {
+          width: 60,
+          height: 60,
+          f: 'px',
+          b: 'px'
+        }
+      },
+      mapStyles: [
         {
           elementType: 'geometry',
           stylers: [
@@ -274,23 +341,73 @@ export default {
       ]
     }
   },
-
   created() {
-    // populate map with bars
-    Api.get('/bars')
-      .then(response => {
-        this.bars = response.data.bars
-      })
-      .catch(error => {
-        this.bars = error
-      })
     // get user's coordinates from browser request
     this.$getLocation({})
       .then(coordinates => {
-        this.myCoordinates = coordinates
+        this.userCoordinates = coordinates
+        this.mapCoordinates = coordinates
         this.zoom = 16
+        this.start = JSON.stringify(this.userCoordinates.lat + ',' + this.userCoordinates.lng)
       })
       .catch(error => alert(error))
+
+    // populate map with bars
+    Api.get('/bars')
+      .then(response => {
+        var e = response.data.bars
+        for (var i = 0; i < e.length; i++) {
+          this.bars.push(e[i])
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  },
+  methods: {
+    focusUser() {
+      this.$refs.mapRef.$mapPromise.then((map) => {
+        map.panTo(this.userCoordinates)
+      })
+    },
+    setPlace(place) {
+      this.place = place
+    },
+    usePlace(place) {
+      if (this.place) {
+        this.userCoordinates = this.place.geometry.location
+        this.focusUser() // TODO: Fix so it parse the start from adress correctly
+        this.start = JSON.stringify(this.place.geometry.location.lat)
+        console.log(this.start)
+      }
+      this.place = null
+    },
+    toggleInfoWindow: function (bar, idx) {
+      this.infoWindowPos = {
+        lat: bar.latLong[0],
+        lng: bar.latLong[1]
+      }
+      this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
+      this.infoOptions.content = bar.name
+
+      if (this.currentMidx === idx) { // TODO: Fix so direction closes when info window closes
+        this.infoWinOpen = !this.infoWinOpen
+      } else {
+        this.infoWinOpen = true
+        this.currentMidx = idx
+      }
+    }
+  },
+  computed: {
+    origin() {
+      if (!this.start) return null
+      return { query: this.start }
+    },
+    destionation() {
+      if (!this.end) return null
+      return { query: this.end }
+    }
   }
 }
+
 </script>
