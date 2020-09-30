@@ -1,5 +1,4 @@
 <template>
-
 <form class="searchbar">
     <b-form-input class="searchbar-input" type="search" placeholder="Enter bar name"></b-form-input>
     <a href="#" class="searchbar-clear"></a>

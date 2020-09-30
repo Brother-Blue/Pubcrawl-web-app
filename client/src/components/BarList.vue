@@ -1,5 +1,6 @@
 <template>
   <div class="bar-list-container">
+    <pubcrawl-searchbar/>
     <div class="bar-container" v-for="bar in bars" :key="bar">
       <bar-item
       :img="img"
@@ -15,11 +16,13 @@
 <script>
 import { Api } from '@/Api'
 import BarItem from '@/components/BarItem'
+import SearchBar from '@/components/SearchBar'
 
 export default {
   name: 'bar-list',
   components: {
-    'bar-item': BarItem
+    'bar-item': BarItem,
+    'pubcrawl-searchbar': SearchBar
   },
   data() {
     return {

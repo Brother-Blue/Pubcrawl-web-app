@@ -8,8 +8,10 @@
   >
   <hr class="bg-secondary">
   <b-list-group horizontal class="bg-dark">
-    <b-list-group-item class="bar-attr bg-dark">Average Rating:
+    <b-list-group-item class="bar-attr bg-dark">
+    <label for="avgRating">Average rating:</label>
     <b-form-rating
+    id="avgRating"
     variant="warning"
     class="bg-dark text-warning border-0"
     v-if="barRating > 0"
