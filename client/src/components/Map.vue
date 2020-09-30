@@ -33,9 +33,7 @@
       :options="infoOptions"
       :position="infoWindowPos"
       :opened="infoWinOpen"
-      @closeclick="{
-        end = ''
-        infoWinOpen=false}">
+      @closeclick="infoWinOpen=false">
       </GmapInfoWindow>
 
       <!-- Bar clustering -->
