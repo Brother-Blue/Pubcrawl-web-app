@@ -2,8 +2,15 @@ var User = require('../models/user');
 var Review = require('../models/review');
 var Event = require('../models/event');
 var express = require('express');
+var passport = require('passport');
 
 var router = express.Router();
+
+router.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: true })
+);
 
 // Create user
 router.post('', function(req, res, next) {
