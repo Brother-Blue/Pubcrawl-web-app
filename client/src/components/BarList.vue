@@ -84,7 +84,8 @@ export default {
 .bar-list-container {
   max-width: 50%;
   min-height: 70vh;
-  overflow-y: scroll;
+  max-height: 80vh;
+  overflow: scroll;
 }
 
 .bar-container {

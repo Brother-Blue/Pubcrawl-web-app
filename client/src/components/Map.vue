@@ -1,21 +1,46 @@
 <template>
   <div>
-    <b-button variant="outline-primary" @click="focusUser()"><b-icon icon="geo-alt"></b-icon></b-button>
 
-    <label>
-      <gmap-autocomplete
-        placeholder="Type in your adress"
+    <!-- Focus user button -->
+    <div id="button_over_map">
+      <b-button
+      variant="light"
+      style="width: 40px; height: 40px; padding: 0"
+      @click="focusUser">
+      <b-icon
+      icon="geo-alt">
+      </b-icon></b-button>
+    </div>
+
+    <!-- Search adress bar-->
+    <label id="search_over_map">
+        <gmap-autocomplete
+        placeholder="Type in your adress..."
+        style="height: 40px; border-radius: 2px; border-width: 0px"
+        v-on:keyup.enter="usePlace"
+        :input="usePlace"
         @place_changed="setPlace">
-      </gmap-autocomplete>
-      <button @click="usePlace">Select</button>
+        </gmap-autocomplete>
     </label>
+
+    <!-- Search user button-->
+    <div id="searchbutton_over_map">
+        <b-button
+        variant="light"
+        style="width: 40px; height: 40px; padding: 0"
+        @click="usePlace">
+
+        <b-icon
+        icon="search">
+        </b-icon></b-button>
+    </div>
 
     <!-- Google map layout -->
     <GmapMap
     ref="mapRef"
     :center="mapCoordinates"
     :zoom="zoom"
-    style="width: 50%; height: 87%; position: absolute; right:0; bottom:0"
+    style="width:50%; position:absolute; right:0; bottom:0; top:186.4px"
     :options="{
       zoomControl: true,
       mapTypeControl: false,
@@ -33,7 +58,7 @@
       :options="infoOptions"
       :position="infoWindowPos"
       :opened="infoWinOpen"
-      @closeclick="infoWinOpen=false">
+      @closeclick="infoWinOpen = false">
       </GmapInfoWindow>
 
       <!-- Bar clustering -->
@@ -46,8 +71,8 @@
       v-for="(r, index) in bars"
       :key="index"
       :position="{
-        lat:r.latLong[0],
-        lng:r.latLong[1]}"
+        lat: r.latLong[0],
+        lng: r.latLong[1]}"
       :clickable="true"
       :draggable="false"
       @click="toggleInfoWindow(r,index)"
@@ -339,8 +364,9 @@ export default {
       ]
     }
   },
+
   created() {
-    // get user's coordinates from browser request
+    // Get user's coordinates from browser request and mark it
     this.$getLocation({})
       .then(coordinates => {
         this.userCoordinates = coordinates
@@ -350,7 +376,7 @@ export default {
       })
       .catch(error => alert(error))
 
-    // populate map with bars
+    // Populate map with bars
     Api.get('/bars')
       .then(response => {
         var e = response.data.bars
@@ -362,33 +388,57 @@ export default {
         console.log(error)
       })
   },
+
   methods: {
+    // Refocus user's coordinates from browser request and mark it
     focusUser() {
-      this.$refs.mapRef.$mapPromise.then((map) => {
-        map.panTo(this.userCoordinates)
-      })
+      this.$getLocation({})
+        .then(coordinates => {
+          this.userCoordinates = coordinates
+          this.mapCoordinates = coordinates
+          this.zoom = 16
+          this.start = JSON.stringify(this.userCoordinates.lat + ',' + this.userCoordinates.lng)
+        })
+        .catch(error => alert(error))
+      setTimeout(() => {
+        this.$refs.mapRef.$mapPromise.then((map) => {
+          map.panTo(this.userCoordinates)
+        })
+      }, 50)
     },
+
+    // Set place from search adress bar
     setPlace(place) {
       this.place = place
     },
+    //
+
+    // Search based on input from adress bar
     usePlace(place) {
       if (this.place) {
         this.userCoordinates = this.place.geometry.location
-        this.focusUser() // TODO: Fix so it parse the start from adress correctly
-        this.start = JSON.stringify(this.place.geometry.location.lat)
-        console.log(this.start)
+        this.$refs.mapRef.$mapPromise.then((map) => {
+          map.panTo(this.userCoordinates)
+        })
+        // I don't know why this is needed, but it is...
+        this.start = JSON.parse(JSON.stringify(this.userCoordinates))
+        this.start = JSON.stringify(this.start.lat + ',' + this.start.lng)
       }
       this.place = null
     },
+
+    // Show info window based on which bar pressed
     toggleInfoWindow: function (bar, idx) {
       this.infoWindowPos = {
         lat: bar.latLong[0],
         lng: bar.latLong[1]
       }
+      // TODO: Move this to when bar is selected in list
       this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
       this.infoOptions.content = bar.name
 
-      if (this.currentMidx === idx) { // TODO: Fix so direction closes when info window closes
+      // If same bar is clicked, close window. Else open
+      if (this.currentMidx === idx) {
         this.infoWinOpen = !this.infoWinOpen
       } else {
         this.infoWinOpen = true
@@ -396,11 +446,15 @@ export default {
       }
     }
   },
+
   computed: {
+    // Get map directions with start positon
     origin() {
       if (!this.start) return null
       return { query: this.start }
     },
+
+    // Get map directions with destination positon
     destionation() {
       if (!this.end) return null
       return { query: this.end }
@@ -409,3 +463,8 @@ export default {
 }
 
 </script>
+<style scoped>
+   #button_over_map { position: absolute; bottom: 110px; right: 10px; z-index: 99; }
+   #search_over_map { position: absolute; top: 200px; right: 10px; z-index: 99; }
+   #searchbutton_over_map { position: absolute; top: 200px; right: 10px; z-index: 99; }
+</style>
