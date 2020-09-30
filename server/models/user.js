@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator'); // TODO: install this in server directory, "npm install mongoose-unique-validator"
+var uniqueValidator = require('mongoose-unique-validator');
 
 // Password hashing
-var bcrypt = require('bcrypt'); // TODO: install this in server directory, "npm install bcrypt"
+var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 // Create user schema

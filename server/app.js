@@ -5,6 +5,8 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 var mongoose = require('mongoose');
+var session = require("express-session");
+var passport = require('passport');
 
 // API endpoint
 var router = require('./controllers/index');
@@ -32,6 +34,11 @@ app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
+
+// TODO: add cookie session support
+app.use(session({ secret: 'sea shanty 2 remix' }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Use API routes
 app.use('/api', router);
