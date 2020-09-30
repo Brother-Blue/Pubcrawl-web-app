@@ -4,7 +4,7 @@
 
     <label>
       <gmap-autocomplete
-        placeholder="Skriv in din adress"
+        placeholder="Type in adress"
         @place_changed="setPlace">
       </gmap-autocomplete>
       <button @click="usePlace">Välj</button>
@@ -33,7 +33,9 @@
       :options="infoOptions"
       :position="infoWindowPos"
       :opened="infoWinOpen"
-      @closeclick="infoWinOpen=false">
+      @closeclick="{
+        end = ''
+        infoWinOpen=false}">
       </GmapInfoWindow>
 
       <!-- Bar clustering -->
@@ -67,7 +69,7 @@
 
 <script>
 import { Api } from '@/Api'
-import DirectionsRenderer from '@/views/components/DirectionsRenderer'
+import DirectionsRenderer from '@/components/DirectionsRenderer'
 
 export default {
   components: { DirectionsRenderer },
