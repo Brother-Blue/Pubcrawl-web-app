@@ -40,15 +40,40 @@
               body-text-variant="white"
               footer-bg-variant="dark"
               footer-text-variant="muted"
+              centered
               ok-only
               ok-variant="warning"
               ok-title="Save & Exit"
               title="Update Event"
               >
               <p>Current Start Date: {{e.startDate.substring(0, 10)}}</p>
+              <b-form-datepicker
+              v-model="startDateValue"
+              :placeholder="e.startDate.substring(0, 10)"
+              :min="minStartDate"
+              :max="maxStartDate"
+              :state="validDate"
+              ></b-form-datepicker><br>
               <p>Current Start Time: {{e.startDate.substring(11, 16)}}</p>
+              <b-form-timepicker
+              v-model="startTimeValue"
+              :placeholder="e.startDate.substring(11, 16)"
+              :state="validTime"
+              ></b-form-timepicker><br>
               <p>Current End Date: {{e.endDate.substring(0, 10)}}</p>
+              <b-form-datepicker
+              v-model="endDateValue"
+              :placeholder="e.endDate.substring(0, 10)"
+              :min="minEndDate"
+              :max="maxEndDate"
+              :state="validDate"
+              ></b-form-datepicker><br>
               <p>Current End Time: {{e.endDate.substring(11, 16)}}</p>
+              <b-form-timepicker
+              v-model="endTimeValue"
+              :placeholder="e.endDate.substring(11, 16)"
+              :state="validTime"
+              ></b-form-timepicker><br>
               <hr class="bg-secondary">
               <b-button class="btn btn-danger">Delete this event</b-button>
               </b-modal>
@@ -96,13 +121,34 @@ export default {
     'pubcrawl-header': Header
   },
   data() {
+    const now = new Date()
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const minEndDate = new Date(today)
+    minEndDate.setMonth(today.getMonth())
+    minEndDate.setDate(today.getDate())
+    const maxEndDate = new Date(today)
+    maxEndDate.setMonth(today.getMonth() + 2)
+    maxEndDate.setDate(today.getDate())
+    const minStartDate = new Date(today)
+    minStartDate.setMonth(today.getMonth())
+    minStartDate.setDate(today.getDate())
+    const maxStartDate = new Date(maxEndDate)
+    maxStartDate.setMonth(maxEndDate.getMonth())
+    maxStartDate.setDate(maxEndDate.getDate())
     return {
       validUser: '',
       deleteModalShow: false,
       events: [],
       reviews: [],
-      bars: []
-      // img: require('./../../../images/events_background_placeholder.png')
+      bars: [],
+      startDateValue: '',
+      startTimeValue: '',
+      endDateValue: '',
+      endTimeValue: '',
+      minStartDate: minStartDate,
+      maxStartDate: maxStartDate,
+      minEndDate: minEndDate,
+      maxEndDate: maxEndDate
     }
   },
   mounted: function () {
@@ -110,6 +156,14 @@ export default {
     this.getEvents()
     this.getReviews()
     this.getBars()
+  },
+  computed: {
+    validDate() {
+      return this.startDateValue <= this.endDateValue
+    },
+    validTime() {
+      return this.startTimeValue < this.endTimeValue
+    }
   },
   methods: {
     isValidUser() {
