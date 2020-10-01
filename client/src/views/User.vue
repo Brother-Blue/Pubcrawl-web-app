@@ -11,7 +11,9 @@
         <b-button class="btn btn-outline-warning" v-b-toggle.my-events>View events</b-button>
         <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>View reviews</b-button>
       </b-button-group>
-      <b-collapse id="my-events">
+      <b-row>
+        <b-col>
+          <b-collapse id="my-events">
         <div class="text-light" v-for="e in events" :key="e">
           <b-card
           bg-variant="dark"
@@ -21,11 +23,15 @@
           </b-card>
         </div>
       </b-collapse>
-      <b-collapse id="my-reviews">
+        </b-col>
+      <b-col>
+        <b-collapse id="my-reviews">
         <div class="text-light">
           <p>Hello 2!</p>
         </div>
       </b-collapse>
+      </b-col>
+      </b-row>
       <b-button class="btn-danger" @click="deleteModalShow = !deleteModalShow">Deactivate my account</b-button>
       <b-modal
       v-model="deleteModalShow"
