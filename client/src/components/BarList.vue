@@ -1,4 +1,4 @@
-<template>
+a<template>
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
     <div v-for="bar in bars" :key="bar" >
@@ -13,13 +13,27 @@
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-          <b-button class="update-bar bg-dark" variant="outline-warning" >
+dde          <b-button v-b-modal="'bar' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
             Update bar info
           </b-button>
-          <b-button class="delete-bar bg-dark" variant="outline-warning">
+          <b-button v-b-modal="'bar' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
             Yeet the bar
           </b-button>
       </div>
+      <b-modal v-bind:id="'bar' + bar._id"
+        header-bg-variant="dark"
+        header-text-variant="warning"
+        body-bg-variant="dark"
+        body-text-variant="light"
+        footer-bg-variant="dark"
+        footer-text-variant="info"
+        v-model="modalShow"
+        size="lg"
+        centered
+        title="confirm bar name for deletion"
+        >
+        are you sure you want to delete: {{bar.name}} ?
+        </b-modal>
     </b-collapse>
     </div>
   </div>
