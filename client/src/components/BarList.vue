@@ -13,7 +13,7 @@ a<template>
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-dde          <b-button v-b-modal="'bar' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
+         <b-button v-b-modal="'bar' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
             Update bar info
           </b-button>
           <b-button v-b-modal="'bar' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
