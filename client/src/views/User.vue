@@ -12,9 +12,9 @@
         <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>View reviews</b-button>
       </b-button-group>
       <b-row>
-        <b-col class="my-events">
+        <b-col class="my-events" :key="events.length + 'b' + curKey">
           <b-collapse id="my-events">
-        <div class="text-light" v-for="e in events" :key="e">
+        <div class="text-light" v-for="(e, index) in events" :key="index">
           <b-card
           class="event-card border border-secondary"
           bg-variant="dark"
@@ -28,7 +28,7 @@
                 <b-col><u>Ends {{e.endDate.substring(0, 10)}} @ {{e.endDate.substring(11, 16)}}</u></b-col>
               </b-row>
               <p class="text-light">For these bars:</p><hr class="bg-secondary">
-              <ul class="bar-list" v-for="b in getMatchingBars(e.bars)" :key="b">
+              <ul class="bar-list" v-for="b in getMatchingBars(e.bars)" :key="b._id">
                 <li>{{b}}</li>
               </ul><hr class="bg-secondary">
               <b-button class="btn btn-warning float left" v-b-modal="'id' + e._id">Update Event</b-button>
@@ -41,9 +41,12 @@
               footer-bg-variant="dark"
               footer-text-variant="muted"
               centered
-              ok-only
               ok-variant="warning"
               ok-title="Save & Exit"
+              cancel-variant="danger"
+              cancel-title="Delete this event"
+              @cancel="deleteEventForever(e._id)"
+              @ok="updateEvent(e._id)"
               title="Update Event"
               >
               <p>Current Start Date: {{e.startDate.substring(0, 10)}}</p>
@@ -75,7 +78,6 @@
               :state="validTime"
               ></b-form-timepicker><br>
               <hr class="bg-secondary">
-              <b-button class="btn btn-danger">Delete this event</b-button>
               </b-modal>
             </b-card-text>
             <template v-slot:footer>
@@ -83,14 +85,49 @@
             </template>
           </b-card>
         </div>
-      </b-collapse>
+          </b-collapse>
         </b-col>
-      <b-col>
-        <b-collapse id="my-reviews">
-        <div class="text-light">
-          <p>Hello 2!</p>
+        <b-col class="my-reviews" :key="reviews.length + 'a' + curKey">
+          <b-collapse id="my-reviews">
+          <div class="text-light" v-for="(r, index) in reviews" :key="index">
+          <b-card
+          class="review-card border border-secondary"
+          bg-variant="dark"
+          text-variant="warning"
+          :header="r.createdAt.substring(0, 10)"
+          footer-tag="footer"
+          >
+            <b-card-text>
+              <b-row class="text-info">
+                <b-col><u>Posted: {{r.createdAt.substring(11, 16)}}</u></b-col>
+              </b-row><br>
+              <p class="text-light">For: <em class="text-warning">{{getMatchingBars(r.bars)[0]}}</em></p><hr class="bg-secondary">
+              <b-button class="btn btn-warning float left" v-b-modal="'id' + r._id">Update Review</b-button>
+              <b-modal
+              :id="'id' + r._id"
+              header-bg-variant="dark"
+              header-text-variant="warning"
+              body-bg-variant="dark"
+              body-text-variant="white"
+              footer-bg-variant="dark"
+              footer-text-variant="muted"
+              centered
+              ok-variant="warning"
+              ok-title="Save & Exit"
+              cancel-variant="danger"
+              cancel-title="Delete this event"
+              @cancel="deleteReviewForever(r._id)"
+              title="Update Event"
+              >
+              <hr class="bg-secondary">
+              </b-modal>
+            </b-card-text>
+            <template v-slot:footer>
+              <em class="text-muted">Event ID: {{r._id}}</em>
+            </template>
+          </b-card>
         </div>
-      </b-collapse>
+        </b-collapse>
       </b-col>
       </b-row>
       <b-button class="btn-danger delete-account" @click="deleteModalShow = !deleteModalShow">Deactivate my account</b-button>
@@ -148,7 +185,8 @@ export default {
       minStartDate: minStartDate,
       maxStartDate: maxStartDate,
       minEndDate: minEndDate,
-      maxEndDate: maxEndDate
+      maxEndDate: maxEndDate,
+      curKey: 0
     }
   },
   mounted: function () {
@@ -162,7 +200,7 @@ export default {
       return this.startDateValue <= this.endDateValue
     },
     validTime() {
-      return this.startTimeValue < this.endTimeValue
+      return this.startTimeValue > this.endTimeValue
     }
   },
   methods: {
@@ -184,7 +222,7 @@ export default {
       var id = this.$route.params.id
       Api.delete(`/users/${id}`)
         .then(response => {
-          console.log('Fucken ded')
+          console.log(response)
         }).catch(error => {
           console.error(error)
         })
@@ -228,7 +266,6 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      console.log(this.bars)
     },
     getMatchingBars(barIDs) {
       var b = []
@@ -237,8 +274,43 @@ export default {
           b.push(this.bars[i].name)
         }
       }
-      console.log(b)
       return b
+    },
+    deleteEventForever(id) {
+      Api.delete(`/events/${id}`)
+        .then(response => {
+          console.log(response)
+          this.events = []
+          this.getEvents()
+          this.curKey += 1
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    deleteReviewForever(id) {
+      Api.delete(`/reviews/${id}`)
+        .then(response => {
+          console.log(response)
+          this.reviews = []
+          this.getReviews()
+          this.curKey += 1
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    updateEvent(id) {
+      const params = {
+        startDate: this.startDateValue + 'T' + this.startTimeValue + '.000Z',
+        endDate: this.endDateValue + 'T' + this.endTimeValue + '.000Z'
+      }
+      Api.patch(`/events/${id}`, params)
+        .then(response => {
+          this.events = []
+          this.getEvents()
+          this.curKey += 1
+        }).catch(error => {
+          console.error(error)
+        })
     }
   }
 }
@@ -287,5 +359,7 @@ export default {
 
 #my-reviews {
   margin-right: 20px;
+  max-height: 65vh;
+  overflow-y: scroll;
 }
 </style>
