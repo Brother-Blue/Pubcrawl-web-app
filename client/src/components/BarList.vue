@@ -13,14 +13,26 @@ a<template>
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-         <b-button v-b-modal="'bar' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
+         <b-button v-b-modal="'update' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
             Update bar info
           </b-button>
-          <b-button v-b-modal="'bar' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
+          <b-button v-b-modal="'delete' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
             Yeet the bar
           </b-button>
       </div>
-      <b-modal v-bind:id="'bar' + bar._id"
+      <b-modal v-bind:id="'update' + bar._id"
+        header-bg-variant="dark"
+        header-text-variant="warning"
+        body-bg-variant="dark"
+        body-text-variant="light"
+        footer-bg-variant="dark"
+        footer-text-variant="info"
+        v-model="modalShow"
+        size="lg"
+        centered
+        v-bind:title="'Update name for: ' + bar.name">
+      </b-modal>
+      <b-modal v-bind:id="'delete' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
         body-bg-variant="dark"
