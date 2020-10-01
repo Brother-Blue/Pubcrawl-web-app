@@ -12,8 +12,15 @@
         ></bar-item>
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
-          <button class="update-bar">ree</button>
-        </b-collapse>
+      <div>
+          <b-button class="update-bar bg-dark" variant="outline-warning" >
+            Update bar info
+          </b-button>
+          <b-button class="delete-bar bg-dark" variant="outline-warning">
+            Yeet the bar
+          </b-button>
+      </div>
+    </b-collapse>
     </div>
   </div>
 </template>
@@ -86,6 +93,21 @@ export default {
 <style scoped>
 ::-webkit-scrollbar {
   width: 20px;
+}
+.delete-bar:hover {
+color: gold;
+}
+.delete-bar {
+  min-width: 50%;
+  float: left;
+}
+.update-bar:hover {
+  color: gold;
+}
+
+.update-bar {
+  min-width: 50%;
+  float: right;
 }
 
 .bar-list-container {
