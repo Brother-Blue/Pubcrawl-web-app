@@ -10,10 +10,10 @@
         :distance="distance"
         :numEvents="bar.events.length"
         ></bar-item>
-        <b-collapse v-bind:id="'bar' + bar._id">
-          <p></p>
-        </b-collapse>
     </b-button>
+    <b-collapse v-bind:id="'bar' + bar._id">
+          <button class="update-bar">ree</button>
+        </b-collapse>
     </div>
   </div>
 </template>
