@@ -3,7 +3,7 @@ var user = require('./users');
 var event = require('./events');
 var bar = require('./bars');
 var express = require('express');
-var passport = require('./passport');
+var passport = require('../config/passport');
 
 var router = express.Router();
 
@@ -14,9 +14,12 @@ router.use('/events', event);
 router.use('/bars', bar);
 
 router.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login'})
+  passport.authenticate('local', { successRedirect: '/' })
     
 );
+
+router.get('/login', function(req, res, next) {
+  console.log("Hjalmar u bitch");
+})
 
 module.exports = router;
