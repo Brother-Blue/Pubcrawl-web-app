@@ -9,7 +9,7 @@
   <hr class="bg-secondary">
   <b-list-group horizontal class="bg-dark">
     <b-list-group-item class="bar-attr bg-dark">
-    <label for="avgRating">Average rating:</label>
+    <label for="avgRating-lg">Average rating:</label>
     <b-form-rating
     id="avgRating"
     variant="warning"

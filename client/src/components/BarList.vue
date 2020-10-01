@@ -1,14 +1,19 @@
 <template>
-  <div class="bar-list-container">
+  <div class="bar-list-container" >
     <pubcrawl-searchbar/>
-    <div class="bar-container" v-for="bar in bars" :key="bar">
-      <bar-item
-      :img="img"
-      :title="bar.name"
-      :barRating="bar.rating"
-      :distance="distance"
-      :numEvents="bar.events.length"
-      ></bar-item>
+    <div v-for="bar in bars" :key="bar" >
+      <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
+        <bar-item
+        :img="img"
+        :title="bar.name"
+        :barRating="bar.rating"
+        :distance="distance"
+        :numEvents="bar.events.length"
+        ></bar-item>
+        <b-collapse v-bind:id="'bar' + bar._id">
+          <p></p>
+        </b-collapse>
+    </b-button>
     </div>
   </div>
 </template>
@@ -27,6 +32,7 @@ export default {
   data() {
     return {
       bars: null,
+      reviews: null,
       distance: 10,
       img: require('./../../../images/bar_placeholder.png')
     }
@@ -52,12 +58,13 @@ export default {
       var a = []
       Api.get('reviews').then((response) => {
         a = response.data.reviews
+        this.reviews = a
         for (var i = 0; i < this.bars.length; i++) {
           var avg = 0
           var count = 0
-          for (var j = 0; j < a.length; j++) {
-            if (this.bars[i]._id === a[j].bars) {
-              avg += a[j].averageRating
+          for (var j = 0; j < this.reviews.length; j++) {
+            if (this.bars[i]._id === this.reviews[j].bars) {
+              avg += this.reviews[j].averageRating
               count++
             } else {
               this.bars[i].rating = 0
