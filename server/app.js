@@ -35,7 +35,7 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
-// TODO: add cookie session support
+// TODO: add cookie session support if needed
 app.use(session({ secret: 'sea shanty 2 remix' }));
 app.use(passport.initialize());
 app.use(passport.session());

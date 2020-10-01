@@ -44,11 +44,8 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, match) {
-        if (err) return cb(err);
-        cb(null, match);
-    })
+UserSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
 };
 
 // Compile model from UserSchema
