@@ -7,13 +7,36 @@
       <p>Otherwise, please <router-link to="/register " class="text-warning"><em>click here</em></router-link> to register a new account.</p>
     </div>
     <div v-if="validUser">
-      <b-button-group class="btn-group">
-        <b-button class="btn btn-outline-warning" v-b-toggle.my-events>View events</b-button>
-        <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>View reviews</b-button>
-      </b-button-group>
+      <b-row>
+        <b-col>
+          <b-button-group class="btn-group">
+            <b-button class="btn btn-outline-warning" v-b-toggle.my-events>View events</b-button>
+            <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>View reviews</b-button>
+          </b-button-group>
+          <b-col>
+            <b-button class="btn btn-warning float-right update-account-btn" v-b-modal.update-user-modal><b-icon icon="person-circle"></b-icon> Update your account</b-button>
+          </b-col>
+        </b-col>
+      </b-row>
+      <b-modal
+      id="update-user-modal"
+      header-bg-variant="dark"
+      header-text-variant="warning"
+      body-bg-variant="dark"
+      body-text-variant="warning"
+      footer-bg-variant="dark"
+      ok-variant="warning"
+      ok-title="Save"
+      :title="'Hello, ' + user.username"
+      >
+      <p>Change email:</p>
+      <p>Change username:</p>
+      <p>Change password:</p>
+      </b-modal>
       <b-row>
         <b-col class="my-events" :key="events.length + 'b' + curKey">
           <b-collapse id="my-events">
+            <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
           <b-card
           class="event-card border border-secondary"
@@ -89,6 +112,7 @@
         </b-col>
         <b-col class="my-reviews" :key="reviews.length + 'a' + curKey">
           <b-collapse id="my-reviews">
+            <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
           <b-card
           class="review-card border border-secondary"
@@ -102,6 +126,76 @@
                 <b-col><u>Posted: {{r.createdAt.substring(11, 16)}}</u></b-col>
               </b-row><br>
               <p class="text-light">For: <em class="text-warning">{{getMatchingBars(r.bars)[0]}}</em></p><hr class="bg-secondary">
+              <b-row>
+                <b-col>
+                <label :for="'a' + r._id">Drink Quality: </label>
+                <b-form-rating
+                v-if="r.drinkQuality > 0"
+                variant="warning"
+                class="border-0 bg-dark text-warning"
+                :id="'a' + r._id"
+                inline
+                show-value
+                show-value-max
+                recision="1"
+                readonly
+                :value="r.drinkQuality"
+                ></b-form-rating>
+                <em v-if="!r.drinkQuality" :id="'a' + r._id">Not rated</em>
+                </b-col>
+                <b-col>
+                <label :for="'b' + r._id">Drink Price: </label>
+                <b-form-rating
+                v-if="r.drinkPrice > 0"
+                variant="warning"
+                class="border-0 bg-dark text-warning"
+                :id="'b' + r._id"
+                inline
+                show-value
+                show-value-max
+                precision="1"
+                readonly
+                :value="r.drinkPrice"
+                ></b-form-rating>
+                <em v-if="!r.drinkPrice" :id="'b' + r._id">Not rated</em>
+                </b-col>
+              </b-row>
+              <b-row>
+                <b-col>
+                <label :for="'c' + r._id">Food Quality: </label>
+                <b-form-rating
+                v-if="r.foodQuality > 0"
+                variant="warning"
+                class="border-0 bg-dark text-warning"
+                :id="'c' + r._id"
+                inline
+                show-value
+                show-value-max
+                recision="1"
+                readonly
+                :value="r.foodQuality"
+                ></b-form-rating>
+                <em v-if="!r.foodQuality" :id="'c' + r._id">Not rated</em>
+                </b-col>
+                <b-col>
+                <label :for="'d' + r._id">Atmosphere: </label>
+                <b-form-rating
+                v-if="r.atmosphere > 0"
+                variant="warning"
+                class="border-0 bg-dark text-warning"
+                :id="'d' + r._id"
+                inline
+                show-value
+                show-value-max
+                precision="1"
+                readonly
+                :value="r.atmosphere"
+                ></b-form-rating>
+                <em v-if="!r.atmosphere" :id="'d' + r._id">Not rated</em>
+                </b-col>
+              </b-row>
+              <p>{{r.comment}}</p><hr class="bg-secondary">
+              <br>
               <b-button class="btn btn-warning float left" v-b-modal="'id' + r._id">Update Review</b-button>
               <b-modal
               :id="'id' + r._id"
@@ -112,14 +206,33 @@
               footer-bg-variant="dark"
               footer-text-variant="muted"
               centered
+              scrollable
               ok-variant="warning"
               ok-title="Save & Exit"
               cancel-variant="danger"
               cancel-title="Delete this event"
               @cancel="deleteReviewForever(r._id)"
+              @ok="updateReview(r._id)"
               title="Update Event"
               >
-              <hr class="bg-secondary">
+              <p>Drink Quality: <em v-if="r.drinkQuality">{{r.drinkQuality}}/5</em><em v-if="!r.drinkQuality">Not rated</em></p>
+              <b-form-input v-model="drinkQualityValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <p class="text-info">New rating: {{drinkQualityValue}}</p>
+              <p>Drink Price: <em v-if="r.drinkPrice">{{r.drinkPrice}}/5</em><em v-if="!r.drinkPrice"></em>Not rated</p>
+              <b-form-input v-model="drinkPriceValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <p class="text-info">New rating: {{drinkPriceValue}}</p>
+              <p>Food Quality: <em v-if="r.foodQuality">{{r.foodQuality}}/5</em><em v-if="!r.foodQuality">Not rated</em></p>
+              <b-form-input v-model="foodQualityValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <p class="text-info">New rating: {{foodQualityValue}}</p>
+              <p>Atmosphere: <em v-if="r.atmosphere">{{r.atmosphere}}/5</em><em v-if="!r.atmosphere">Not rated</em></p>
+              <b-form-input v-model="atmosphereValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <p class="text-info">New rating: {{atmosphereValue}}</p>
+              <b-form-textarea
+              v-model="commentValue"
+              :placeholder="r.comment"
+              rows="6"
+              >
+              </b-form-textarea>
               </b-modal>
             </b-card-text>
             <template v-slot:footer>
@@ -174,6 +287,7 @@ export default {
     maxStartDate.setDate(maxEndDate.getDate())
     return {
       validUser: '',
+      user: null,
       deleteModalShow: false,
       events: [],
       reviews: [],
@@ -186,6 +300,11 @@ export default {
       maxStartDate: maxStartDate,
       minEndDate: minEndDate,
       maxEndDate: maxEndDate,
+      drinkQualityValue: 0,
+      drinkPriceValue: 0,
+      foodQualityValue: 0,
+      atmosphereValue: 0,
+      commentValue: '',
       curKey: 0
     }
   },
@@ -211,6 +330,7 @@ export default {
           e.forEach(user => {
             if (user._id === this.$route.params.id) {
               this.validUser = true
+              this.user = user
             }
           })
         }).catch(error => {
@@ -311,6 +431,23 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    updateReview(id) {
+      const params = {
+        drinkQuality: this.drinkQualityValue,
+        drinkPrice: this.drinkPriceValue,
+        foodQuality: this.foodQualityValue,
+        atmosphere: this.atmosphereValue,
+        comment: this.commentValue
+      }
+      Api.patch(`/reviews/${id}`, params)
+        .then(response => {
+          this.reviews = []
+          this.getReviews()
+          this.curKey += 1
+        }).catch(error => {
+          console.error(error)
+        })
     }
   }
 }
@@ -325,9 +462,8 @@ export default {
 }
 
 .btn-group {
-  margin-top: 50px;
+  margin: 40px auto;
   width: 40%;
-  margin-bottom: 30px;
 }
 
 .btn-group * {
@@ -357,9 +493,20 @@ export default {
   box-shadow: 2px 2px 5px 2px black;
 }
 
+.review-card {
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 5px 2px black;
+}
+
 #my-reviews {
   margin-right: 20px;
   max-height: 65vh;
   overflow-y: scroll;
+}
+
+.update-account-btn {
+  position: fixed;
+  top: 25vh;
+  right: 20px;
 }
 </style>
