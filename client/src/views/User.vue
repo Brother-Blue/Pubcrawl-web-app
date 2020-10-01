@@ -27,11 +27,38 @@
       footer-bg-variant="dark"
       ok-variant="warning"
       ok-title="Save"
+      @ok="updateUser(user._id)"
       :title="'Hello, ' + user.username"
       >
-      <p>Change email:</p>
-      <p>Change username:</p>
-      <p>Change password:</p>
+      <b-form-group
+        class="text-warning"
+        id="fieldset-1"
+        label="Change email"
+        description="We do not share your email with anyone else"
+        label-for="email"
+         >
+         <b-form-input
+         ref="emailRef"
+         id="email"
+         v-model="email"
+         type="email"
+         trim
+         ></b-form-input>
+        </b-form-group>
+      <b-form-group
+        class="text-warning"
+        id="fieldset-1"
+        label="Change password"
+        description="Password must be between 6-128 characters. It is recommended to use a combination of letters, numbers, and symbols."
+        label-for="password"
+        >
+         <b-form-input
+          id="password"
+          v-model="password"
+          type="password"
+          trim
+          ></b-form-input>
+        </b-form-group>
       </b-modal>
       <b-row>
         <b-col class="my-events" :key="events.length + 'b' + curKey">
@@ -288,6 +315,8 @@ export default {
     return {
       validUser: '',
       user: null,
+      email: '',
+      password: '',
       deleteModalShow: false,
       events: [],
       reviews: [],
@@ -445,6 +474,18 @@ export default {
           this.reviews = []
           this.getReviews()
           this.curKey += 1
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    updateUser(id) {
+      const params = {
+        email: this.email,
+        password: this.password
+      }
+      Api.patch(`/users/${id}`, params)
+        .then(response => {
+          console.log(response)
         }).catch(error => {
           console.error(error)
         })
