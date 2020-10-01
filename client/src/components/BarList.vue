@@ -10,28 +10,13 @@ a<template>
         :distance="distance"
         :numEvents="bar.events.length"
         ></bar-item>
-    </b-button>
-    <b-collapse v-bind:id="'bar' + bar._id">
+      </b-button>
+      <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-         <b-button v-b-modal="'update' + bar._id" class="update-bar bg-dark" variant="outline-warning" >
-            Update bar info
-          </b-button>
           <b-button v-b-modal="'delete' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
-            Yeet the bar
+            Delete the bar
           </b-button>
       </div>
-      <b-modal v-bind:id="'update' + bar._id"
-        header-bg-variant="dark"
-        header-text-variant="warning"
-        body-bg-variant="dark"
-        body-text-variant="light"
-        footer-bg-variant="dark"
-        footer-text-variant="info"
-        v-model="modalShow"
-        size="lg"
-        centered
-        v-bind:title="'Update name for: ' + bar.name">
-      </b-modal>
       <b-modal v-bind:id="'delete' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
@@ -43,9 +28,10 @@ a<template>
         size="lg"
         centered
         title="confirm bar name for deletion"
+        @ok="deleteBar(bar._id)"
         >
         are you sure you want to delete: {{bar.name}} ?
-        </b-modal>
+      </b-modal>
     </b-collapse>
     </div>
   </div>
@@ -87,6 +73,15 @@ export default {
           console.error(error)
         })
     },
+    deleteBar(barID) {
+      var id = barID
+      Api.delete(`/bars/${id}`)
+        .then(response => {
+          console.log('bar been yote')
+        }).catch(error => {
+          console.error(error)
+        })
+    },
     getReviews() {
       var a = []
       Api.get('reviews').then((response) => {
@@ -120,20 +115,13 @@ export default {
 ::-webkit-scrollbar {
   width: 20px;
 }
+
 .delete-bar:hover {
 color: gold;
 }
 .delete-bar {
   min-width: 50%;
   float: left;
-}
-.update-bar:hover {
-  color: gold;
-}
-
-.update-bar {
-  min-width: 50%;
-  float: right;
 }
 
 .bar-list-container {
