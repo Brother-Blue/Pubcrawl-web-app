@@ -285,6 +285,23 @@
       >
       <p>Are you sure you want to deactivate your account? You will <strong class="text-danger">never get it back!</strong> (<em>A very very long time</em>).</p>
       </b-modal>
+      <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
+      <b-button class="btn-danger delete-account" @click="deleteAllShow = !deleteAllShow">Deactivate my account</b-button>
+      <b-modal
+      v-model="deleteAllShow"
+      header-bg-variant="dark"
+      header-text-variant="warning"
+      body-bg-variant="dark"
+      body-text-variant="light"
+      footer-bg-variant="dark"
+      footer-text-variant="danger"
+      title="Delete account"
+      @ok="deleteAllUsers"
+      centered
+      >
+      <p>Are you sure you want to delete all accounts? <strong class="text-danger">That's a dick move!</strong> (<em>A very very mean thing to do</em>).</p>
+      </b-modal>
+      <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
     </div>
   </div>
 </template>
@@ -318,6 +335,7 @@ export default {
       email: '',
       password: '',
       deleteModalShow: false,
+      deleteAllShow: false, // Temporary
       events: [],
       reviews: [],
       bars: [],
@@ -370,6 +388,14 @@ export default {
     deleteConfirmation() {
       var id = this.$route.params.id
       Api.delete(`/users/${id}`)
+        .then(response => {
+          console.log(response)
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    deleteAllUsers() {
+      Api.delete('/users')
         .then(response => {
           console.log(response)
         }).catch(error => {
