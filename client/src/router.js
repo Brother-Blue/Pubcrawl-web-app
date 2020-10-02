@@ -4,9 +4,9 @@ import Home from './views/Home.vue'
 import Events from './views/Events.vue'
 import Login from './views/Login.vue'
 import Register from './views/Register.vue'
+import User from './views/User.vue'
 
 Vue.use(Router)
-
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -30,6 +30,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/user/:id',
+      name: 'user-page',
+      component: User
     }
   ]
 })
