@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
-var uniqueValidator = require('mongoose-unique-validator'); // TODO: install this in server directory, "npm install mongoose-unique-validator"
+var uniqueValidator = require('mongoose-unique-validator');
 
 // Password hashing
-var bcrypt = require('bcrypt'); // TODO: install this in server directory, "npm install bcrypt"
+var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 // Create user schema
@@ -44,11 +44,8 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-        if (err) return cb(err);
-        cb(null, isMatch);
-    });
+UserSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
 };
 
 // Compile model from UserSchema

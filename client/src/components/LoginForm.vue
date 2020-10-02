@@ -10,8 +10,6 @@
             id="fieldset-1"
             label="Enter username"
             label-for="username"
-            :invalid-feedback="invalidFeedback"
-            :valid-feedback="validFeedback"
             >
             <b-form-input
             id="username"
@@ -30,8 +28,6 @@
             id="fieldset-1"
             label="Enter password"
             label-for="password"
-            :invalid-feedback="invalidFeedback"
-            :valid-feedback="validFeedback"
             >
         <b-form-input
         id="password"
@@ -46,12 +42,14 @@
 
         </b-form-group>
         <p class="text-light">New user? <router-link to="/register" class="text-warning">Register here</router-link> </p>
-        <b-button class="btn" variant="outline-warning">Login</b-button>
+        <b-button class="btn" variant="outline-warning" @click=loginUser>Login</b-button>
       </b-card>
     </div>
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
   name: 'login-form',
   data() {
@@ -66,6 +64,20 @@ export default {
     },
     passwordState() {
       return this.password.length >= 6 && this.password.length <= 128
+    }
+  },
+  methods: {
+    loginUser() {
+      const params = {
+        username: this.username,
+        password: this.password
+      }
+      Api.post('/login', params, { useCredentials: true })
+        .then(response => {
+          console.log('Success!')
+        }).catch(error => {
+          console.error(error)
+        })
     }
   }
 }

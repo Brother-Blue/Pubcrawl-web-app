@@ -1,59 +1,59 @@
-<template>
-  <div class="bar-list-container">
-    <div class="bar-container" v-for="bar in bars" :key="bar">
-      <div class="bar-header">
-        <b-img
-          class="bar-logo"
-          v-bind:src="defaultImg"
-          fluid
-          alt="Responsive image"
-        ></b-img>
-        <h3>
-          {{ bar.name }}
-        </h3>
+a<template>
+  <div class="bar-list-container" >
+    <pubcrawl-searchbar/>
+    <div v-for="bar in bars" :key="bar" >
+      <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
+        <bar-item
+        :img="img"
+        :title="bar.name"
+        :barRating="bar.rating"
+        :distance="distance"
+        :numEvents="bar.events.length"
+        ></bar-item>
+      </b-button>
+      <b-collapse v-bind:id="'bar' + bar._id">
+      <div>
+          <b-button v-b-modal="'delete' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
+            Delete the bar
+          </b-button>
       </div>
-      <hr />
-      <div class="bar-body">
-        <b-list-group horizontal>
-          <b-list-group-item class="bar-attr">
-            <b-form-rating
-              id= "avg-rating"
-              icon-empty="blank"
-              icon-full="cup"
-              inline
-              readonly
-              :value="bar.rating"
-              precision="1"
-              show-value
-              >
-            </b-form-rating>
-            <p> {{message}} </p>
-          </b-list-group-item>
-          <b-list-group-item class="bar-attr"
-            >Distance: <strong>{{ distance }}km</strong></b-list-group-item
-          >
-          <b-list-group-item class="bar-attr"
-            >Events: <strong>{{ bar.events.length }}</strong></b-list-group-item
-          >
-        </b-list-group>
-      </div>
-      <hr />
-      <div class="bar-view-more"></div>
+      <b-modal v-bind:id="'delete' + bar._id"
+        header-bg-variant="dark"
+        header-text-variant="warning"
+        body-bg-variant="dark"
+        body-text-variant="light"
+        footer-bg-variant="dark"
+        footer-text-variant="info"
+        v-model="modalShow"
+        size="lg"
+        centered
+        title="confirm bar name for deletion"
+        @ok="deleteBar(bar._id)"
+        >
+        are you sure you want to delete: {{bar.name}} ?
+      </b-modal>
+    </b-collapse>
     </div>
   </div>
 </template>
 
 <script>
 import { Api } from '@/Api'
+import BarItem from '@/components/BarItem'
+import SearchBar from '@/components/SearchBar'
 
 export default {
   name: 'bar-list',
+  components: {
+    'bar-item': BarItem,
+    'pubcrawl-searchbar': SearchBar
+  },
   data() {
     return {
       bars: null,
-      message: '',
+      reviews: null,
       distance: 10,
-      defaultImg: 'https://images-platform.99static.com//sH-Ldum17LQhqqvZfKHJGxb21Jc=/0x0:1500x1500/fit-in/500x500/99designs-contests-attachments/86/86697/attachment_86697480'
+      img: require('./../../../images/bar_placeholder.png')
     }
   },
   methods: {
@@ -62,29 +62,47 @@ export default {
       // Once Hjalle is done paying for Google Cloud subscriptionss
     },
     getBars() {
-      var a = []
       var e = []
       Api.get('/bars')
-        .then(response => {
+        .then((response) => {
           e = response.data.bars
           this.bars = e
+          this.getReviews()
         })
-        .catch(error => {
-          e = error
+        .catch((error) => {
+          console.error(error)
         })
-      Api.get('/reviews')
+    },
+    deleteBar(barID) {
+      var id = barID
+      Api.delete(`/bars/${id}`)
         .then(response => {
-          a = response.data.reviews
-          for (var i = 0; i < this.bars.length; i++) {
-            for (var j = 0; j < a.length; j++) {
-              if (this.bars[i]._id === a[j].bars) {
-                this.bars[i].rating = a[j].averageRating
-              } else {
-                this.bars[i].rating = 'No reviews'
-              }
+          console.log('bar been yote')
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    getReviews() {
+      var a = []
+      Api.get('reviews').then((response) => {
+        a = response.data.reviews
+        this.reviews = a
+        for (var i = 0; i < this.bars.length; i++) {
+          var avg = 0
+          var count = 0
+          for (var j = 0; j < this.reviews.length; j++) {
+            if (this.bars[i]._id === this.reviews[j].bars) {
+              avg += this.reviews[j].averageRating
+              count++
+            } else {
+              this.bars[i].rating = 0
             }
           }
-        })
+          if (count > 0) {
+            this.bars[i].rating = avg / count
+          }
+        }
+      })
     }
   },
   created: function () {
@@ -98,10 +116,19 @@ export default {
   width: 20px;
 }
 
+.delete-bar:hover {
+color: gold;
+}
+.delete-bar {
+  min-width: 50%;
+  float: left;
+}
+
 .bar-list-container {
   max-width: 50%;
   min-height: 70vh;
-  overflow-y: scroll;
+  max-height: 80vh;
+  overflow: scroll;
 }
 
 .bar-container {
