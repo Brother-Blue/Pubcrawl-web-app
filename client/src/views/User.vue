@@ -280,13 +280,15 @@
       footer-bg-variant="dark"
       footer-text-variant="danger"
       title="Delete account"
+      ok-title="Delete account"
+      ok-variant="danger"
       @ok="deleteConfirmation"
       centered
       >
       <p>Are you sure you want to deactivate your account? You will <strong class="text-danger">never get it back!</strong> (<em>A very very long time</em>).</p>
       </b-modal>
       <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
-      <b-button class="btn-danger delete-account" @click="deleteAllShow = !deleteAllShow">Deactivate my account</b-button>
+      <b-button class="btn-danger delete-all-accounts" @click="deleteAllShow = !deleteAllShow">Deactivate all accounts</b-button>
       <b-modal
       v-model="deleteAllShow"
       header-bg-variant="dark"
@@ -296,6 +298,9 @@
       footer-bg-variant="dark"
       footer-text-variant="danger"
       title="Delete account"
+      ok-disabled
+      ok-title="Nice try ;)"
+      ok-variant="danger"
       @ok="deleteAllUsers"
       centered
       >
@@ -541,6 +546,12 @@ export default {
   position: fixed;
   bottom: 25px;
   right: 25px;
+}
+
+.delete-all-accounts {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
 }
 
 .bar-list {
