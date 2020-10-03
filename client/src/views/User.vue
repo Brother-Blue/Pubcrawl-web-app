@@ -289,7 +289,7 @@ export default {
   box-shadow: 2px 2px 5px 2px black;
 }
 
-#my-reviews {
+.my-reviews {
   margin-right: 20px;
   max-height: 65vh;
   overflow-y: scroll;

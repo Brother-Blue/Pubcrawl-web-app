@@ -94,6 +94,7 @@
             scrollable
             ok-variant="warning"
             ok-title="Save & Exit"
+            :ok-disabled="commentValue.length >= 140"
             cancel-variant="danger"
             cancel-title="Delete this event"
             @cancel="deleteReview(reviewID)"
@@ -112,13 +113,17 @@
                 <p>Atmosphere: <em v-if="atmosphere">{{atmosphere}} / 5</em><em v-if="!atmosphere">Not rated</em></p>
                 <b-form-input v-model="atmosphereValue" type="range" min="1" max="5" step="0.5"></b-form-input>
                 <p class="text-info">New rating: {{atmosphereValue}}</p>
-                <b-form-textarea
-                :v-model="commentValue"
-                :placeholder="comment"
-                :state="commentValue.length <= 140"
-                rows="3"
+                <b-form-group
+                description="Max comment length is 140 characters"
                 >
-                </b-form-textarea>
+                  <b-form-textarea
+                  v-model="commentValue"
+                  :placeholder="comment"
+                  :state="commentValue.length <= 140"
+                  rows="3"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
             </b-modal>
         </b-card-text>
         <template v-slot:footer>

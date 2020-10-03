@@ -43,6 +43,7 @@
         ok-title="Save & Exit"
         cancel-variant="danger"
         cancel-title="Delete this event"
+        :ok-disabled="this.startDateValue > this.endDateValue"
         @cancel="deleteEvent(eventID)"
         @ok="updateEvent(eventID)"
         title="Update Event"
