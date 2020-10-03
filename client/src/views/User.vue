@@ -141,7 +141,18 @@
           <b-collapse id="my-reviews">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
-          <!-- placeholde -->
+            <pubcrawl-user-review
+            :id="index"
+            :reviewID="r._id"
+            :comment="r.comment"
+            :drinkQuality="r.drinkQuality"
+            :drinkPrice="r.drinkPrice"
+            :foodQuality="r.foodQuality"
+            :atmosphere="r.atmosphere"
+            :createdOn="r.createdAt.substring(0, 10)"
+            :createdAt="r.createdAt.substring(11, 16)"
+            >
+            </pubcrawl-user-review>
           </div>
         </b-collapse>
       </b-col>
@@ -168,11 +179,13 @@
 <script>
 import { Api } from '@/Api'
 import Header from '@/components/Header'
+import UserReview from '@/components/UserReview'
 
 export default {
   name: 'user-page',
   components: {
-    'pubcrawl-header': Header
+    'pubcrawl-header': Header,
+    'pubcrawl-user-review': UserReview
   },
   data() {
     const now = new Date()
@@ -409,11 +422,6 @@ export default {
 }
 
 .event-card {
-  margin-bottom: 10px;
-  box-shadow: 2px 2px 5px 2px black;
-}
-
-.review-card {
   margin-bottom: 10px;
   box-shadow: 2px 2px 5px 2px black;
 }

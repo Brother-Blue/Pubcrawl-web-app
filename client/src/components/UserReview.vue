@@ -3,87 +3,87 @@
         class="review-card border border-secondary"
         bg-variant="dark"
         text-variant="warning"
-        :header="r.createdAt.substring(0, 10)"
+        :header="createdOn"
         footer-tag="footer"
         >
         <b-card-text>
         <b-row class="text-info">
-            <b-col><u>Posted: {{r.createdAt.substring(11, 16)}}</u></b-col>
+            <b-col><u :createdAt="createdAt">Posted: {{createdAt}}</u></b-col>
         </b-row><br>
-        <p class="text-light">For: <em class="text-warning">{{getMatchingBars(r.bars)[0]}}</em></p><hr class="bg-secondary">
+        <p class="text-light">For: <em class="text-warning" :name="getBarName(reviewID)">{{name}}</em></p><hr class="bg-secondary">
         <b-row>
             <b-col>
-                <label :for="'a' + r._id">Drink Quality: </label>
+                <label :for="'a' + reviewID">Drink Quality: </label>
                 <b-form-rating
-                v-if="r.drinkQuality > 0"
+                v-if="drinkQuality > 0"
                 variant="warning"
                 class="border-0 bg-dark text-warning"
-                :id="'a' + r._id"
+                :id="'a' + reviewID"
                 inline
                 show-value
                 show-value-max
                 recision="1"
                 readonly
-                :value="r.drinkQuality"
+                :value="drinkQuality"
                 ></b-form-rating>
-                <em v-if="!r.drinkQuality" :id="'a' + r._id">Not rated</em>
+                <em v-if="!drinkQuality" :id="'a' + reviewID">Not rated</em>
             </b-col>
             <b-col>
-                <label :for="'b' + r._id">Drink Price: </label>
+                <label :for="'b' + reviewID">Drink Price: </label>
                 <b-form-rating
-                v-if="r.drinkPrice > 0"
+                v-if="drinkPrice > 0"
                 variant="warning"
                 class="border-0 bg-dark text-warning"
-                :id="'b' + r._id"
+                :id="'b' + reviewID"
                 inline
                 show-value
                 show-value-max
                 precision="1"
                 readonly
-                :value="r.drinkPrice"
+                :value="drinkPrice"
                 ></b-form-rating>
-                <em v-if="!r.drinkPrice" :id="'b' + r._id">Not rated</em>
+                <em v-if="!drinkPrice" :id="'b' + reviewID">Not rated</em>
             </b-col>
         </b-row>
         <b-row>
             <b-col>
-                <label :for="'c' + r._id">Food Quality: </label>
+                <label :for="'c' + reviewID">Food Quality: </label>
                 <b-form-rating
-                v-if="r.foodQuality > 0"
+                v-if="foodQuality > 0"
                 variant="warning"
                 class="border-0 bg-dark text-warning"
-                :id="'c' + r._id"
+                :id="'c' + reviewID"
                 inline
                 show-value
                 show-value-max
                 recision="1"
                 readonly
-                :value="r.foodQuality"
+                :value="foodQuality"
                 ></b-form-rating>
-                <em v-if="!r.foodQuality" :id="'c' + r._id">Not rated</em>
+                <em v-if="!foodQuality" :id="'c' + reviewID">Not rated</em>
             </b-col>
             <b-col>
-                <label :for="'d' + r._id">Atmosphere: </label>
+                <label :for="'d' + reviewID">Atmosphere: </label>
                 <b-form-rating
-                v-if="r.atmosphere > 0"
+                v-if="atmosphere > 0"
                 variant="warning"
                 class="border-0 bg-dark text-warning"
-                :id="'d' + r._id"
+                :id="'d' + reviewID"
                 inline
                 show-value
                 show-value-max
                 precision="1"
                 readonly
-                :value="r.atmosphere"
+                :value="atmosphere"
                 ></b-form-rating>
-                <em v-if="!r.atmosphere" :id="'d' + r._id">Not rated</em>
+                <em v-if="!atmosphere" :id="'d' + reviewID">Not rated</em>
             </b-col>
         </b-row>
-            <p>{{r.comment}}</p><hr class="bg-secondary">
+            <p>{{comment}}</p><hr class="bg-secondary">
             <br>
-            <b-button class="btn btn-warning float left" v-b-modal="'id' + r._id">Update Review</b-button>
+            <b-button class="btn btn-warning float left" v-b-modal="'id' + reviewID">Update Review</b-button>
             <b-modal
-            :id="'id' + r._id"
+            :id="'id' + reviewID"
             header-bg-variant="dark"
             header-text-variant="warning"
             body-bg-variant="dark"
@@ -96,42 +96,67 @@
             ok-title="Save & Exit"
             cancel-variant="danger"
             cancel-title="Delete this event"
-            @cancel="deleteReviewForever(r._id)"
-            @ok="updateReview(r._id)"
+            @cancel="deleteReviewForever(review_id)"
+            @ok="updateReview(review_id)"
             title="Update Event"
             >
-                <p>Drink Quality: <em v-if="r.drinkQuality">{{r.drinkQuality}}/5</em><em v-if="!r.drinkQuality">Not rated</em></p>
-                <b-form-input v-model="drinkQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
-                <p class="text-info">New rating: {{drinkQualityValue}}</p>
-                <p>Drink Price: <em v-if="r.drinkPrice">{{r.drinkPrice}}/5</em><em v-if="!r.drinkPrice"></em>Not rated</p>
-                <b-form-input v-model="drinkPriceValue" type="range" min="1" max="5" step="0.5"></b-form-input>
-                <p class="text-info">New rating: {{drinkPriceValue}}</p>
-                <p>Food Quality: <em v-if="r.foodQuality">{{r.foodQuality}}/5</em><em v-if="!r.foodQuality">Not rated</em></p>
-                <b-form-input v-model="foodQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
-                <p class="text-info">New rating: {{foodQualityValue}}</p>
-                <p>Atmosphere: <em v-if="r.atmosphere">{{r.atmosphere}}/5</em><em v-if="!r.atmosphere">Not rated</em></p>
-                <b-form-input v-model="atmosphereValue" type="range" min="1" max="5" step="0.5"></b-form-input>
-                <p class="text-info">New rating: {{atmosphereValue}}</p>
+            <!-- TODO: Add in emit functionality to @ok and @cancel -->
+                <p>Drink Quality: <em v-if="drinkQuality">{{drinkQuality}}/5</em><em v-if="!drinkQuality">Not rated</em></p>
+                <b-form-input :v-model="drinkQuality" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
+                <p class="text-info">New rating: {{drinkQuality}}</p>
+                <p>Drink Price: <em v-if="drinkPrice">{{drinkPrice}}/5</em><em v-if="!drinkPrice">Not rated</em></p>
+                <b-form-input :v-model="drinkPrice" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
+                <p class="text-info">New rating: {{drinkPrice}}</p>
+                <p>Food Quality: <em v-if="foodQuality">{{foodQuality}}/5</em><em v-if="!foodQuality">Not rated</em></p>
+                <b-form-input :v-model="foodQuality" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
+                <p class="text-info">New rating: {{foodQuality}}</p>
+                <p>Atmosphere: <em v-if="atmosphere">{{atmosphere}}/5</em><em v-if="!atmosphere">Not rated</em></p>
+                <b-form-input :v-model="atmosphere" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
+                <p class="text-info">New rating: {{atmosphere}}</p>
                 <b-form-textarea
-                v-model="commentValue"
-                :placeholder="r.comment"
-                rows="6"
+                :v-model="comment"
+                :placeholder="comment"
+                :state="comment.length <= 140"
+                rows="3"
                 >
                 </b-form-textarea>
             </b-modal>
         </b-card-text>
         <template v-slot:footer>
-            <em class="text-muted">Review ID: {{r._id}}</em>
+            <em class="text-muted" :reviewID="reviewID">Review ID: {{reviewID}}</em>
         </template>
     </b-card>
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
-  name: 'user-review-card'
+  name: 'user-review-card',
+  props: [
+    'reviewID', 'comment', 'drinkQuality', 'drinkPrice', 'foodQuality', 'atmosphere', 'barName', 'createdAt', 'createdOn'
+  ],
+  data() {
+    return {
+      name: ''
+    }
+  },
+  methods: {
+    getBarName(id) {
+      Api.get(`/reviews/${id}/bars`)
+        .then(response => {
+          this.name = response.data.name
+        }).catch(error => {
+          console.error(error)
+        })
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+.review-card {
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 5px 2px black;
+}
 </style>
