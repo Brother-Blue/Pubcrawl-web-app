@@ -17,6 +17,8 @@
          id="email"
          v-model="email"
          type="email"
+         lazy-formatter
+         :formatter="inputFormatter"
          trim
          ></b-form-input>
            <b-form-invalid-feedback id="input-live-feedback">
@@ -34,6 +36,7 @@
           v-model="username"
           type="text"
           :state="usernameState"
+          :formatter="inputFormatter"
           trim
           ></b-form-input>
           <b-form-invalid-feedback id="input-live-feedback" :errMessage="errMessageUsername">
@@ -132,6 +135,9 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    inputFormatter(value) {
+      return value.toLowerCase()
     }
   }
 }
