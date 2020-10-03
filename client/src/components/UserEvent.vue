@@ -111,9 +111,9 @@ export default {
     maxStartDate.setDate(maxEndDate.getDate())
     return {
       startDateValue: this.startDateDay,
-      startTimeValue: 'T' + this.startDateTime + '.000Z',
+      startTimeValue: this.startDateTime,
       endDateValue: this.endDateDay,
-      endTimeValue: 'T' + this.endDateTime + '.000Z',
+      endTimeValue: this.endDateTime,
       minStartDate: minStartDate,
       maxStartDate: maxStartDate,
       minEndDate: minEndDate,
