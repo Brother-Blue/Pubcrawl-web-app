@@ -16,6 +16,7 @@
             v-model="username"
             type="text"
             :state="usernameState"
+            :formatter="usernameFormatter"
             trim
             ></b-form-input>
 
@@ -78,6 +79,9 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    usernameFormatter(value) {
+      return value.toLowerCase()
     }
   }
 }
