@@ -61,8 +61,8 @@
         </b-form-group>
       </b-modal>
       <b-row>
-        <b-col class="my-events" :key="events.length + 'b' + curKey">
-          <b-collapse visible id="my-events">
+        <b-col class="my-events">
+          <b-collapse visible id="my-events" :key="events.length + 'b' + curKey">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
           <pubcrawl-user-event
@@ -73,6 +73,8 @@
           :endDateDay="e.endDate.substring(0, 10)"
           :endDateTime="e.endDate.substring(11, 16)"
           :eventTitle="e.title"
+          @yeetTheEvent="deleteEventForever"
+          @updateEventByID="updateEvent"
           ></pubcrawl-user-event>
         </div>
           </b-collapse>
@@ -145,8 +147,6 @@ export default {
   },
   created: function () {
     this.isValidUser()
-  },
-  mounted: function () {
     this.getEvents()
     this.getReviews()
   },
@@ -216,13 +216,11 @@ export default {
           console.error(error)
         })
     },
-    updateEvent(id) {
-      const params = {
-        startDate: this.startDateValue + 'T' + this.startTimeValue + '.000Z',
-        endDate: this.endDateValue + 'T' + this.endTimeValue + '.000Z'
-      }
-      Api.patch(`/events/${id}`, params)
+    updateEvent(id, payload) {
+      console.log(id, payload)
+      Api.patch(`/events/${id}`, payload)
         .then(response => {
+          console.log(response.data)
           this.events = []
           this.getEvents()
           this.curKey += 1

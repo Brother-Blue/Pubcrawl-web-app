@@ -43,11 +43,10 @@
         ok-title="Save & Exit"
         cancel-variant="danger"
         cancel-title="Delete this event"
-        @cancel="deleteEventForever(eventID)"
+        @cancel="deleteEvent(eventID)"
         @ok="updateEvent(eventID)"
         title="Update Event"
       >
-      <!-- TODO: add in emit methods -->
         <p>Current Start Date: {{ startDateDay }}</p>
         <b-form-datepicker
           v-model="startDateValue"
@@ -61,7 +60,6 @@
         <b-form-timepicker
           v-model="startTimeValue"
           :placeholder="startDateTime"
-          :state="validTime"
         ></b-form-timepicker
         ><br />
         <p>Current End Date: {{ endDateDay }}</p>
@@ -77,7 +75,6 @@
         <b-form-timepicker
           v-model="endTimeValue"
           :placeholder="endDateTime"
-          :state="validTime"
         ></b-form-timepicker
         ><br />
         <hr class="bg-secondary" />
@@ -113,10 +110,10 @@ export default {
     maxStartDate.setMonth(maxEndDate.getMonth())
     maxStartDate.setDate(maxEndDate.getDate())
     return {
-      startDateValue: '',
-      startTimeValue: '',
-      endDateValue: '',
-      endTimeValue: '',
+      startDateValue: this.startDateDay,
+      startTimeValue: 'T' + this.startDateTime + '.000Z',
+      endDateValue: this.endDateDay,
+      endTimeValue: 'T' + this.endDateTime + '.000Z',
       minStartDate: minStartDate,
       maxStartDate: maxStartDate,
       minEndDate: minEndDate,
@@ -131,9 +128,6 @@ export default {
   computed: {
     validDate() {
       return this.startDateValue <= this.endDateValue
-    },
-    validTime() {
-      return this.startTimeValue > this.endTimeValue
     }
   },
   methods: {
@@ -144,6 +138,16 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    deleteEvent(id) {
+      this.$emit('yeetTheEvent', id)
+    },
+    updateEvent(id) {
+      const payload = {
+        startDate: this.startDateValue + 'T' + this.startTimeValue + '.000Z',
+        endDate: this.endDateValue + 'T' + this.endTimeValue + '.000Z'
+      }
+      this.$emit('updateEventByID', id, payload)
     }
   }
 }
