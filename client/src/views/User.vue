@@ -65,75 +65,15 @@
           <b-collapse visible id="my-events">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
-          <b-card
-          class="event-card border border-secondary"
-          bg-variant="dark"
-          text-variant="warning"
-          :header="e.title"
-          footer-tag="footer"
-          >
-            <b-card-text>
-              <b-row class="text-info">
-                <b-col><u>Starting {{e.startDate.substring(0, 10)}} @ {{e.startDate.substring(11, 16)}}</u></b-col>
-                <b-col><u>Ends {{e.endDate.substring(0, 10)}} @ {{e.endDate.substring(11, 16)}}</u></b-col>
-              </b-row>
-              <p class="text-light">For these bars:</p><hr class="bg-secondary">
-              <ul class="bar-list" v-for="b in getMatchingBars(e.bars)" :key="b._id">
-                <li>{{b}}</li>
-              </ul><hr class="bg-secondary">
-              <b-button class="btn btn-warning float left" v-b-modal="'id' + e._id">Update Event</b-button>
-              <b-modal
-              :id="'id' + e._id"
-              header-bg-variant="dark"
-              header-text-variant="warning"
-              body-bg-variant="dark"
-              body-text-variant="white"
-              footer-bg-variant="dark"
-              footer-text-variant="muted"
-              centered
-              ok-variant="warning"
-              ok-title="Save & Exit"
-              cancel-variant="danger"
-              cancel-title="Delete this event"
-              @cancel="deleteEventForever(e._id)"
-              @ok="updateEvent(e._id)"
-              title="Update Event"
-              >
-              <p>Current Start Date: {{e.startDate.substring(0, 10)}}</p>
-              <b-form-datepicker
-              v-model="startDateValue"
-              :placeholder="e.startDate.substring(0, 10)"
-              :min="minStartDate"
-              :max="maxStartDate"
-              :state="validDate"
-              ></b-form-datepicker><br>
-              <p>Current Start Time: {{e.startDate.substring(11, 16)}}</p>
-              <b-form-timepicker
-              v-model="startTimeValue"
-              :placeholder="e.startDate.substring(11, 16)"
-              :state="validTime"
-              ></b-form-timepicker><br>
-              <p>Current End Date: {{e.endDate.substring(0, 10)}}</p>
-              <b-form-datepicker
-              v-model="endDateValue"
-              :placeholder="e.endDate.substring(0, 10)"
-              :min="minEndDate"
-              :max="maxEndDate"
-              :state="validDate"
-              ></b-form-datepicker><br>
-              <p>Current End Time: {{e.endDate.substring(11, 16)}}</p>
-              <b-form-timepicker
-              v-model="endTimeValue"
-              :placeholder="e.endDate.substring(11, 16)"
-              :state="validTime"
-              ></b-form-timepicker><br>
-              <hr class="bg-secondary">
-              </b-modal>
-            </b-card-text>
-            <template v-slot:footer>
-              <em class="text-muted">Event ID: {{e._id}}</em>
-            </template>
-          </b-card>
+          <pubcrawl-user-event
+          :id="index"
+          :eventID="e._id"
+          :startDateDay="e.startDate.substring(0, 10)"
+          :startDateTime="e.startDate.substring(11, 16)"
+          :endDateDay="e.endDate.substring(0, 10)"
+          :endDateTime="e.endDate.substring(11, 16)"
+          :eventTitle="e.title"
+          ></pubcrawl-user-event>
         </div>
           </b-collapse>
         </b-col>
@@ -182,28 +122,16 @@
 import { Api } from '@/Api'
 import Header from '@/components/Header'
 import UserReview from '@/components/UserReview'
+import UserEvent from '@/components/UserEvent'
 
 export default {
   name: 'user-page',
   components: {
     'pubcrawl-header': Header,
-    'pubcrawl-user-review': UserReview
+    'pubcrawl-user-review': UserReview,
+    'pubcrawl-user-event': UserEvent
   },
   data() {
-    const now = new Date()
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-    const minEndDate = new Date(today)
-    minEndDate.setMonth(today.getMonth())
-    minEndDate.setDate(today.getDate())
-    const maxEndDate = new Date(today)
-    maxEndDate.setMonth(today.getMonth() + 2)
-    maxEndDate.setDate(today.getDate())
-    const minStartDate = new Date(today)
-    minStartDate.setMonth(today.getMonth())
-    minStartDate.setDate(today.getDate())
-    const maxStartDate = new Date(maxEndDate)
-    maxStartDate.setMonth(maxEndDate.getMonth())
-    maxStartDate.setDate(maxEndDate.getDate())
     return {
       validUser: '',
       user: null,
@@ -212,15 +140,6 @@ export default {
       deleteModalShow: false,
       events: [],
       reviews: [],
-      bars: [],
-      startDateValue: '',
-      startTimeValue: '',
-      endDateValue: '',
-      endTimeValue: '',
-      minStartDate: minStartDate,
-      maxStartDate: maxStartDate,
-      minEndDate: minEndDate,
-      maxEndDate: maxEndDate,
       curKey: 0
     }
   },
@@ -230,15 +149,6 @@ export default {
   mounted: function () {
     this.getEvents()
     this.getReviews()
-    this.getBars()
-  },
-  computed: {
-    validDate() {
-      return this.startDateValue <= this.endDateValue
-    },
-    validTime() {
-      return this.startTimeValue > this.endTimeValue
-    }
   },
   methods: {
     isValidUser() {
@@ -268,12 +178,9 @@ export default {
     getEvents() {
       Api.get('/events')
         .then(response => {
-          var e = response.data.events
-          for (var i = 0; i < e.length; i++) {
-            if (e[i].users === this.$route.params.id) {
-              this.events.push(e[i])
-            }
-          }
+          this.events = response.data.events
+            .filter(event =>
+              event.users === this.$route.params.id)
         }).catch(error => {
           console.error(error)
         })
@@ -281,38 +188,12 @@ export default {
     getReviews() {
       Api.get('/reviews')
         .then(response => {
-          var r = response.data.reviews
-          for (var i = 0; i < r.length; i++) {
-            if (r[i].users === this.$route.params.id) {
-              this.reviews.push(r[i])
-            }
-          }
+          this.reviews = response.data.reviews
+            .filter(review =>
+              review.users === this.$route.params.id)
         }).catch(error => {
           console.error(error)
         })
-    },
-    getBars() {
-      Api.get('/bars')
-        .then(response => {
-          var b = response.data.bars
-          for (var i = 0; i < b.length; i++) {
-            this.bars.push({
-              id: b[i]._id,
-              name: b[i].name
-            })
-          }
-        }).catch(error => {
-          console.error(error)
-        })
-    },
-    getMatchingBars(barIDs) {
-      var b = []
-      for (var i = 0; i < this.bars.length; i++) {
-        if (barIDs.includes(this.bars[i].id)) {
-          b.push(this.bars[i].name)
-        }
-      }
-      return b
     },
     deleteEventForever(id) {
       Api.delete(`/events/${id}`)
@@ -397,12 +278,6 @@ export default {
   position: fixed;
   bottom: 25px;
   right: 25px;
-}
-
-.bar-list {
-  list-style-type: none;
-  padding: 0px;
-  text-align: center;
 }
 
 .my-events {

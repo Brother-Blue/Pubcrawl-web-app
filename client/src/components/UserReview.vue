@@ -100,7 +100,6 @@
             @ok="updateReview(reviewID)"
             title="Update Event"
             >
-            <!-- TODO: Add in emit functionality to @ok and @cancel -->
                 <p>Drink Quality: <em v-if="drinkQuality">{{drinkQuality}} / 5</em><em v-if="!drinkQuality">Not rated</em></p>
                 <b-form-input v-model="drinkQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
                 <p class="text-info">New rating: {{drinkQualityValue}}</p>
@@ -132,7 +131,7 @@
 import { Api } from '@/Api'
 
 export default {
-  name: 'user-review-card',
+  name: 'user-review',
   props: [
     'reviewID', 'comment', 'drinkQuality', 'drinkPrice', 'foodQuality', 'atmosphere', 'barName', 'createdAt', 'createdOn'
   ],
