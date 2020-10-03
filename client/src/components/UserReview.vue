@@ -96,27 +96,27 @@
             ok-title="Save & Exit"
             cancel-variant="danger"
             cancel-title="Delete this event"
-            @cancel="deleteReviewForever(review_id)"
-            @ok="updateReview(review_id)"
+            @cancel="deleteReview(reviewID)"
+            @ok="updateReview(reviewID)"
             title="Update Event"
             >
             <!-- TODO: Add in emit functionality to @ok and @cancel -->
-                <p>Drink Quality: <em v-if="drinkQuality">{{drinkQuality}}/5</em><em v-if="!drinkQuality">Not rated</em></p>
-                <b-form-input :v-model="drinkQuality" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
-                <p class="text-info">New rating: {{drinkQuality}}</p>
-                <p>Drink Price: <em v-if="drinkPrice">{{drinkPrice}}/5</em><em v-if="!drinkPrice">Not rated</em></p>
-                <b-form-input :v-model="drinkPrice" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
-                <p class="text-info">New rating: {{drinkPrice}}</p>
-                <p>Food Quality: <em v-if="foodQuality">{{foodQuality}}/5</em><em v-if="!foodQuality">Not rated</em></p>
-                <b-form-input :v-model="foodQuality" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
-                <p class="text-info">New rating: {{foodQuality}}</p>
-                <p>Atmosphere: <em v-if="atmosphere">{{atmosphere}}/5</em><em v-if="!atmosphere">Not rated</em></p>
-                <b-form-input :v-model="atmosphere" type="range" min="1" max="5" step="0.5" description="Do not move the slider if you do not want to change the review."></b-form-input>
-                <p class="text-info">New rating: {{atmosphere}}</p>
+                <p>Drink Quality: <em v-if="drinkQuality">{{drinkQuality}} / 5</em><em v-if="!drinkQuality">Not rated</em></p>
+                <b-form-input v-model="drinkQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
+                <p class="text-info">New rating: {{drinkQualityValue}}</p>
+                <p>Drink Price: <em v-if="drinkPrice">{{drinkPrice}} / 5</em><em v-if="!drinkPrice">Not rated</em></p>
+                <b-form-input v-model="drinkPriceValue" type="range" min="1" max="5" step="0.5"></b-form-input>
+                <p class="text-info">New rating: {{drinkPriceValue}}</p>
+                <p>Food Quality: <em v-if="foodQuality">{{foodQuality}} / 5</em><em v-if="!foodQuality">Not rated</em></p>
+                <b-form-input v-model="foodQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
+                <p class="text-info">New rating: {{foodQualityValue}}</p>
+                <p>Atmosphere: <em v-if="atmosphere">{{atmosphere}} / 5</em><em v-if="!atmosphere">Not rated</em></p>
+                <b-form-input v-model="atmosphereValue" type="range" min="1" max="5" step="0.5"></b-form-input>
+                <p class="text-info">New rating: {{atmosphereValue}}</p>
                 <b-form-textarea
-                :v-model="comment"
+                :v-model="commentValue"
                 :placeholder="comment"
-                :state="comment.length <= 140"
+                :state="commentValue.length <= 140"
                 rows="3"
                 >
                 </b-form-textarea>
@@ -138,7 +138,12 @@ export default {
   ],
   data() {
     return {
-      name: ''
+      name: '',
+      drinkQualityValue: '',
+      drinkPriceValue: '',
+      foodQualityValue: '',
+      atmosphereValue: '',
+      commentValue: ''
     }
   },
   methods: {
@@ -149,6 +154,19 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    deleteReview(id) {
+      this.$emit('yeetReviewByID', id)
+    },
+    updateReview(id) {
+      const payload = {
+        drinkQuality: this.drinkQualityValue,
+        drinkPrice: this.drinkPriceValue,
+        foodQuality: this.foodQualityValue,
+        atmosphere: this.atmosphereValue,
+        comment: this.commentValue
+      }
+      this.$emit('updateReviewByID', id, payload)
     }
   }
 }

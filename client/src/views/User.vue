@@ -10,8 +10,8 @@
       <b-row>
         <b-col>
           <b-button-group class="btn-group">
-            <b-button class="btn btn-outline-warning" v-b-toggle.my-events>View events</b-button>
-            <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>View reviews</b-button>
+            <b-button class="btn btn-outline-warning" v-b-toggle.my-events>Show/Hide events</b-button>
+            <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>Show/Hide reviews</b-button>
           </b-button-group>
           <b-col>
             <b-button class="btn btn-warning float-right update-account-btn" v-b-modal.update-user-modal><b-icon icon="person-circle"></b-icon> Update your account</b-button>
@@ -62,7 +62,7 @@
       </b-modal>
       <b-row>
         <b-col class="my-events" :key="events.length + 'b' + curKey">
-          <b-collapse id="my-events">
+          <b-collapse visible id="my-events">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
           <b-card
@@ -137,8 +137,8 @@
         </div>
           </b-collapse>
         </b-col>
-        <b-col class="my-reviews" :key="reviews.length + 'a' + curKey">
-          <b-collapse id="my-reviews">
+        <b-col class="my-reviews">
+          <b-collapse visible id="my-reviews" :key="reviews.length + 'a' + curKey">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
             <pubcrawl-user-review
@@ -151,6 +151,8 @@
             :atmosphere="r.atmosphere"
             :createdOn="r.createdAt.substring(0, 10)"
             :createdAt="r.createdAt.substring(11, 16)"
+            @yeetReviewByID="deleteReviewForever"
+            @updateReviewByID="updateReview"
             >
             </pubcrawl-user-review>
           </div>
@@ -219,11 +221,6 @@ export default {
       maxStartDate: maxStartDate,
       minEndDate: minEndDate,
       maxEndDate: maxEndDate,
-      drinkQualityValue: 0,
-      drinkPriceValue: 0,
-      foodQualityValue: 0,
-      atmosphereValue: 0,
-      commentValue: '',
       curKey: 0
     }
   },
@@ -331,7 +328,6 @@ export default {
     deleteReviewForever(id) {
       Api.delete(`/reviews/${id}`)
         .then(response => {
-          console.log(response)
           this.reviews = []
           this.getReviews()
           this.curKey += 1
@@ -353,15 +349,9 @@ export default {
           console.error(error)
         })
     },
-    updateReview(id) {
-      const params = {
-        drinkQuality: this.drinkQualityValue,
-        drinkPrice: this.drinkPriceValue,
-        foodQuality: this.foodQualityValue,
-        atmosphere: this.atmosphereValue,
-        comment: this.commentValue
-      }
-      Api.patch(`/reviews/${id}`, params)
+    updateReview(id, payload) {
+      console.log(id, payload)
+      Api.patch(`/reviews/${id}`, payload)
         .then(response => {
           this.reviews = []
           this.getReviews()
