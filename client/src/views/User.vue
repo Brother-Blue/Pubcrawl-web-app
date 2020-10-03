@@ -243,16 +243,16 @@
               title="Update Event"
               >
               <p>Drink Quality: <em v-if="r.drinkQuality">{{r.drinkQuality}}/5</em><em v-if="!r.drinkQuality">Not rated</em></p>
-              <b-form-input v-model="drinkQualityValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <b-form-input v-model="drinkQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
               <p class="text-info">New rating: {{drinkQualityValue}}</p>
               <p>Drink Price: <em v-if="r.drinkPrice">{{r.drinkPrice}}/5</em><em v-if="!r.drinkPrice"></em>Not rated</p>
-              <b-form-input v-model="drinkPriceValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <b-form-input v-model="drinkPriceValue" type="range" min="1" max="5" step="0.5"></b-form-input>
               <p class="text-info">New rating: {{drinkPriceValue}}</p>
               <p>Food Quality: <em v-if="r.foodQuality">{{r.foodQuality}}/5</em><em v-if="!r.foodQuality">Not rated</em></p>
-              <b-form-input v-model="foodQualityValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <b-form-input v-model="foodQualityValue" type="range" min="1" max="5" step="0.5"></b-form-input>
               <p class="text-info">New rating: {{foodQualityValue}}</p>
               <p>Atmosphere: <em v-if="r.atmosphere">{{r.atmosphere}}/5</em><em v-if="!r.atmosphere">Not rated</em></p>
-              <b-form-input v-model="atmosphereValue" type="range" min="0" max="5" step="0.5"></b-form-input>
+              <b-form-input v-model="atmosphereValue" type="range" min="1" max="5" step="0.5"></b-form-input>
               <p class="text-info">New rating: {{atmosphereValue}}</p>
               <b-form-textarea
               v-model="commentValue"
@@ -337,8 +337,10 @@ export default {
       curKey: 0
     }
   },
-  mounted: function () {
+  created: function () {
     this.isValidUser()
+  },
+  mounted: function () {
     this.getEvents()
     this.getReviews()
     this.getBars()
@@ -353,19 +355,19 @@ export default {
   },
   methods: {
     isValidUser() {
-      Api.get('/users')
+      var id = this.$route.params.id
+      Api.get(`/users/${id}`)
         .then(response => {
-          var e = response.data.users
-          e.forEach(user => {
-            if (user._id === this.$route.params.id) {
-              this.validUser = true
-              this.user = user
-            }
-          })
+          var status = response.request.status
+          if (status === 200) {
+            this.validUser = true
+            this.user = response.data
+          } else {
+            this.validUser = false
+          }
         }).catch(error => {
           console.error(error)
         })
-      this.validUser = false
     },
     deleteConfirmation() {
       var id = this.$route.params.id
