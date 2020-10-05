@@ -3,21 +3,18 @@
         <pubcrawl-header id="header"></pubcrawl-header>
         <pubcrawl-calendar id="calendar"></pubcrawl-calendar>
         <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
-        <pubcrawl-footer></pubcrawl-footer>
     </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
 import EventCalendar from '@/components/EventCalendar'
-import Footer from '@/components/Footer'
 
 export default {
   name: 'events',
   components: {
     'pubcrawl-header': Header,
     'pubcrawl-calendar': EventCalendar,
-    'pubcrawl-footer': Footer
   },
   methods: {
     toTop() {
@@ -42,7 +39,7 @@ export default {
 }
 
 #calendar {
-  margin-top: 190px;
+  margin-top: 80px;
 }
 
 #jump-button {

@@ -15,7 +15,7 @@
     <!-- Search adress bar-->
     <label id="search_over_map">
         <gmap-autocomplete
-        placeholder="Type in your adress..."
+        placeholder="Enter adress"
         style="height: 40px; border-radius: 2px; border-width: 0px"
         v-on:keyup.enter="usePlace"
         :input="usePlace"
@@ -40,7 +40,7 @@
     ref="mapRef"
     :center="mapCoordinates"
     :zoom="zoom"
-    style="width:50%; position:absolute; right:0; bottom:0; top:186.4px"
+    style="width:50%; position:absolute; right:0; bottom:0; top: 44px"
     :options="{
       zoomControl: true,
       mapTypeControl: false,
@@ -465,6 +465,6 @@ export default {
 </script>
 <style scoped>
    #button_over_map { position: absolute; bottom: 110px; right: 10px; z-index: 99; }
-   #search_over_map { position: absolute; top: 200px; right: 10px; z-index: 99; }
-   #searchbutton_over_map { position: absolute; top: 200px; right: 10px; z-index: 99; }
+   #search_over_map { position: absolute; top: 60px; right: 10px; z-index: 99; }
+   #searchbutton_over_map { position: absolute; top: 60px; right: 10px; z-index: 99; }
 </style>

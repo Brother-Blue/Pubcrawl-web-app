@@ -169,15 +169,16 @@ color: gold;
 
 .bar-list-container {
   max-width: 50%;
-  min-height: 70vh;
-  max-height: 80vh;
+  max-height: 95.6vh;
   overflow: scroll;
+  border-width: 0px;
 }
 
 .bar-container {
   min-width: 100%;
   margin-top: 10px;
   margin-left: 0;
+  border-width: 0px;
 }
 
 .bar-header {
