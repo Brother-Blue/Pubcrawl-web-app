@@ -1,7 +1,7 @@
 <template>
     <div class="btn-group">
       <b-button-group>
-        <router-link to="/" class="btn-link">Home</router-link>
+        <router-link to="/" class="btn-link"><img class="image" src="../../../images/logo_placeholder.png"/></router-link>
         <router-link to="/events" class="btn-link">Events</router-link>
         <router-link to="/login" class="btn-link">{{ message }}</router-link>
       </b-button-group>
@@ -33,6 +33,10 @@ export default {
 </script>
 
 <style scoped>
+.image {
+  height: 50px;
+  padding: 0;
+}
 .btn-group {
     min-width: 100%;
     margin-top: 0px
@@ -44,10 +48,12 @@ export default {
 
 .btn-link {
     width: 33.33%;
-    margin-top: 0px;
-    padding: 10px;
     background-color: rgb(83, 90, 97);
     color: white;
+    margin-top: 0;
+    padding: 5px;
+    font-family: "Georgia", sans-serif;
+    font-size: 2.1em;
 }
 
 .btn-link:hover {
