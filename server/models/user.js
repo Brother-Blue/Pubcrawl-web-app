@@ -44,7 +44,7 @@ UserSchema.pre('save', function(next) {
     });
 });
 
-UserSchema.methods.validPassword = function(password) {
+UserSchema.methods.isValidPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
 
