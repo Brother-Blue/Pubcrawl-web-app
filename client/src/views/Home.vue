@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main bg-dark">
     <header-bar></header-bar>
     <bar-list></bar-list>
     <bar-map></bar-map>
