@@ -14,7 +14,7 @@ export default {
   name: 'events',
   components: {
     'pubcrawl-header': Header,
-    'pubcrawl-calendar': EventCalendar,
+    'pubcrawl-calendar': EventCalendar
   },
   methods: {
     toTop() {
@@ -31,12 +31,13 @@ export default {
   flex-direction: column;
 }
 
-#header {
+/* TODO: In case text start clipping */
+/* #header {
   min-width: 100%;
   position: fixed;
   top: 0;
   z-index: 1000;
-}
+} */
 
 #calendar {
   margin-top: 80px;
