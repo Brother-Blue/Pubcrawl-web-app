@@ -2,8 +2,35 @@ var User = require('../models/user');
 var Review = require('../models/review');
 var Event = require('../models/event');
 var express = require('express');
+var passport = require('../config/passport');
+var jwt = require('jsonwebtoken');
 
 var router = express.Router();
+
+router.post('/login', async (req, res, next) => {
+    console.log('pong')
+      passport.authenticate('login', async (err, user, info) => {
+          try {
+            if (err || !user) {
+              var error = new Error('An error occurred.');
+              return next(error);
+            }
+            req.login( user, { session: false }, async (error) => {
+                if (error) return next(error);
+  
+                var body = { _id: user._id, username: user.username };
+                var token = jwt.sign({ user: body }, 'TOP_SECRET');
+  
+                return res.json({ token });
+              }
+            );
+          } catch (error) {
+            return next(error);
+          }
+        }
+      )(req, res, next);
+    }
+  );
 
 // Create user
 router.post('', function(req, res, next) {
@@ -20,7 +47,7 @@ router.get('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             return res.status(404).json(
-                {"message": "user not found"});
+                {'message': 'user not found'});
         }
         res.status(200).json(user);
     });
@@ -30,12 +57,12 @@ router.get('/:id', function(req, res, next) {
 router.get('', function(req, res, next) {   
     if (!req.query.username){return next();}
     User.find({
-        username: { $regex: req.query.username, $options: "i" }
+        username: { $regex: req.query.username, $options: 'i' }
     },
         function(err, users) {
             if (err) { return next(err); }
             if (!users) { return res.status(404).json(
-                {"message": "no users found"});
+                {'message': 'no users found'});
             }
         res.status(200).json(users);
     });
@@ -45,7 +72,7 @@ router.get('', function(req, res, next) {
 router.get('', function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
-        res.status(200).json({"users": users});
+        res.status(200).json({'users': users});
     });
 });
 
@@ -55,7 +82,7 @@ router.get('/:id/reviews', function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             return res.status(404).json(
-                {"message": "user not found"});
+                {'message': 'user not found'});
         }
         res.status(200).json(user.reviews);
     })
@@ -67,7 +94,7 @@ router.put('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             return res.status(404).json(
-                {"message": "user not found"});
+                {'message': 'user not found'});
         }
         user.email = req.body.email;
         user.username = req.body.username;
@@ -87,7 +114,7 @@ router.patch('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             return res.status(404).json(
-                {"message": "user not found"});
+                {'message': 'user not found'});
         }
         user.email = (req.body.email || user.email);
         user.username = (req.body.username || user.username);
@@ -107,7 +134,7 @@ router.delete('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!user) {
             return res.status(404).json(
-                {"message": "user not found"});
+                {'message': 'user not found'});
         }
         Event.deleteMany(
             { users: req.params.id },
@@ -128,10 +155,10 @@ router.delete('', function(req, res, next) {
         if (err) { return next(err)};
         if (!user) { 
             return res.status(404).json(
-                {"message": "no users found"});
+                {'message': 'no users found'});
         }
         res.status(202).json(
-            {"message": "all users have been deleted"});
+            {'message': 'all users have been deleted'});
     });
 });
 
