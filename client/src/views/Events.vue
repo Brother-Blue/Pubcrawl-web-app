@@ -14,7 +14,7 @@ export default {
   name: 'events',
   components: {
     'pubcrawl-header': Header,
-    'pubcrawl-calendar': EventCalendar,
+    'pubcrawl-calendar': EventCalendar
   },
   methods: {
     toTop() {
