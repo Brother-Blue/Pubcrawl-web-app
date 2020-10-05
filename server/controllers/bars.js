@@ -38,7 +38,7 @@ router.get('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         res.status(200).json(bar);
     });
@@ -51,7 +51,7 @@ router.get('', function(req, res, next) {
         name: req.query.sortByName
     }).exec(function(err,results){
         if(err) { return next(err)}
-        if(!results) {return res.status(404).json({"message": "no reviews found"})}
+        if(!results) {return res.status(404).json({'message': 'no reviews found'})}
         res.status(200).json(results);
     })
 });
@@ -62,7 +62,7 @@ router.get('/:id/reviews', function(req, res, next) {
     Review.find({}).sort({
         drinkQuality: req.query.sortByDrinkQuality}).exec(function(err, results){
             if(err) { return next(err)}
-            if(!results) {return res.status(404).json({"message": "no reviews found"})}
+            if(!results) {return res.status(404).json({'message': 'no reviews found'})}
             res.status(200).json(results)
         });
 });
@@ -73,7 +73,7 @@ router.get('/:id/reviews', function(req, res, next) {
     Review.find({}).sort({
         drinkPrice: req.query.sortByDrinkPrice}).exec(function(err, results){
             if(err) { return next(err)}
-            if(!results) {return res.status(404).json({"message": "no reviews found"})}
+            if(!results) {return res.status(404).json({'message': 'no reviews found'})}
             res.status(200).json(results)
         });
 });
@@ -85,7 +85,7 @@ router.get('/:id/reviews', function (req, res, next) {
         averageRating: req.query.sortByFoodQuality
     }).exec(function (err, results) {
         if (err) { return next(err); }
-        if (!results) { return res.status(404).json({"message": "no reviews found"}); }
+        if (!results) { return res.status(404).json({'message': 'no reviews found'}); }
         res.status(200).json(results);
     })
 });
@@ -97,7 +97,7 @@ router.get('/:id/reviews', function (req, res, next) {
         averageRating: req.query.sortByAtmosphere
     }).exec(function (err, results) {
         if (err) { return next(err); }
-        if (!results) { return res.status(404).json({"message": "no reviews found"}); }
+        if (!results) { return res.status(404).json({'message': 'no reviews found'}); }
         res.status(200).json(results);
     })
 });
@@ -109,7 +109,7 @@ router.get('/:id/reviews', function (req, res, next) {
         averageRating: req.query.sortByAverageRating
     }).exec(function (err, results) {
         if (err) { return next(err); }
-        if (!results) { return res.status(404).json({"message": "no reviews found"}); }
+        if (!results) { return res.status(404).json({'message': 'no reviews found'}); }
         res.status(200).json(results);
     })
 });
@@ -121,7 +121,7 @@ router.get('/:id/events', function (req, res, next) {
         startDate: req.query.sortByStartDate
     }).exec(function (err, results) {
         if (err) { return next(err); }
-        if (!results) { return res.status(404).json({"message": "no events found"}); }
+        if (!results) { return res.status(404).json({'message': 'no events found'}); }
         res.status(200).json(results);
     })
 });
@@ -130,12 +130,12 @@ router.get('/:id/events', function (req, res, next) {
 router.get('', function(req, res, next) {   
     if (!req.query.name){return next();}
     Bar.find({
-        name: { $regex: req.query.name, $options: "i" }
+        name: { $regex: req.query.name, $options: 'i' }
     },
         function(err, bars) {
             if (err) { return next(err); }
             if (!bars) { return res.status(404).json(
-                {"message": "no reviews found"});
+                {'message': 'no reviews found'});
             }
         res.status(200).json(bars);
     });
@@ -145,7 +145,7 @@ router.get('', function(req, res, next) {
 router.get('', function(req, res, next) {
     Bar.find(function(err, bars) {
         if (err) { return next(err); }
-        res.status(200).json({"bars": bars});
+        res.status(200).json({'bars': bars});
     });
 });
 
@@ -158,7 +158,7 @@ router.get('/:id/reviews', function(req, res, next) {
     }, function(err, reviews) {
         if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
+            {'message': 'no reviews found'});
         }
         res.status(200).json(reviews);
     });
@@ -173,7 +173,7 @@ router.get('/:id/reviews', function(req, res, next) {
     }, function(err, reviews) {
         if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
+            {'message': 'no reviews found'});
         }
         res.status(200).json(reviews);
     });
@@ -188,7 +188,7 @@ router.get('/:id/reviews', function(req, res, next) {
     }, function(err, reviews) {
         if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
+            {'message': 'no reviews found'});
         }
         res.status(200).json(reviews);
     });
@@ -203,7 +203,7 @@ router.get('/:id/reviews', function(req, res, next) {
     }, function(err, reviews) {
         if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
+            {'message': 'no reviews found'});
         }
         res.status(200).json(reviews);
     });
@@ -218,7 +218,7 @@ router.get('/:id/reviews', function(req, res, next) {
     }, function(err, reviews) {
         if (err) { return next(err); }
         if (!reviews) { return res.status(404).json(
-            {"message": "no reviews found"});
+            {'message': 'no reviews found'});
         }
         res.status(200).json(reviews);
     });
@@ -230,7 +230,7 @@ router.get('/:id/reviews', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         res.status(200).json(bar.reviews);
     })
@@ -242,7 +242,7 @@ router.get('/:id/events', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         res.status(200).json(bar.events);
     })
@@ -254,12 +254,14 @@ router.put('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         bar.name = req.body.name;
         bar.latLong = req.body.latLong;
         bar.reviews = req.body.reviews;
         bar.events = req.body.events;
+        bar.address = req.body.address;
+        bar.photo = req.body.photo;
         bar.save();
         res.status(200).json(bar);
     });
@@ -271,12 +273,14 @@ router.patch('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         bar.name = (req.body.name || bar.name);
         bar.latLong = (req.body.latLong || bar.latLong);
         bar.reviews = (req.body.reviews || bar.reviews);
         bar.events = (req.body.events || bar.events);
+        bar.address = (req.body.address || bar.address);
+        bar.photo = (req.body.photo || bar.photo);
         bar.save();
         res.status(200).json(bar);
     });
@@ -307,7 +311,7 @@ router.delete('/:bar/reviews/:id', function(req, res, next) {
             if (err) { return next(err); }
             if (!review) {
                 return res.status(404).json(
-                    {"message": "review not found"});
+                    {'message': 'review not found'});
             }
             res.status(200).json({'message': 'review deleted'});
         });
@@ -320,7 +324,7 @@ router.delete('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!bar) {
             return res.status(404).json(
-                {"message": "bar not found"});
+                {'message': 'bar not found'});
         }
         Review.deleteMany(
             { bars: req.params.id },
@@ -341,10 +345,10 @@ router.delete('', function(req, res, next) {
         if (err) { return next(err)};
         if (!bar) { 
             return res.status(404).json(
-                {"message": "no bars found"});
+                {'message': 'no bars found'});
         }
         res.status(200).json(
-            {"message": "all bars have been deleted"});
+            {'message': 'all bars have been deleted'});
     });
 });
 

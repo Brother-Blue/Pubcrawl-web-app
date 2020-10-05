@@ -1,6 +1,6 @@
 var Event = require('../models/event');
 var Bar = require('../models/bar');
-var authenticated = require('../config/authenticated');
+var passport = require('passport');
 var express = require('express');
 
 var router = express.Router();
@@ -30,7 +30,7 @@ router.get('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         res.status(200).json(event);
     });
@@ -43,7 +43,7 @@ router.get('', function(req, res, next) {
         startDate: req.query.sortByStartDate
     }).exec(function(err,results){
         if(err) { return next(err)}
-        if(!results) {return res.status(404).json({"message": "no events found"})}
+        if(!results) {return res.status(404).json({'message': 'no events found'})}
         res.status(200).json(results);
     })
 });
@@ -52,12 +52,12 @@ router.get('', function(req, res, next) {
 router.get('', function(req, res, next) {   
     if (!req.query.title){return next();}
     Event.find({
-        title: { $regex: req.query.title, $options: "i" }
+        title: { $regex: req.query.title, $options: 'i' }
     },
         function(err, events) {
             if (err) { return next(err); }
             if (!events) { return res.status(404).json(
-                {"message": "no events found"});
+                {'message': 'no events found'});
             }
         res.status(200).json(events);
     });
@@ -67,12 +67,12 @@ router.get('', function(req, res, next) {
 router.get('', function(req, res, next) {   
     if (!req.query.description){return next();}
     Event.find({
-        description: { $regex: req.query.description, $options: "i" }
+        description: { $regex: req.query.description, $options: 'i' }
     },
         function(err, events) {
             if (err) { return next(err); }
             if (!events) { return res.status(404).json(
-                {"message": "no events found"});
+                {'message': 'no events found'});
             }
         res.status(200).json(events);
     });
@@ -82,7 +82,7 @@ router.get('', function(req, res, next) {
 router.get('', function(req, res, next) {
     Event.find(function(err, events) {
         if (err) { return next(err); }
-        res.status(200).json({"events": events});
+        res.status(200).json({'events': events});
     });
 });
 
@@ -92,7 +92,7 @@ router.get('/:id/bars', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         res.status(200).json(event.bars);
     })
@@ -104,7 +104,7 @@ router.get('/:id/users', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         res.status(200).json(event.users);
     })
@@ -116,7 +116,7 @@ router.put('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         event.title = req.body.title;
         event.description = req.body.description;
@@ -136,7 +136,7 @@ router.patch('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         event.title = (req.body.title || event.title);
         event.description = (req.body.description || event.description);
@@ -156,7 +156,7 @@ router.delete('/:id', function(req, res, next) {
         if (err) { return next(err); }
         if (!event) {
             return res.status(404).json(
-                {"message": "event not found"});
+                {'message': 'event not found'});
         }
         Bar.updateMany(
             { },
@@ -173,10 +173,10 @@ router.delete('', function(req, res, next) {
         if (err) { return next(err)};
         if (!event) { 
             return res.status(404).json(
-                {"message": "no events found"});
+                {'message': 'no events found'});
         }
         res.status(200).json(
-            {"message": "all events have been deleted"});
+            {'message': 'all events have been deleted'});
     });
 })
 
