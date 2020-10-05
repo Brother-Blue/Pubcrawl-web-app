@@ -14,7 +14,7 @@
     :max="max"
     @selected="getEvents(value)"
     ></b-calendar>
-    <add-event-button></add-event-button>
+    <add-event-button @sendingPayload="saveEvent"></add-event-button>
     <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
         <event-item
         :eventTitle="e[0]"
@@ -103,6 +103,14 @@ export default {
           })
       }
       return bars
+    },
+    saveEvent(payload) {
+      Api.post('/events', payload)
+        .then(response => {
+          console.log(response)
+        }).catch(error => {
+          console.error(error)
+        })
     }
   }
 }
