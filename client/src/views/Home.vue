@@ -19,3 +19,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
