@@ -36,6 +36,11 @@ app.use(cors());
 // Use API routes
 app.use('/api', router);
 
+app.get('/api', function(req, res) {
+    res.status(200).json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
+});
+
+
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
     console.log('L43 req', req);
