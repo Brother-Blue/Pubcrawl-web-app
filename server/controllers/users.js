@@ -18,9 +18,9 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error);
   
                 var body = { _id: user._id, username: user.username };
-                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '1h' });
+                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '12h' });
                 res.cookie('jwt', token, { httpOnly: false, secure: false });
-                return res.json({ _id });
+                return res.json({ body });
               }
             );
           } catch (error) {
@@ -40,7 +40,7 @@ router.post('', function(req, res, next) {
 });  
 
 // Read user
-router.get('/:id', function(req, res, next) {
+router.get('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -52,7 +52,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 // Read all users and partially filter by username
-router.get('', function(req, res, next) {   
+router.get('', passport.authenticate('jwt', { session: false }), function(req, res, next) {   
     if (!req.query.username){return next();}
     User.find({
         username: { $regex: req.query.username, $options: 'i' }
@@ -67,7 +67,7 @@ router.get('', function(req, res, next) {
 });
 
 // Read all users 
-router.get('', function(req, res, next) {
+router.get('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.find(function(err, users) {
         if (err) { return next(err); }
         res.status(200).json({'users': users});
@@ -75,7 +75,7 @@ router.get('', function(req, res, next) {
 });
 
 // Read all user reviews
-router.get('/:id/reviews', function(req, res, next) {
+router.get('/:id/reviews', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findById(req.params.id).populate('reviews').exec(function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -87,7 +87,7 @@ router.get('/:id/reviews', function(req, res, next) {
 });
 
 // Update user
-router.put('/:id', function(req, res, next) {
+router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -107,7 +107,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // Update user partially
-router.patch('/:id', function(req, res, next) {
+router.patch('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -127,7 +127,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // Delete user
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findByIdAndDelete({_id: req.params.id}, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -148,7 +148,7 @@ router.delete('/:id', function(req, res, next) {
 });
 
 // Delete all users
-router.delete('', function(req, res, next) {
+router.delete('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.deleteMany({}, function(err, user) {
         if (err) { return next(err)};
         if (!user) { 

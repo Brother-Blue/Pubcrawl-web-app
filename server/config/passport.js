@@ -2,7 +2,6 @@ var User = require('../models/user');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 var JWTstrategy = require('passport-jwt').Strategy;
-var ExtractJWT = require('passport-jwt').ExtractJwt;
 
 // TODO: add 'passport.authenticate('jwt', { session: false }),' to APIs that we want to protect
 
@@ -32,20 +31,26 @@ passport.use('login', new localStrategy({
   )
 );
 
-passport.use(
-  new JWTstrategy(
-    {
-      secretOrKey: 'sea shanty 2 remix',
-      jwtFromRequest: req => req.cookies.jwt,
-    },
-    async (token, done) => {
-      try {
-        return done(null, token.user);
-      } catch (error) {
-        done(error);
-      }
-    }
-  )
-);
+var cookieExtractor = function(req) {
+  var token = null;
+  if (req && req.cookies)
+  {
+      token = req.cookies['jwt'];
+  }
+  return token;
+};
+
+passport.use(new JWTstrategy(
+  {
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: 'sea shanty 2 remix',
+},
+(jwtPayload, done) => {
+  if (Date.now() > jwtPayload.expires) {
+    return done('jwt expired');
+  }
+  return done(null, jwtPayload);
+}
+));
 
 module.exports = passport
