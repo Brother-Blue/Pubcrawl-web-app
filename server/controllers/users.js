@@ -8,7 +8,6 @@ var jwt = require('jsonwebtoken');
 var router = express.Router();
 
 router.post('/login', async (req, res, next) => {
-    console.log('pong')
       passport.authenticate('login', async (err, user, info) => {
           try {
             if (err || !user) {
@@ -19,9 +18,9 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error);
   
                 var body = { _id: user._id, username: user.username };
-                var token = jwt.sign({ user: body }, 'TOP_SECRET');
-  
-                return res.json({ token });
+                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '1h' });
+                res.cookie('jwt', token, { httpOnly: false, secure: false });
+                return res.json({ _id });
               }
             );
           } catch (error) {
@@ -29,8 +28,7 @@ router.post('/login', async (req, res, next) => {
           }
         }
       )(req, res, next);
-    }
-  );
+});
 
 // Create user
 router.post('', function(req, res, next) {

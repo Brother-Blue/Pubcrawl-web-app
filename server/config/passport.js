@@ -35,8 +35,8 @@ passport.use('login', new localStrategy({
 passport.use(
   new JWTstrategy(
     {
-      secretOrKey: 'TOP_SECRET',
-      jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+      secretOrKey: 'sea shanty 2 remix',
+      jwtFromRequest: req => req.cookies.jwt,
     },
     async (token, done) => {
       try {
