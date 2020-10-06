@@ -3,11 +3,12 @@ var Review = require('../models/review');
 var Event = require('../models/event');
 var express = require('express');
 var mongoose = require('mongoose');
+var passport = require('passport');
 
 var router = express.Router();
 
 // Create bar
-router.post('', function(req, res, next) {
+router.post('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     var bar = new Bar(req.body);
     bar.save(function(err) {
         if (err) { return next(err); }
@@ -16,7 +17,7 @@ router.post('', function(req, res, next) {
 });
 
 // Create bar review
-router.post('/:id/reviews', function(req, res, next) {
+router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     var review = new Review(req.body);
     Bar.findById({_id: req.params.id}, function(err, bar) {
         if (err) { return next(err); }
@@ -249,7 +250,7 @@ router.get('/:id/events', function(req, res, next) {
 });
 
 // Update bar
-router.put('/:id', function(req, res, next) {
+router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
         if (!bar) {
@@ -268,7 +269,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // Update bar partially
-router.patch('/:id', function(req, res, next) {
+router.patch('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Bar.findById(req.params.id, function(err, bar) {
         if (err) { return next(err); }
         if (!bar) {
@@ -287,7 +288,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // Delete review through bar
-router.delete('/:bar/reviews/:id', function(req, res, next) {
+router.delete('/:bar/reviews/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     var barID, reviewBar, reviewID
     Bar.findById({_id: req.params.bar}, function(err, bar) {
         if (err) { return next(err) }
@@ -319,7 +320,7 @@ router.delete('/:bar/reviews/:id', function(req, res, next) {
 });
 
 // Delete bar
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Bar.findByIdAndDelete({_id: req.params.id}, function(err, bar) {
         if (err) { return next(err); }
         if (!bar) {
@@ -340,7 +341,7 @@ router.delete('/:id', function(req, res, next) {
 });
 
 // Delete all bars
-router.delete('', function(req, res, next) {
+router.delete('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Bar.deleteMany({}, function(err, bar) {
         if (err) { return next(err)};
         if (!bar) { 

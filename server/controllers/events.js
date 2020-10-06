@@ -6,7 +6,7 @@ var express = require('express');
 var router = express.Router();
 
 // Create event
-router.post('', function(req, res, next) {
+router.post('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     var event = new Event(req.body);
     for (let i = 0; i < req.body.bars.length; i++) {
         Bar.findById({_id: req.body.bars[i]}, function(err, bar) {
@@ -111,7 +111,7 @@ router.get('/:id/users', function(req, res, next) {
 });
 
 // Update event
-router.put('/:id', function(req, res, next) {
+router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
         if (!event) {
@@ -131,7 +131,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // Update event partially
-router.patch('/:id', function(req, res, next) {
+router.patch('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Event.findById(req.params.id, function(err, event) {
         if (err) { return next(err); }
         if (!event) {
@@ -151,7 +151,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // Delete event
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Event.findByIdAndDelete({_id: req.params.id}, function(err, event) {
         if (err) { return next(err); }
         if (!event) {
@@ -168,7 +168,7 @@ router.delete('/:id', function(req, res, next) {
 });
 
 // Delete all events
-router.delete('', function(req, res, next) {
+router.delete('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     Event.deleteMany({}, function(err, event) {
         if (err) { return next(err)};
         if (!event) { 
