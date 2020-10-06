@@ -5,6 +5,7 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 var mongoose = require('mongoose');
+var cookieParser = require('cookie-parser')
 
 // API endpoint
 var router = require('./controllers/index');
@@ -27,6 +28,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
 var app = express();
 // Parse requests of content-type 'application/json'
 app.use(bodyParser.json());
+app.use(cookieParser())
 // HTTP request logger
 app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
