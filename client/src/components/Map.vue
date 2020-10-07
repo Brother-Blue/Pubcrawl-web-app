@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Focus user button -->
     <div id="button_over_map">
       <b-button
@@ -29,7 +28,6 @@
         variant="light"
         style="width: 40px; height: 40px; padding: 0"
         @click="usePlace">
-
         <b-icon
         icon="search">
         </b-icon></b-button>
@@ -63,7 +61,9 @@
       <!-- Bar clustering -->
       <GmapCluster
       :clickable="true"
-      :animation="2">
+      :zoom-on-click="true"
+      :maxZoom="16"
+      :animation="1">
 
       <!-- Bar marker -->
       <GmapMarker
@@ -119,10 +119,10 @@ export default {
       start: null,
       end: null,
       barStyles: {
-        url: require('./../../../images/map_icon.svg'),
+        url: require('./../../../images/map_icon.png'),
         scaledSize: {
-          width: 40,
-          height: 40,
+          width: 50,
+          height: 50,
           f: 'px',
           b: 'px'
         }
@@ -432,9 +432,8 @@ export default {
         lat: bar.latLong[0],
         lng: bar.latLong[1]
       }
-      // TODO: Move this to when bar is selected in list
-      this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
-      this.infoOptions.content = bar.name
+      this.infoOptions.content = this.getInfoWindowContent(bar)
+      // this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
 
       // If same bar is clicked, close window. Else open
       if (this.currentMidx === idx) {
@@ -443,6 +442,16 @@ export default {
         this.infoWinOpen = true
         this.currentMidx = idx
       }
+    },
+    getInfoWindowContent: function (bar) {
+      return (`  <div>
+  <img src="${bar.photo}" alt="bar_image" style="width:15vh">
+  <div>
+    <p></p>
+    <h6><b>${bar.name}</b></h6>
+    <p>${bar.address}</p>
+  </div>
+</div>`)
     }
   },
 
@@ -463,7 +472,7 @@ export default {
 
 </script>
 <style scoped>
-   #button_over_map { position: absolute; bottom: 110px; right: 10px; z-index: 99; }
-   #search_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
-   #searchbutton_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
+  #button_over_map { position: absolute; bottom: 110px; right: 10px; z-index: 99; }
+  #search_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
+  #searchbutton_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
 </style>
