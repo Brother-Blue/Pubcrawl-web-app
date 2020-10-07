@@ -73,7 +73,7 @@
                 :state="eAvailable"
                 trim
             ></b-form-input>
-             <b-form-invalid-feedback id="input-live-feedback" :errMessageEmail="errMessageEmail">
+             <b-form-invalid-feedback class="text-warning" id="input-live-feedback" :errMessageEmail="errMessageEmail">
               {{errMessageEmail}}
             </b-form-invalid-feedback>
           </b-form-group>
@@ -134,9 +134,8 @@ export default {
       registerEmail: '',
       errMessageUsername: '',
       errMessageEmail: '',
-      availableUser: true,
-      availableEmail: true,
-      users: []
+      users: [],
+      emails: []
     }
   },
   created: function () {
@@ -161,12 +160,12 @@ export default {
     uAvailable() {
       var b = this.registerUsername.length >= 4 && this.registerUsername.length <= 15
       var valid = this.usernameValid(b)
-      this.usernameAvailable(this.registerUsername)
-      return this.availableUser && valid
+      var c = this.usernameAvailable(this.registerUsername)
+      return c && valid
     },
     eAvailable() {
-      this.emailAvailable(this.registerEmail)
-      return this.availableEmail
+      var d = this.emailAvailable(this.registerEmail)
+      return d
     }
   },
   methods: {
@@ -198,7 +197,10 @@ export default {
     getUsers() {
       Api.get('/users')
         .then(response => {
-          this.users = response.data.users
+          response.data.users.forEach(user => {
+            this.users.push(user.username)
+            this.emails.push(user.email)
+          })
         }).catch(error => {
           console.log(error)
         })
@@ -212,24 +214,30 @@ export default {
       }
     },
     usernameAvailable(u) {
-      this.users.forEach(user => {
-        if (user.username === u) {
-          this.errMessageUsername = 'Username not available'
-          this.availableUser = false
-        } else {
-          this.availableUser = true
-        }
-      })
+      var a = this.users.includes(u)
+      if (a) {
+        this.errMessageUsername = 'Username is not available'
+        return false
+      }
+      return true
     },
     emailAvailable(e) {
-      this.users.forEach(user => {
-        if (user.email === e) {
-          this.errMessageEmail = 'Email not available'
-          this.availableEmail = false
-        } else {
-          this.availableEmail = true
+      var a = this.validateEmail(e)
+      if (a) {
+        if (this.emails.includes(e)) {
+          this.errMessageEmail = 'Email is not available'
+          return false
         }
-      })
+        return true
+      }
+      this.errMessageEmail = 'Invalid email'
+      return a
+    },
+    validateEmail(e) {
+      if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(e)) {
+        return true
+      }
+      return false
     },
     registerUser() {
       const params = {
@@ -240,7 +248,7 @@ export default {
       Api.post('/users', params)
         .then(response => {
           // Stuff
-          console.log(`Success ${response.statusCode}`)
+          console.log(`Success ${response}`)
         }).catch(error => {
           console.error(error)
         })
