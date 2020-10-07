@@ -66,7 +66,6 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
 import BarItem from '@/components/BarItem'
 import SearchBar from '@/components/SearchBar'
 
@@ -98,40 +97,6 @@ export default {
     calcDistance(deviceCoords, destinationCoords) {
       // TODO: Calculate distance with Google Maps API
       // Once Hjalle is done paying for Google Cloud subscriptionss
-    },
-    getBars() {
-      var e = []
-      Api.get('/bars')
-        .then((response) => {
-          e = response.data.bars
-          this.bars = e
-          this.getReviews()
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
-    getReviews() {
-      var a = []
-      Api.get('reviews').then((response) => {
-        a = response.data.reviews
-        this.reviews = a
-        for (var i = 0; i < this.bars.length; i++) {
-          var avg = 0
-          var count = 0
-          for (var j = 0; j < this.reviews.length; j++) {
-            if (this.bars[i]._id === this.reviews[j].bars) {
-              avg += this.reviews[j].averageRating
-              count++
-            } else {
-              this.bars[i].rating = 0
-            }
-          }
-          if (count > 0) {
-            this.bars[i].rating = avg / count
-          }
-        }
-      })
     },
     addReview(barID) {
       const payload = {

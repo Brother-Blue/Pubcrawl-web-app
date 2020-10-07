@@ -22,6 +22,8 @@ export default {
   },
   data() {
     return {
+      bars: null,
+      reviews: null
     }
   },
   methods: {
@@ -32,6 +34,39 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    getBars() {
+      var e = []
+      Api.get('/bars')
+        .then((response) => {
+          e = response.data.bars
+          this.bars = e
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    getAvgRating() {
+      var a = []
+      Api.get('reviews').then((response) => {
+        a = response.data.reviews
+        this.reviews = a
+        for (var i = 0; i < this.bars.length; i++) {
+          var avg = 0
+          var count = 0
+          for (var j = 0; j < this.reviews.length; j++) {
+            if (this.bars[i]._id === this.reviews[j].bars) {
+              avg += this.reviews[j].averageRating
+              count++
+            } else {
+              this.bars[i].rating = 0
+            }
+          }
+          if (count > 0) {
+            this.bars[i].rating = avg / count
+          }
+        }
+      })
     }
   }
 }
