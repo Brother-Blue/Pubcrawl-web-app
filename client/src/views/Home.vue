@@ -5,7 +5,9 @@
     :barArray="bars"
     @addReview='addBarReview'>
     </bar-list>
-    <bar-map></bar-map>
+    <bar-map
+    :bars="bars">
+    </bar-map>
   </div>
 </template>
 
@@ -23,8 +25,7 @@ export default {
   },
   data() {
     return {
-      bars: null,
-      reviews: null
+      bars: null
     }
   },
   methods: {
@@ -47,7 +48,7 @@ export default {
             Api.get(`/bars/${this.bars[i]._id}/reviews`)
               .then(response => {
                 review = response.data.reviews
-                if (review.averageRating) {
+                if (review) {
                   for (var i = 0; i < review.length; i++) {
                     avg += review.averageRating
                     count++

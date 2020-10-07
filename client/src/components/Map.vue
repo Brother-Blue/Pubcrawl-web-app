@@ -90,11 +90,11 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
 import DirectionsRenderer from '@/components/DirectionsRenderer'
 
 export default {
   components: { DirectionsRenderer },
+  props: ['bars'],
 
   data() {
     return {
@@ -103,7 +103,6 @@ export default {
         lng: 11.974560
       },
       userCoordinates: null,
-      bars: [],
       place: null,
       zoom: 12,
       infoWindowPos: null,
@@ -374,18 +373,6 @@ export default {
         this.start = JSON.stringify(this.userCoordinates.lat + ',' + this.userCoordinates.lng)
       })
       .catch(error => alert(error))
-
-    // Populate map with bars
-    Api.get('/bars')
-      .then(response => {
-        var e = response.data.bars
-        for (var i = 0; i < e.length; i++) {
-          this.bars.push(e[i])
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
   },
 
   methods: {
@@ -450,6 +437,7 @@ export default {
     <p></p>
     <h6><b>${bar.name}</b></h6>
     <p>${bar.address}</p>
+    <p>${bar.avgRating}</p>
   </div>
 </div>`)
     }
