@@ -13,7 +13,7 @@
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-         <b-button v-b-modal="'add-review' + bar._id" class="add-review bg-dark" variant="outline-warning" >
+         <b-button v-b-modal="'add-review' + bar._id" class="add-review " variant="outline-warning" >
             add review to bar
           </b-button>
       </div>
@@ -27,13 +27,37 @@
         size="lg"
         centered
         v-bind:title="'add review for:  ' + bar.name"
-        @ok="updateBarInfo(bar._id)"
+        @ok="addReview(bar._id)"
+        :ok-disabled="commentValue.length >= 140"
         >
-        <b-form-input
-        v-bind:id="'add-review' + bar._id"
-        v-bind:placeholder="'Update name for: ' + bar.name"
-        v-model="text">
-        </b-form-input>
+        <b-input-group class="drink-quality" prepend="Drink Quality">
+        <b-form-rating v-model="drinkQualityValue" show-clear></b-form-rating>
+        </b-input-group
+        >
+         <b-input-group class="drink-price" prepend="Drink Price">
+        <b-form-rating v-model="drinkPriceValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+          <b-input-group class="atmosphere" prepend="Atmosphere">
+        <b-form-rating v-model="atmosphereValue" show-clear></b-form-rating>
+          </b-input-group
+          >
+         <b-input-group class="food-quality" prepend="Food Quality">
+        <b-form-rating v-model="foodQualityValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+        <b-form-group class="comment"
+                description="Max comment length is 140 characters"
+                >
+                  <b-form-textarea
+                  v-model="commentValue"
+                  :placeholder="comment"
+                  :state="commentValue.length <= 140"
+                  rows="3"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+        >
       </b-modal>
     </b-collapse>
     </div>
@@ -47,6 +71,9 @@ import SearchBar from '@/components/SearchBar'
 
 export default {
   name: 'bar-list',
+  props: [
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn'
+  ],
   components: {
     'bar-item': BarItem,
     'pubcrawl-searchbar': SearchBar
@@ -56,6 +83,11 @@ export default {
       bars: null,
       reviews: null,
       distance: 10,
+      drinkQualityValue: null,
+      drinkPriceValue: null,
+      atmosphereValue: null,
+      foodQualityValue: null,
+      commentValue: '',
       img: require('./../../../images/bar_placeholder.png')
     }
   },
@@ -73,15 +105,6 @@ export default {
           this.getReviews()
         })
         .catch((error) => {
-          console.error(error)
-        })
-    },
-    deleteBar(barID) {
-      var id = barID
-      Api.delete(`/bars/${id}`)
-        .then(response => {
-          console.log('bar been yote')
-        }).catch(error => {
           console.error(error)
         })
     },
@@ -106,6 +129,17 @@ export default {
           }
         }
       })
+    },
+    addReview(barID) {
+      const payload = {
+        drinkQuality: this.drinkQualityValue,
+        drinkPrice: this.drinkPriceValue,
+        foodQuality: this.foodQualityValue,
+        atmosphere: this.atmosphereValue,
+        comment: this.commentValue
+      }
+      console.log(payload + 'what ze fuk happnd  ' + barID)
+      this.$emit('addReview', barID, payload)
     }
   },
   created: function () {
@@ -166,5 +200,24 @@ color: gold;
   width: 100%;
   padding-top: 50px;
   margin-bottom: 0px;
+}
+.drink-price {
+  width: 100%;
+  padding-top: 10px;
+}
+.atmosphere {
+  padding-top: 10px;
+}
+.food-quality {
+  padding-top: 10px;
+}
+.input-group>.input-group-prepend {
+    flex: 0 0 20%;
+}
+.input-group .input-group-text {
+    width: 100%;
+}
+.comment {
+  padding-top: 10px;
 }
 </style>
