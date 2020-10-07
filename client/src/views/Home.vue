@@ -37,35 +37,35 @@ export default {
         })
     },
     getBars() {
-      var e = []
       Api.get('/bars')
         .then((response) => {
-          e = response.data.bars
-          this.bars = e
-          this.getAvgRating()
+          this.bars = response.data.bars
+          for (var i = 0; i < this.bars.length; i++) {
+            var review = []
+            var avg = 0
+            var count = 0
+            Api.get(`/bars/${this.bars[i]._id}/reviews`)
+              .then(response => {
+                review = response.data.reviews
+                if (review.averageRating) {
+                  for (var i = 0; i < review.length; i++) {
+                    avg += review.averageRating
+                    count++
+                  }
+                }
+              }).catch(error => {
+                console.error(error)
+              })
+            if (count > 0) {
+              this.bars[i].rating = avg / count
+            } else {
+              this.bars[i].rating = 0
+            }
+          }
         })
         .catch((error) => {
           console.error(error)
         })
-    },
-    getAvgRating() {
-      Api.get('reviews').then((response) => {
-        this.reviews = response.data.reviews
-        for (var i = 0; i < this.bars.length; i++) {
-          this.bars[i].rating = 0
-          var avg = 0
-          var count = 0
-          for (var j = 0; j < this.reviews.length; j++) {
-            if (this.bars[i]._id === this.reviews[j].bars) {
-              avg += this.reviews[j].averageRating
-              count++
-            }
-          }
-          if (count > 0) {
-            this.bars[i].rating = avg / count
-          }
-        }
-      })
     }
   },
   created: function () {
