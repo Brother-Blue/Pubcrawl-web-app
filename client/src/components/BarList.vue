@@ -1,9 +1,10 @@
 <template>
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
-    <div v-for="bar in bars" :key="bar" >
+    <div v-for="(bar,index) in bars" :key="index +curKey" >
       <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
         <bar-item
+        id="index"
         :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
@@ -80,6 +81,7 @@ export default {
   },
   data() {
     return {
+      curKey: null,
       bars: null,
       reviews: null,
       distance: 10,
@@ -143,6 +145,7 @@ export default {
       }
       console.log(payload + 'what ze fuk happnd  ' + barID)
       this.$emit('addReview', barID, payload)
+      this.curKey++
     }
   },
   created: function () {
