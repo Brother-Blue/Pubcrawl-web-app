@@ -1,6 +1,6 @@
 <template>
   <b-navbar>
-    <b-navbar-brand href="#" class="bg-dark text-warning" to="/">REPLACE WITH IMAGE</b-navbar-brand>
+    <b-navbar-brand href="#" class="bg-dark text-warning" :to="{path: '/', query: {id: this.$route.query.id}}">REPLACE WITH IMAGE</b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="text-warning"><b-button class="btn btn-warning" v-b-toggle.sidebar-menu>Menu <b-icon icon="list"></b-icon></b-button></b-nav-item>
     </b-navbar-nav>
@@ -18,8 +18,8 @@
       vertical
       class="float-left text-justify"
       >
-        <b-nav-item class="text-warning" v-if="getSignedIn" to="/user/${this.$router.query.id}"><b-icon icon="person-fill"></b-icon> My Pages</b-nav-item>
-        <b-nav-item class="text-warning" to="/events"><b-icon icon="calendar"></b-icon> Events</b-nav-item>
+        <b-nav-item class="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-fill"></b-icon> My Pages</b-nav-item>
+        <b-nav-item class="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar"></b-icon> Events</b-nav-item>
         <b-nav-item class="text-warning" v-if="!getSignedIn" v-b-modal.signin-modal><b-icon icon="gear"></b-icon> Sign in</b-nav-item>
         <b-nav-item class="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear"></b-icon> Sign out</b-nav-item>
       </b-nav>
