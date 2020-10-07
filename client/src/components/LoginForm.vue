@@ -81,9 +81,9 @@ export default {
           console.log('Success!')
         }).catch(error => {
           if (error.response.status === 404) {
-            this.sendToast('Uh oh!', false, 'Invalid username or password.')
+            this.sendToast('Uh oh!', false, 'Something went wrong logging you in. Please try again later.')
           } else if (error.response.status === 401) {
-            this.sendToast('Uh oh!', false, 'You do not have permission to do this.')
+            this.sendToast('Uh oh!', false, 'Invalid username or password.')
           }
           console.log(error.response)
         })
