@@ -30,6 +30,10 @@ router.post('/login', async (req, res, next) => {
       )(req, res, next);
 });
 
+router.get('/test', function(req, res, next) {
+    console.log(req.cookies);
+})
+
 // Create user
 router.post('', function(req, res, next) {
     var user = new User(req.body);

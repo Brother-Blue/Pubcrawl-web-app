@@ -176,9 +176,15 @@ export default {
       }
       Api.post('/users/login', params, { useCredentials: true })
         .then(response => {
-          console.log('Success!\n' + response)
           if (response.status === 200) {
-            console.log('Pongers!')
+            Api.get('/test')
+              .then(response => {
+                // nothing
+              }).catch(error => {
+                console.error(error)
+              })
+            localStorage.pubcrawlCookie = response.cookie
+            this.$router.push(`/?id=${response.data._id}`)
           }
         }).catch(error => {
           if (error.response.status === 404) {
@@ -190,6 +196,8 @@ export default {
           }
           console.log(error.response)
         })
+      // localStorage.pubcrawlCookie = 'test' <-- dumbass test
+      this.$bvModal.hide(this.id)
     },
     sendToast(title, append = false, message) {
       this.$bvToast.toast(message, {
