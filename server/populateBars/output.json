@@ -1,0 +1,22 @@
+{
+    "bars": [
+        {
+            "name": "Quality Hotel 11",
+            "latLong": [
+                57.701109,
+                11.9137304
+            ],
+            "address": "Maskingatan 11, Göteborg",
+            "photo": "https://lh3.googleusercontent.com/p/AF1QipO2rE7M6Pwu5-w8VFx6xSLL5N9O8ejszwc_k0V-=s1600-w2503-h1651"
+        },
+        {
+            "name": "Disponenten Kök Och Vinbar",
+            "latLong": [
+                57.7009814,
+                11.9152689
+            ],
+            "address": "Sjöportsgatan 2, Göteborg",
+            "photo": "https://lh3.googleusercontent.com/p/AF1QipMzW2S2E9Z6Re9-sLjb6qstCkg9CYKPfcEAmeDm=s1600-w960-h960"
+        }
+    ]
+}

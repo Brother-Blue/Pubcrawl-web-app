@@ -16,6 +16,7 @@
             v-model="username"
             type="text"
             :state="usernameState"
+            :formatter="usernameFormatter"
             trim
             ></b-form-input>
 
@@ -42,7 +43,7 @@
 
         </b-form-group>
         <p class="text-light">New user? <router-link to="/register" class="text-warning">Register here</router-link> </p>
-        <b-button class="btn" variant="outline-warning" @click=loginUser>Login</b-button>
+        <b-button class="btn" variant="outline-warning" @click=loginUser :disabled="!validRegister">Login</b-button>
       </b-card>
     </div>
 </template>
@@ -64,6 +65,9 @@ export default {
     },
     passwordState() {
       return this.password.length >= 6 && this.password.length <= 128
+    },
+    validRegister() {
+      return this.username.length >= 4 && this.username.length <= 15 && this.password.length >= 6 && this.password.length <= 128
     }
   },
   methods: {
@@ -76,8 +80,24 @@ export default {
         .then(response => {
           console.log('Success!')
         }).catch(error => {
-          console.error(error)
+          if (error.response.status === 404) {
+            this.sendToast('Uh oh!', false, 'Invalid username or password.')
+          } else if (error.response.status === 401) {
+            this.sendToast('Uh oh!', false, 'You do not have permission to do this.')
+          }
+          console.log(error.response)
         })
+    },
+    usernameFormatter(value) {
+      return value.toLowerCase()
+    },
+    sendToast(title, append = false, message) {
+      this.$bvToast.toast(message, {
+        title: title,
+        toaster: 'b-toaster-top-center',
+        solid: true,
+        appendToast: append
+      })
     }
   }
 }

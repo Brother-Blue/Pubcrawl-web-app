@@ -87,7 +87,7 @@ router.get('', function(req, res, next) {
 });
 
 // Read all event bars
-router.get('/:id/bars', authenticated, function(req, res, next) {
+router.get('/:id/bars', function(req, res, next) {
     Event.findById(req.params.id).populate('bars').exec(function(err, event) {
         if (err) { return next(err); }
         if (!event) {

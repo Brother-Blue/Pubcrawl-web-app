@@ -15,11 +15,6 @@ router.use('/bars', bar);
 
 router.post('/login',
   passport.authenticate('local', { successRedirect: '/' })
-    
 );
-
-router.get('/login', function(req, res, next) {
-  console.log("Hjalmar u bitch");
-})
 
 module.exports = router;

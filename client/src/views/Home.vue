@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main bg-dark">
     <header-bar></header-bar>
     <bar-list></bar-list>
     <bar-map></bar-map>
@@ -19,3 +19,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
