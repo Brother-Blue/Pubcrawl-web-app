@@ -49,10 +49,8 @@ export default {
         })
     },
     getAvgRating() {
-      var a = []
       Api.get('reviews').then((response) => {
-        a = response.data.reviews
-        this.reviews = a
+        this.reviews = response.data.reviews
         for (var i = 0; i < this.bars.length; i++) {
           var avg = 0
           var count = 0
