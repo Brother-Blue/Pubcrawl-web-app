@@ -111,11 +111,33 @@
       footer-bg-variant="dark"
       footer-text-variant="danger"
       title="Delete account"
+      ok-title="Delete account"
+      ok-variant="danger"
       @ok="deleteConfirmation"
       centered
       >
       <p>Are you sure you want to deactivate your account? You will <strong class="text-danger">never get it back!</strong> (<em>A very very long time</em>).</p>
       </b-modal>
+      <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
+      <b-button class="btn-danger delete-all-accounts" @click="deleteAllShow = !deleteAllShow">Deactivate all accounts</b-button>
+      <b-modal
+      v-model="deleteAllShow"
+      header-bg-variant="dark"
+      header-text-variant="warning"
+      body-bg-variant="dark"
+      body-text-variant="light"
+      footer-bg-variant="dark"
+      footer-text-variant="danger"
+      title="Delete account"
+      ok-disabled
+      ok-title="Nice try ;)"
+      ok-variant="danger"
+      @ok="deleteAllUsers"
+      centered
+      >
+      <p>Are you sure you want to delete all accounts? <strong class="text-danger">That's a dick move!</strong> (<em>A very very mean thing to do</em>).</p>
+      </b-modal>
+      <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
     </div>
   </div>
 </template>
@@ -140,6 +162,7 @@ export default {
       email: '',
       password: '',
       deleteModalShow: false,
+      deleteAllShow: false, // Temporary
       events: [],
       reviews: [],
       curKey: 0
@@ -169,6 +192,14 @@ export default {
     deleteConfirmation() {
       var id = this.$route.params.id
       Api.delete(`/users/${id}`)
+        .then(response => {
+          console.log(response)
+        }).catch(error => {
+          console.error(error)
+        })
+    },
+    deleteAllUsers() {
+      Api.delete('/users')
         .then(response => {
           console.log(response)
         }).catch(error => {
@@ -276,6 +307,18 @@ export default {
   position: fixed;
   bottom: 25px;
   right: 25px;
+}
+
+.delete-all-accounts {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+}
+
+.bar-list {
+  list-style-type: none;
+  padding: 0px;
+  text-align: center;
 }
 
 .my-events {

@@ -630,9 +630,7 @@
 								"id": "c183b6f3-6f78-4f7a-bcaa-923632af38bc",
 								"exec": [
 									"pm.test(\"Get all bars for event\", function() {\r",
-									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response[0]._id).to.eql(pm.globals.get('test-bar-id'));\r",
 									"});"
 								],
 								"type": "text/javascript"
