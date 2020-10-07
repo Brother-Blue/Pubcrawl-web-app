@@ -1,14 +1,14 @@
 <template>
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
-    <div v-for="(bar,index) in bars" :key="index +curKey" >
+    <div v-for="(bar,index) in barArray" :key="index +curKey" >
       <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
         <bar-item
         id="index"
         :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
-        :distance="distance"
+        :address="bar.address"
         :numEvents="bar.events.length"
         ></bar-item>
     </b-button>
@@ -72,7 +72,7 @@ import SearchBar from '@/components/SearchBar'
 export default {
   name: 'bar-list',
   props: [
-    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn'
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray'
   ],
   components: {
     'bar-item': BarItem,
@@ -83,7 +83,7 @@ export default {
       curKey: null,
       bars: null,
       reviews: null,
-      distance: 10,
+      barLocation: null,
       drinkQualityValue: null,
       drinkPriceValue: null,
       atmosphereValue: null,
@@ -112,9 +112,6 @@ export default {
       this.$emit('addReview', barID, payload)
       this.curKey++
     }
-  },
-  created: function () {
-    this.getBars()
   }
 }
 </script>

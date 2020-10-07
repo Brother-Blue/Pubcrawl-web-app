@@ -2,6 +2,7 @@
   <div class="main bg-dark">
     <header-bar></header-bar>
     <bar-list
+    :barArray="bars"
     @addReview='addBarReview'>
     </bar-list>
     <bar-map></bar-map>
@@ -41,6 +42,7 @@ export default {
         .then((response) => {
           e = response.data.bars
           this.bars = e
+          this.getAvgRating()
         })
         .catch((error) => {
           console.error(error)
@@ -68,6 +70,9 @@ export default {
         }
       })
     }
+  },
+  created: function () {
+    this.getBars()
   }
 }
 </script>
