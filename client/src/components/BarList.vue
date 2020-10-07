@@ -13,14 +13,11 @@
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-         <b-button v-b-modal="'update' + bar._id" class="update-bar bg-dark" variant="outline-warning" v-on:click="resetBarName()" >
-            Update bar info
-          </b-button>
-          <b-button v-b-modal="'delete' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
-            Delete the bar
+         <b-button v-b-modal="'add-review' + bar._id" class="add-review bg-dark" variant="outline-warning" >
+            add review to bar
           </b-button>
       </div>
-      <b-modal v-bind:id="'update' + bar._id"
+      <b-modal v-bind:id="'add-review' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
         body-bg-variant="dark"
@@ -29,29 +26,15 @@
         footer-text-variant="info"
         size="lg"
         centered
-        v-bind:title="'Update name for: ' + bar.name"
+        v-bind:title="'add review for:  ' + bar.name"
         @ok="updateBarInfo(bar._id)"
-        @cancel="resetBarName()">
+        >
         <b-form-input
-        v-bind:id="'update' + bar._id"
+        v-bind:id="'add-review' + bar._id"
         v-bind:placeholder="'Update name for: ' + bar.name"
-        v-model="barName">
+        v-model="text">
         </b-form-input>
       </b-modal>
-      <b-modal v-bind:id="'delete' + bar._id"
-        header-bg-variant="dark"
-        header-text-variant="warning"
-        body-bg-variant="dark"
-        body-text-variant="light"
-        footer-bg-variant="dark"
-        footer-text-variant="info"
-        size="lg"
-        centered
-        title="confirm bar name for deletion"
-        @ok="deleteBar(bar._id)"
-        >
-        are you sure you want to delete: {{bar.name}} ?
-        </b-modal>
     </b-collapse>
     </div>
   </div>
@@ -72,7 +55,6 @@ export default {
     return {
       bars: null,
       reviews: null,
-      barName: '',
       distance: 10,
       img: require('./../../../images/bar_placeholder.png')
     }
@@ -81,21 +63,6 @@ export default {
     calcDistance(deviceCoords, destinationCoords) {
       // TODO: Calculate distance with Google Maps API
       // Once Hjalle is done paying for Google Cloud subscriptionss
-    },
-    resetBarName() {
-      this.barName = ''
-    },
-    updateBarInfo(barID) {
-      console.log(this.barName)
-      const params = {
-        name: this.barName
-      }
-      Api.patch(`/bars/${barID}`, params)
-        .then(response => {
-          console.log(response)
-        }).catch(error => {
-          console.error(error)
-        })
     },
     getBars() {
       var e = []
@@ -151,12 +118,11 @@ export default {
 ::-webkit-scrollbar {
   width: 20px;
 }
-.delete-bar:hover {
+.add-review:hover {
 color: gold;
 }
-.delete-bar {
-  min-width: 50%;
-  float: left;
+.add-review {
+  min-width: 100%;
 }
 .update-bar:hover {
   color: gold;
