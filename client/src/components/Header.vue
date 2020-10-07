@@ -3,14 +3,22 @@
       <b-button-group>
         <router-link to="/" class="btn-link"><img class="image" src="../../../images/logo_placeholder.png"/></router-link>
         <router-link to="/events" class="btn-link">Events</router-link>
-        <router-link to="/login" class="btn-link">{{ message }}</router-link>
+        <!-- <router-link to="/login" class="btn-link" >{{ message }}</router-link> -->
+        <b-button v-b-modal.signin-modal>{{message}}</b-button>
       </b-button-group>
+      <pubcrawl-signin
+      id="signin-modal"
+      ></pubcrawl-signin>
     </div>
 </template>
 
 <script>
+import LoginForm from '@/components/LoginForm'
 export default {
   name: 'header',
+  components: {
+    'pubcrawl-signin': LoginForm
+  },
   data() {
     return {
       message: 'Sign in'
