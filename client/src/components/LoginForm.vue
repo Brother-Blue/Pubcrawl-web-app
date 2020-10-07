@@ -176,12 +176,17 @@ export default {
       }
       Api.post('/users/login', params, { useCredentials: true })
         .then(response => {
-          console.log('Success!')
+          console.log('Success!\n' + response._id)
+          if (response.status === 200) {
+            console.log('Pongers!')
+          }
         }).catch(error => {
           if (error.response.status === 404) {
             this.sendToast('Uh oh!', false, 'Something went wrong logging you in. Please try again later.')
           } else if (error.response.status === 401) {
-            this.sendToast('Uh oh!', false, 'Invalid username or password.')
+            this.sendToast('Uh oh!', false, 'Insufficient permissions.')
+          } else if (error.response.status === 500) {
+            this.sendToast('Uh oh!', false, 'Invalid username or password')
           }
           console.log(error.response)
         })
