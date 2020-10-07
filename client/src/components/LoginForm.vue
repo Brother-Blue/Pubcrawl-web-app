@@ -174,7 +174,7 @@ export default {
         username: this.username,
         password: this.password
       }
-      Api.post('/login', params, { useCredentials: true })
+      Api.post('/users/login', params, { useCredentials: true })
         .then(response => {
           console.log('Success!')
         }).catch(error => {
