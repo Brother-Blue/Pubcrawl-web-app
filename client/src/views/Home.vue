@@ -52,14 +52,13 @@ export default {
       Api.get('reviews').then((response) => {
         this.reviews = response.data.reviews
         for (var i = 0; i < this.bars.length; i++) {
+          this.bars[i].rating = 0
           var avg = 0
           var count = 0
           for (var j = 0; j < this.reviews.length; j++) {
             if (this.bars[i]._id === this.reviews[j].bars) {
               avg += this.reviews[j].averageRating
               count++
-            } else {
-              this.bars[i].rating = 0
             }
           }
           if (count > 0) {
