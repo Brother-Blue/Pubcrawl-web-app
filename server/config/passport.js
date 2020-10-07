@@ -1,30 +1,56 @@
 var User = require('../models/user');
 var passport = require('passport');
-var LocalStrategy = require('passport-local');
+var localStrategy = require('passport-local').Strategy;
+var JWTstrategy = require('passport-jwt').Strategy;
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        User.findOne({username: username}, function(err, user) {
-            if (err) return done(err);
-            if (!user) {
-              return done(null, false, {'message': 'incorrect username or password'});
-            }
-            if (!user.validPassword(password)) {
-              return done(null, false, {'message': 'incorrect username or password'});
-            }
-            return done(null, user);
-        });
+// TODO: add 'passport.authenticate('jwt', { session: false }),' to APIs that we want to protect
+
+passport.use('login', new localStrategy({
+      usernameField: 'username',
+      passwordField: 'password'
+    },
+    async (username, password, done) => {
+      try {
+        var user = await User.findOne({ username });
+
+        if (!user) {
+          return done(null, false, {'message': 'wrong username or password'});
+        }
+
+        var validate = await user.isValidPassword(password);
+
+        if (!validate) {
+          return done(null, false, {'message': 'wrong username or password'});
+        }
+
+        return done(null, user, {'message': 'Logged in Successfully'});
+      } catch (error) {
+        return done(error);
+      }
     }
-));
+  )
+);
 
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-  
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
+var cookieExtractor = function(req) {
+  var token = null;
+  if (req && req.cookies)
+  {
+      token = req.cookies['jwt'];
+  }
+  return token;
+};
+
+passport.use(new JWTstrategy(
+  {
+  jwtFromRequest: cookieExtractor,
+  secretOrKey: 'sea shanty 2 remix',
+},
+(jwtPayload, done) => {
+  if (Date.now() > jwtPayload.expires) {
+    return done('jwt expired');
+  }
+  return done(null, jwtPayload);
+}
+));
 
 module.exports = passport

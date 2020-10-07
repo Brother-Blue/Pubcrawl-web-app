@@ -1,0 +1,104 @@
+{
+   "html_attributions" : [],
+   "results" : [
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 57.701109,
+               "lng" : 11.9137304
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 57.7024825302915,
+                  "lng" : 11.9152587302915
+               },
+               "southwest" : {
+                  "lat" : 57.6997845697085,
+                  "lng" : 11.9125607697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/lodging-71.png",
+         "name" : "Quality Hotel 11",
+         "opening_hours" : {
+            "open_now" : true
+         },
+         "photos" : [
+            {
+               "height" : 1651,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/103978372839234177112\"\u003emikael levin\u003c/a\u003e"
+               ],
+               "photo_reference" : "CmRaAAAA5OUTrjtD8fJcfXJcP8_lVBUmWJ3-f7LwGeJMsswec_E4De-uIxSu5WJ2mnm_a_iLFUeZwu30Ck-_KBKwcNINWfKCUQHsLfdloiteBiaaKsQbGasKUP4q7P-heJbyM7V2EhCjlomYqVa4GHoYxSe-WQPbGhRENq0dNU1bRKd5SFEgOA3G1eErzQ",
+               "width" : 2503
+            }
+         ],
+         "place_id" : "ChIJyd2WZrSMT0YR8c6zntYv5lM",
+         "plus_code" : {
+            "compound_code" : "PW27+CF Göteborg, Sverige",
+            "global_code" : "9F9HPW27+CF"
+         },
+         "rating" : 4.1,
+         "reference" : "ChIJyd2WZrSMT0YR8c6zntYv5lM",
+         "scope" : "GOOGLE",
+         "types" : [ "lodging", "bar", "point_of_interest", "establishment" ],
+         "user_ratings_total" : 1725,
+         "vicinity" : "Maskingatan 11, Göteborg"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : {
+            "location" : {
+               "lat" : 57.7009814,
+               "lng" : 11.9152689
+            },
+            "viewport" : {
+               "northeast" : {
+                  "lat" : 57.70231283029152,
+                  "lng" : 11.9165318302915
+               },
+               "southwest" : {
+                  "lat" : 57.6996148697085,
+                  "lng" : 11.9138338697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "name" : "Disponenten Kök Och Vinbar",
+         "opening_hours" : {
+            "open_now" : false
+         },
+         "photos" : [
+            {
+               "height" : 960,
+               "html_attributions" : [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/104553732220446944696\"\u003eDisponenten Kök &amp; Vinbar\u003c/a\u003e"
+               ],
+               "photo_reference" : "CmRaAAAArqT33BXSJE0B1BN4tjxCE9T_-2rFUARMOQmHFahF5H1J7czt97J6hdKpOkxjSG74TCf-LLYNDbY19hVGI5rVTJ1PkEbWRS4xfvrBWJpOh8jJlVrvXS30HbBdO-cthJ3PEhC4b-B7bubRk9NHYPMZOSHNGhT31ukH5VkByeV5sTHzYAP--AgK5Q",
+               "width" : 960
+            }
+         ],
+         "place_id" : "ChIJFfkkjLSMT0YR8h47M3zKGBY",
+         "plus_code" : {
+            "compound_code" : "PW28+94 Göteborg, Sverige",
+            "global_code" : "9F9HPW28+94"
+         },
+         "price_level" : 2,
+         "rating" : 4.1,
+         "reference" : "ChIJFfkkjLSMT0YR8h47M3zKGBY",
+         "scope" : "GOOGLE",
+         "types" : [
+            "meal_takeaway",
+            "bar",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 30,
+         "vicinity" : "Sjöportsgatan 2, Göteborg"
+      }
+   ],
+   "status" : "OK"
+}

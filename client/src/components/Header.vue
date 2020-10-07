@@ -1,23 +1,24 @@
 <template>
-  <div>
-    <b-jumbotron
-      class="jumbotron"
-      header="PubCrawl"
-      lead="Welcome to the party"
-    ></b-jumbotron>
     <div class="btn-group">
       <b-button-group>
-        <router-link to="/" class="btn-link">Home</router-link>
+        <router-link to="/" class="btn-link"><img class="image" src="../../../images/logo_placeholder.png"/></router-link>
         <router-link to="/events" class="btn-link">Events</router-link>
-        <router-link to="/login" class="btn-link">{{ message }}</router-link>
+        <!-- <router-link to="/login" class="btn-link" >{{ message }}</router-link> -->
+        <b-button v-b-modal.signin-modal>{{message}}</b-button>
       </b-button-group>
+      <pubcrawl-signin
+      id="signin-modal"
+      ></pubcrawl-signin>
     </div>
-  </div>
 </template>
 
 <script>
+import LoginForm from '@/components/LoginForm'
 export default {
   name: 'header',
+  components: {
+    'pubcrawl-signin': LoginForm
+  },
   data() {
     return {
       message: 'Sign in'
@@ -40,17 +41,13 @@ export default {
 </script>
 
 <style scoped>
-.jumbotron {
-  background-color: rgb(50, 50, 80);
-  color: darkkhaki;
-  padding: 1px;
-  margin-bottom: 0px;
-  border-radius: 0px;
+.image {
+  height: 50px;
+  padding: 0;
 }
-
 .btn-group {
     min-width: 100%;
-    margin-top: 0px;
+    margin-top: 0px
 }
 
 .btn-link:hover {
@@ -59,10 +56,12 @@ export default {
 
 .btn-link {
     width: 33.33%;
-    margin-top: 0px;
-    padding: 10px;
-    background-color: rgb(108, 117, 125);
+    background-color: rgb(83, 90, 97);
     color: white;
+    margin-top: 0;
+    padding: 5px;
+    font-family: "Georgia", sans-serif;
+    font-size: 2.1em;
 }
 
 .btn-link:hover {

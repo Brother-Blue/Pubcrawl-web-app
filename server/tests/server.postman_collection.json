@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "d411a3b6-8ec7-48a6-baa8-a45a0a2b279e",
+		"_postman_id": "8271ffae-2a53-4f39-89b2-63f1d875c2b0",
 		"name": "g20-pubcrawl",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ac91404b-4029-4cc0-9838-ce7b284708ff",
+								"id": "2e8f382c-7f7d-4ff5-87d5-9bc155fbb147",
 								"exec": [
 									"pm.test(\"Successfully add user\", function() {",
 									"    pm.expect(pm.response).to.be.status(201);",
@@ -52,12 +52,54 @@
 					"response": []
 				},
 				{
+					"name": "login-user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9cdeaa09-51e7-40b6-984a-6f072c4323fa",
+								"exec": [
+									"pm.test(\"Successfully add user\", function() {",
+									"    pm.expect(pm.response).to.be.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser123\",\n    \"password\": \"password1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/users/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "add-test-bar",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "6c58959c-e873-45f7-a030-9817f5153d76",
+								"id": "aefda3b9-ca04-403a-bb69-0f0f0d684e74",
 								"exec": [
 									"pm.test(\"Successfully add bar\", function() {\r",
 									"    pm.expect(pm.response).to.be.status(201);\r",
@@ -74,7 +116,50 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"ZZtest-bar-123\",\r\n    \"latLong\": [12.345, 54.321]\r\n}",
+							"raw": "{\r\n    \"name\": \"ÖÖtest-bar-123\",\r\n    \"latLong\": [12.345, 54.321]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/bars",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-test-bar2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6d583425-9982-44a3-b677-48446cfc599f",
+								"exec": [
+									"pm.test(\"Successfully add bar2\", function() {\r",
+									"    pm.expect(pm.response).to.be.status(201);\r",
+									"    const response = pm.response.json();\r",
+									"    pm.globals.set(\"test-bar-id2\", response._id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"00test-bar-123\",\r\n    \"latLong\": [12.345, 54.321]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -100,7 +185,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "aa50b331-bffc-47ed-9008-aa4982cce1da",
+								"id": "2fdedb08-a9ff-4259-bbb6-bacf7f95cae6",
 								"exec": [
 									"pm.test(\"Add a test review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -145,7 +230,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "358c3e12-1b53-4697-aa6b-8496bb261e34",
+								"id": "aa3ec0e7-fee7-46ad-8455-6cb5a8ee2c33",
 								"exec": [
 									"pm.test(\"Successfully add user\", function() {\r",
 									"    pm.expect(pm.response).to.be.status(201);\r",
@@ -188,7 +273,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6bdd82cb-f15c-4334-9db9-b6ba835a6b07",
+								"id": "a50bf881-f013-4f1c-823a-a0a9d4d6d570",
 								"exec": [
 									"pm.test(\"Get all users\", function() {",
 									"    pm.expect(pm.response).to.have.status(200);",
@@ -231,7 +316,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "26dca093-1a06-4337-b73d-11c6332f1b7c",
+								"id": "f7f5a11c-887a-469b-baa6-02278b659e74",
 								"exec": [
 									"pm.test(\"Get test user\", function() {",
 									"    const response = pm.response.json();",
@@ -269,7 +354,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "def06211-a1c9-4b5a-8b21-87ea1e809f22",
+								"id": "1a140ef7-3c85-47d4-93cd-db259060ddb9",
 								"exec": [
 									"pm.test(\"Get all bars\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -301,12 +386,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "5cd5aaa9-28ee-4320-ac9b-57092639c9b0",
+								"id": "50772f8d-0ae2-4a78-a407-cad65815eac5",
 								"exec": [
 									"pm.test(\"Get bar by ID\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response.name).to.eql('ZZtest-bar-123');\r",
+									"    pm.expect(response.name).to.eql('ÖÖtest-bar-123');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -336,7 +421,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "573a46f8-0929-42d2-9dab-f3febd0d6fd5",
+								"id": "74b6e51e-49f3-4df4-93c1-fc96a903b16b",
 								"exec": [
 									"pm.test(\"Get all reviews\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -368,7 +453,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "32c3b60c-3e62-4322-af61-dd48ca849be2",
+								"id": "704b0281-bbfb-44eb-af0c-5672a56de1b8",
 								"exec": [
 									"pm.test(\"Get review by id\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -404,7 +489,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "129a0fd5-7fca-43c7-be75-efaaa136ae5f",
+								"id": "11e515b0-5d3d-4ffa-954b-6b6e369ae04a",
 								"exec": [
 									"pm.test(\"Get user that posted review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -440,7 +525,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "2c2aaff2-2fdd-4a02-964a-5a2a2f74f926",
+								"id": "1dfa2887-637b-46be-8cf6-4d130c8db1cc",
 								"exec": [
 									"pm.test(\"Get user that posted review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -476,7 +561,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "7e564f5c-2f20-4938-aecb-4ae868787502",
+								"id": "c32730a8-9603-4a21-870b-ad7168f1295d",
 								"exec": [
 									"pm.test(\"Get all events\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -508,7 +593,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "28b8b4d1-38e2-4047-b7ae-2542b1c1d9f0",
+								"id": "8725b8d2-4689-4c39-94e3-c67ee65dd866",
 								"exec": [
 									"pm.test(\"Successfully add user\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -542,7 +627,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d6e866d8-dc69-4350-b3d3-225521b15bcd",
+								"id": "c183b6f3-6f78-4f7a-bcaa-923632af38bc",
 								"exec": [
 									"pm.test(\"Get all bars for event\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -576,7 +661,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "23d68274-31ab-4c1d-a0f1-6d6f4aff5a85",
+								"id": "90ad1842-e394-4a2e-902d-d79e851281f1",
 								"exec": [
 									"pm.test(\"Get user that posted the event\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -612,7 +697,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "41bd00ab-84bf-4989-b432-bb7f8ab7ad6a",
+								"id": "4b82a34a-cc36-4e43-bc89-3433a326e728",
 								"exec": [
 									"pm.test(\"Create low rating review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -657,7 +742,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "11bb6a30-f935-4a7f-bddd-c8ac75c4057d",
+								"id": "1e77ac97-87a6-467e-ae0b-36c66afdaaf2",
 								"exec": [
 									"pm.test(\"Create mid rating review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -700,7 +785,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "3fee96a9-678d-4928-8156-a58d6800c7b2",
+								"id": "9b21550b-5d3f-48cd-89e1-702fb09e0d3e",
 								"exec": [
 									"pm.test(\"Create high rating review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -749,12 +834,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "bcb869c6-72ed-444c-b2cd-1fc3accf487c",
+								"id": "10b0c4f5-e2cc-467d-ac63-20a8ac54b682",
 								"exec": [
 									"pm.test(\"Sort bars by name aA-zZ\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response[response.length-1].name).to.eql('ZZtest-bar-123');\r",
+									"    pm.expect(response[0].name).to.eql('00test-bar-123');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -789,12 +874,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "9827a2db-8b3b-481c-a4a7-4dd5c183a9e9",
+								"id": "16643507-7b24-4bc9-aa83-b90ac5012e53",
 								"exec": [
 									"pm.test(\"Sort bars by name Zz-Aa\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response[0].name).to.eql('ZZtest-bar-123');\r",
+									"    pm.expect(response[0].name).to.eql('ÖÖtest-bar-123');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -829,7 +914,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "68a8601d-275a-43c5-b335-e4b4e6e00258",
+								"id": "e07e0088-2528-4eb7-803d-3096be30cd1c",
 								"exec": [
 									"pm.test(\"Get highest drink quality review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -871,7 +956,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "175f141a-32f7-44fa-9ae3-cef64816cb12",
+								"id": "f28e7896-f983-4b45-85d6-f1a7bb19f184",
 								"exec": [
 									"pm.test(\"Get highest drink price review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -913,7 +998,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a19b2526-7212-4881-a128-ff83b58bdb99",
+								"id": "29174b1e-e2cd-4d33-84a2-6d1434daf959",
 								"exec": [
 									"pm.test(\"Get highest food quality review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -955,7 +1040,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a2d8e2e0-58eb-4cdd-aa70-99f4acff076e",
+								"id": "b92ce8ed-7404-4b05-8c9e-2d8660415920",
 								"exec": [
 									"pm.test(\"Get highest atmosphere review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -997,7 +1082,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "28bcc5bf-25d5-4bda-bdb0-3bf0d5c7d336",
+								"id": "64f483f8-5a3a-4516-b46c-e10d27004421",
 								"exec": [
 									"pm.test(\"Get highest average rating review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1039,7 +1124,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c9774a53-0484-4e8a-b3b6-a109ac3652dc",
+								"id": "6790d09c-db73-4ede-a366-83f23e5b94e8",
 								"exec": [
 									"pm.test(\"Get lowest drink quality review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1081,7 +1166,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "de7852d3-d87b-4d63-9689-4978c3530f0c",
+								"id": "39550e1f-a19e-4a67-9b29-08c8397520cc",
 								"exec": [
 									"pm.test(\"Get lowest drink price review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1123,7 +1208,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c9965036-0c9e-4a2a-9a30-326517d32882",
+								"id": "08a33479-0438-4150-9781-69092d45e83c",
 								"exec": [
 									"pm.test(\"Get lowest food quality review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1165,7 +1250,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b7d3fecb-f9b2-446b-a609-6e84c31423f3",
+								"id": "05978e80-aaa7-40eb-b6af-7d4973f27e66",
 								"exec": [
 									"pm.test(\"Get lowest atmosphere review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1207,7 +1292,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "62b27a9c-5158-47e0-a021-204d9bbeabef",
+								"id": "704bf90c-6bba-45af-9d62-3f6ee0dbacc0",
 								"exec": [
 									"pm.test(\"Get lowest average rating review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1249,12 +1334,12 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "f9d7bcc4-cd28-423b-b9ff-796a19e9b61d",
+								"id": "760581f0-43b3-4f15-b4e0-c9bafe3735a1",
 								"exec": [
 									"pm.test(\"Filter bar by partial name\", function() {\r",
 									"    const response = pm.response.json();\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
-									"    pm.expect(response[0].name).to.eql('ZZtest-bar-123');\r",
+									"    pm.expect(response[0].name).to.eql('ÖÖtest-bar-123');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1265,7 +1350,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/bars?name=123",
+							"raw": "{{host}}/api/bars?name=ÖÖ",
 							"host": [
 								"{{host}}"
 							],
@@ -1276,7 +1361,7 @@
 							"query": [
 								{
 									"key": "name",
-									"value": "123"
+									"value": "ÖÖ"
 								}
 							]
 						}
@@ -1295,7 +1380,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "08fd6627-730a-4e5b-ba4b-1ae9d7799791",
+								"id": "6465d84f-c1f7-4950-8968-34b3a812c371",
 								"exec": [
 									"pm.test(\"Update test user username\", function() {",
 									"    pm.expect(pm.response).to.have.status(200);",
@@ -1337,7 +1422,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d21611b7-d210-4734-a461-7833f578d492",
+								"id": "d0d2ebdf-0613-4c43-ab81-9dbfa253d042",
 								"exec": [
 									"pm.test(\"Update test bar\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1379,7 +1464,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "60dfea94-284b-45d9-bcf2-893409e32759",
+								"id": "1c9398ea-9982-4798-9559-33611a8a0b8e",
 								"exec": [
 									"pm.test(\"Update review\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1421,7 +1506,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "fe8e3740-c9f8-461a-a20f-09bf29800154",
+								"id": "df243d0d-2aec-4c0b-8eed-490adcdfbbb0",
 								"exec": [
 									"pm.test(\"Update test event\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1463,7 +1548,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "102113d2-2ae7-4981-85cf-c491530e74f3",
+								"id": "a4b5c229-aa9d-469e-8274-867b772bf23d",
 								"exec": [
 									"pm.test(\"Put new password on user\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1505,7 +1590,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8ba9cf2d-73a6-4ff3-b493-fcf71859b62e",
+								"id": "2703eae3-cee7-4366-868f-5af09484372b",
 								"exec": [
 									"pm.test(\"Get test user\", function() {",
 									"    const response = pm.response.json();",
@@ -1541,7 +1626,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1efcd383-4873-46e6-aeb6-1e4148403675",
+								"id": "a2bf6312-f291-44d6-8e60-a75ce26663aa",
 								"exec": [
 									"pm.test(\"Get bar by ID\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1576,7 +1661,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ec41d33d-8bcc-423c-b31e-6cd57217ad8c",
+								"id": "542c3815-196d-411d-9503-7c9c682f0001",
 								"exec": [
 									"pm.test(\"Get updated test review\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1611,7 +1696,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "56764cac-2a04-4e1d-8576-27e736e30ccf",
+								"id": "400f8cd6-6fc2-4af8-85ce-8f361f9ca405",
 								"exec": [
 									"pm.test(\"Get updated bar\", function() {\r",
 									"    const response = pm.response.json();\r",
@@ -1652,7 +1737,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "44e00476-f537-4a83-b32d-1554e0fafcd0",
+								"id": "5cb98fdc-dd02-45dc-a83f-81d193eb13f6",
 								"exec": [
 									"pm.test(\"Delete review through bar by id\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1725,7 +1810,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "757dacf7-b2e2-46e9-8b21-4bc98e069300",
+								"id": "0aec5883-5ad9-4db2-9764-27ccae8261d1",
 								"exec": [
 									"pm.test(\"Delete test event\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1758,7 +1843,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "909f192d-aed8-4c96-bf7e-36e01b5c333d",
+								"id": "38783f34-8a02-434a-8ea9-580c37673115",
 								"exec": [
 									"pm.test(\"Delete test review\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1791,7 +1876,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d4f0e107-6893-4bdf-9d85-960fccf84b08",
+								"id": "7a2673bb-613e-4208-b562-408393c4a16f",
 								"exec": [
 									"pm.test(\"Delete test bar\", function() {\r",
 									"    pm.expect(pm.response).to.have.status(200);\r",
@@ -1819,12 +1904,45 @@
 					"response": []
 				},
 				{
+					"name": "delete-test-bar2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f7b0bbf6-5cad-49e6-8095-25f372ae2966",
+								"exec": [
+									"pm.test(\"Delete test bar2\", function() {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/bars/{{test-bar-id2}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"{{test-bar-id2}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete-test-user",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"id": "0ac4c10e-5e02-4e17-86a4-3655be6c739f",
+								"id": "ed5d8a98-304b-4836-aeab-32aecd999ca7",
 								"exec": [
 									"pm.test(\"Delete test user\", function() {",
 									"    pm.expect(pm.response).to.have.status(200);",
@@ -1859,7 +1977,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "ed337377-5211-4e31-ae2c-803346cb9650",
+				"id": "dad31082-b21a-4ea6-b829-2ee335dfff33",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1869,7 +1987,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "75ced71b-a75a-4092-982b-a2156626e018",
+				"id": "999594e6-8591-4d4a-8d95-e250dd180b14",
 				"type": "text/javascript",
 				"exec": [
 					""

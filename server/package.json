@@ -26,6 +26,7 @@
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "connect-history-api-fallback": "^1.6.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
@@ -36,6 +37,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.4.11",
     "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
   },
   "devDependencies": {

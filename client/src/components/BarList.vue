@@ -1,36 +1,63 @@
-a<template>
+<template>
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
     <div v-for="bar in bars" :key="bar" >
       <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
         <bar-item
-        :img="img"
+        :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
         :distance="distance"
         :numEvents="bar.events.length"
         ></bar-item>
-      </b-button>
-      <b-collapse v-bind:id="'bar' + bar._id">
+    </b-button>
+    <b-collapse v-bind:id="'bar' + bar._id">
       <div>
-          <b-button v-b-modal="'delete' + bar._id" class="delete-bar bg-dark" variant="outline-warning">
-            Delete the bar
+         <b-button v-b-modal="'add-review' + bar._id" class="add-review " variant="outline-warning" >
+            add review to bar
           </b-button>
       </div>
-      <b-modal v-bind:id="'delete' + bar._id"
+      <b-modal v-bind:id="'add-review' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
         body-bg-variant="dark"
         body-text-variant="light"
         footer-bg-variant="dark"
         footer-text-variant="info"
-        v-model="modalShow"
         size="lg"
         centered
-        title="confirm bar name for deletion"
-        @ok="deleteBar(bar._id)"
+        v-bind:title="'add review for:  ' + bar.name"
+        @ok="addReview(bar._id)"
+        :ok-disabled="commentValue.length >= 140"
         >
-        are you sure you want to delete: {{bar.name}} ?
+        <b-input-group class="drink-quality" prepend="Drink Quality">
+        <b-form-rating v-model="drinkQualityValue" show-clear></b-form-rating>
+        </b-input-group
+        >
+         <b-input-group class="drink-price" prepend="Drink Price">
+        <b-form-rating v-model="drinkPriceValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+          <b-input-group class="atmosphere" prepend="Atmosphere">
+        <b-form-rating v-model="atmosphereValue" show-clear></b-form-rating>
+          </b-input-group
+          >
+         <b-input-group class="food-quality" prepend="Food Quality">
+        <b-form-rating v-model="foodQualityValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+        <b-form-group class="comment"
+                description="Max comment length is 140 characters"
+                >
+                  <b-form-textarea
+                  v-model="commentValue"
+                  :placeholder="comment"
+                  :state="commentValue.length <= 140"
+                  rows="3"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+        >
       </b-modal>
     </b-collapse>
     </div>
@@ -44,6 +71,9 @@ import SearchBar from '@/components/SearchBar'
 
 export default {
   name: 'bar-list',
+  props: [
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn'
+  ],
   components: {
     'bar-item': BarItem,
     'pubcrawl-searchbar': SearchBar
@@ -53,6 +83,12 @@ export default {
       bars: null,
       reviews: null,
       distance: 10,
+      drinkQualityValue: null,
+      drinkPriceValue: null,
+      atmosphereValue: null,
+      foodQualityValue: null,
+      commentValue: '',
+      userID: null,
       img: require('./../../../images/bar_placeholder.png')
     }
   },
@@ -70,15 +106,6 @@ export default {
           this.getReviews()
         })
         .catch((error) => {
-          console.error(error)
-        })
-    },
-    deleteBar(barID) {
-      var id = barID
-      Api.delete(`/bars/${id}`)
-        .then(response => {
-          console.log('bar been yote')
-        }).catch(error => {
           console.error(error)
         })
     },
@@ -103,6 +130,19 @@ export default {
           }
         }
       })
+    },
+    addReview(barID) {
+      const payload = {
+        users: this.userID,
+        bars: barID,
+        drinkQuality: this.drinkQualityValue,
+        drinkPrice: this.drinkPriceValue,
+        foodQuality: this.foodQualityValue,
+        atmosphere: this.atmosphereValue,
+        comment: this.commentValue
+      }
+      console.log(payload + 'what ze fuk happnd  ' + barID)
+      this.$emit('addReview', barID, payload)
     }
   },
   created: function () {
@@ -115,26 +155,33 @@ export default {
 ::-webkit-scrollbar {
   width: 20px;
 }
-
-.delete-bar:hover {
+.add-review:hover {
 color: gold;
 }
-.delete-bar {
+.add-review {
+  min-width: 100%;
+}
+.update-bar:hover {
+  color: gold;
+}
+
+.update-bar {
   min-width: 50%;
-  float: left;
+  float: right;
 }
 
 .bar-list-container {
   max-width: 50%;
-  min-height: 70vh;
-  max-height: 80vh;
+  max-height: 95.6vh;
   overflow: scroll;
+  border-width: 0px;
 }
 
 .bar-container {
   min-width: 100%;
   margin-top: 10px;
   margin-left: 0;
+  border-width: 0px;
 }
 
 .bar-header {
@@ -147,7 +194,7 @@ color: gold;
 .bar-logo {
   margin: 5px;
   float: left;
-  width: 20%;
+  max-width: 20px;
 }
 
 .bar-attr {
@@ -156,5 +203,24 @@ color: gold;
   width: 100%;
   padding-top: 50px;
   margin-bottom: 0px;
+}
+.drink-price {
+  width: 100%;
+  padding-top: 10px;
+}
+.atmosphere {
+  padding-top: 10px;
+}
+.food-quality {
+  padding-top: 10px;
+}
+.input-group>.input-group-prepend {
+    flex: 0 0 20%;
+}
+.input-group .input-group-text {
+    width: 100%;
+}
+.comment {
+  padding-top: 10px;
 }
 </style>
