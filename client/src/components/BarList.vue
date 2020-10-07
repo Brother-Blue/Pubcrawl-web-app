@@ -1,14 +1,14 @@
 <template>
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
-    <div v-for="(bar,index) in bars" :key="index +curKey" >
+    <div v-for="(bar,index) in barArray" :key="index +curKey" >
       <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
         <bar-item
         id="index"
         :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
-        :distance="distance"
+        :address="bar.address"
         :numEvents="bar.events.length"
         ></bar-item>
     </b-button>
@@ -66,14 +66,13 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
 import BarItem from '@/components/BarItem'
 import SearchBar from '@/components/SearchBar'
 
 export default {
   name: 'bar-list',
   props: [
-    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn'
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray'
   ],
   components: {
     'bar-item': BarItem,
@@ -84,7 +83,7 @@ export default {
       curKey: null,
       bars: null,
       reviews: null,
-      distance: 10,
+      barLocation: null,
       drinkQualityValue: null,
       drinkPriceValue: null,
       atmosphereValue: null,
@@ -98,40 +97,6 @@ export default {
     calcDistance(deviceCoords, destinationCoords) {
       // TODO: Calculate distance with Google Maps API
       // Once Hjalle is done paying for Google Cloud subscriptionss
-    },
-    getBars() {
-      var e = []
-      Api.get('/bars')
-        .then((response) => {
-          e = response.data.bars
-          this.bars = e
-          this.getReviews()
-        })
-        .catch((error) => {
-          console.error(error)
-        })
-    },
-    getReviews() {
-      var a = []
-      Api.get('reviews').then((response) => {
-        a = response.data.reviews
-        this.reviews = a
-        for (var i = 0; i < this.bars.length; i++) {
-          var avg = 0
-          var count = 0
-          for (var j = 0; j < this.reviews.length; j++) {
-            if (this.bars[i]._id === this.reviews[j].bars) {
-              avg += this.reviews[j].averageRating
-              count++
-            } else {
-              this.bars[i].rating = 0
-            }
-          }
-          if (count > 0) {
-            this.bars[i].rating = avg / count
-          }
-        }
-      })
     },
     addReview(barID) {
       const payload = {
@@ -147,9 +112,6 @@ export default {
       this.$emit('addReview', barID, payload)
       this.curKey++
     }
-  },
-  created: function () {
-    this.getBars()
   }
 }
 </script>

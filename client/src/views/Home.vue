@@ -2,6 +2,7 @@
   <div class="main bg-dark">
     <header-bar></header-bar>
     <bar-list
+    :barArray="bars"
     @addReview='addBarReview'>
     </bar-list>
     <bar-map></bar-map>
@@ -22,6 +23,8 @@ export default {
   },
   data() {
     return {
+      bars: null,
+      reviews: null
     }
   },
   methods: {
@@ -32,7 +35,41 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    getBars() {
+      Api.get('/bars')
+        .then((response) => {
+          this.bars = response.data.bars
+          for (var i = 0; i < this.bars.length; i++) {
+            var review = []
+            var avg = 0
+            var count = 0
+            Api.get(`/bars/${this.bars[i]._id}/reviews`)
+              .then(response => {
+                review = response.data.reviews
+                if (review.averageRating) {
+                  for (var i = 0; i < review.length; i++) {
+                    avg += review.averageRating
+                    count++
+                  }
+                }
+              }).catch(error => {
+                console.error(error)
+              })
+            if (count > 0) {
+              this.bars[i].rating = avg / count
+            } else {
+              this.bars[i].rating = 0
+            }
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
     }
+  },
+  created: function () {
+    this.getBars()
   }
 }
 </script>
