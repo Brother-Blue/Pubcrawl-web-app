@@ -5,8 +5,7 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 var mongoose = require('mongoose');
-var session = require("express-session");
-var passport = require('passport');
+var cookieParser = require('cookie-parser')
 
 // API endpoint
 var router = require('./controllers/index');
@@ -29,16 +28,12 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, 
 var app = express();
 // Parse requests of content-type 'application/json'
 app.use(bodyParser.json());
+app.use(cookieParser())
 // HTTP request logger
 app.use(morgan('dev'));
 // Enable cross-origin resource sharing for frontend must be registered before api
 app.options('*', cors());
 app.use(cors());
-
-// TODO: add cookie session support if needed
-app.use(session({ secret: 'sea shanty 2 remix' }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Use API routes
 app.use('/api', router);
@@ -46,6 +41,7 @@ app.use('/api', router);
 app.get('/api', function(req, res) {
     res.status(200).json({'message': 'Welcome to Pubcrawl API. Here are possible endpoints to use /users /events /bars /reviews'});
 });
+
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {

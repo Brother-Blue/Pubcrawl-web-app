@@ -2,10 +2,12 @@ var mongoose = require('mongoose');
 
 // Create bar schema
 let BarSchema = new mongoose.Schema({
-    name: { type: String, required: true, minlength: [1, "Minimum length is 1"], maxlength: [25, "Maximum length is 25."] },
+    name: { type: String, required: true, minlength: [1, 'Minimum length is 1'], maxlength: [25, 'Maximum length is 25.'] },
     latLong: { type: [Number], required: true },
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'reviews' }],
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }]
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
+    address: { type: String },
+    photo: { type: String }
 }, {
     versionKey: false // Skip mongoose-version-key
 });
