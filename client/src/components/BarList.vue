@@ -4,7 +4,7 @@
     <div v-for="bar in bars" :key="bar" >
       <b-button v-b-toggle="'bar' + bar._id" class="bar-container">
         <bar-item
-        :img="img"
+        :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
         :distance="distance"
@@ -88,6 +88,7 @@ export default {
       atmosphereValue: null,
       foodQualityValue: null,
       commentValue: '',
+      userID: null,
       img: require('./../../../images/bar_placeholder.png')
     }
   },
@@ -132,6 +133,8 @@ export default {
     },
     addReview(barID) {
       const payload = {
+        users: this.userID,
+        bars: barID,
         drinkQuality: this.drinkQualityValue,
         drinkPrice: this.drinkPriceValue,
         foodQuality: this.foodQualityValue,
@@ -191,7 +194,7 @@ color: gold;
 .bar-logo {
   margin: 5px;
   float: left;
-  width: 20%;
+  max-width: 20px;
 }
 
 .bar-attr {

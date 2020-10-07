@@ -27,7 +27,7 @@ export default {
   methods: {
     addBarReview(id, payload) {
       console.log('inside the post method call' + id)
-      Api.post(`/bars/${id}`, payload)
+      Api.post(`/bars/${id}/reviews`, payload)
         .then(response => {
         }).catch(error => {
           console.error(error)

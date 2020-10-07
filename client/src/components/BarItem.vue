@@ -2,6 +2,8 @@
   <b-card
   class="bg-dark text-warning bar-item-container"
   :img-src="img"
+  :img-height="200"
+  :img-width="200"
   img-left
   img-alt="Ape together strong but still cant find image"
   :title="title"
