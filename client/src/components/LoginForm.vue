@@ -176,7 +176,7 @@ export default {
       }
       Api.post('/users/login', params, { useCredentials: true })
         .then(response => {
-          console.log('Success!\n' + response._id)
+          console.log('Success!\n' + response)
           if (response.status === 200) {
             console.log('Pongers!')
           }
