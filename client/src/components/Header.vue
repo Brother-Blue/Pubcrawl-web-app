@@ -20,7 +20,7 @@
       >
         <b-nav-item class="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-fill"></b-icon> My Pages</b-nav-item>
         <b-nav-item class="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar"></b-icon> Events</b-nav-item>
-        <b-nav-item class="text-warning" v-if="!getSignedIn" v-b-modal.signin-modal><b-icon icon="gear"></b-icon> Sign in</b-nav-item>
+        <b-nav-item class="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear"></b-icon> Sign in</b-nav-item>
         <b-nav-item class="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear"></b-icon> Sign out</b-nav-item>
       </b-nav>
     </b-sidebar>
@@ -61,7 +61,9 @@ export default {
       this.signedIn = false
       this.message = 'Sign in'
       this.$router.push('/')
-      console.log(localStorage.getItem('pubcrawlCookie'))
+    },
+    showModal() {
+      this.$bvModal.show('signin-modal')
     }
   }
 }

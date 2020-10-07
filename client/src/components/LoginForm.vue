@@ -174,27 +174,20 @@ export default {
         username: this.username,
         password: this.password
       }
-      Api.post('/users/login', params, { useCredentials: true })
+      Api.post('/users/login', params, { withCredentials: false })
         .then(response => {
           if (response.status === 200) {
-            Api.get('/test')
-              .then(response => {
-                // nothing
-              }).catch(error => {
-                console.error(error)
-              })
-            localStorage.pubcrawlCookie = response.cookie
             this.$router.push(`/?id=${response.data._id}`)
           }
         }).catch(error => {
-          if (error.response.status === 404) {
+          if (error.status === 404) {
             this.sendToast('Uh oh!', false, 'Something went wrong logging you in. Please try again later.')
-          } else if (error.response.status === 401) {
+          } else if (error.status === 401) {
             this.sendToast('Uh oh!', false, 'Insufficient permissions.')
-          } else if (error.response.status === 500) {
+          } else if (error.status === 500) {
             this.sendToast('Uh oh!', false, 'Invalid username or password')
           }
-          console.log(error.response)
+          console.log(error)
         })
       // localStorage.pubcrawlCookie = 'test' <-- dumbass test
       this.$bvModal.hide(this.id)
