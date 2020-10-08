@@ -124,7 +124,7 @@ export default {
   width: 20px;
 }
 .bar-list-container {
-  max-width: 50%;
+  max-width: 100%;
   max-height: 93.6vh;
   margin-left: 10px;
   overflow: scroll;
