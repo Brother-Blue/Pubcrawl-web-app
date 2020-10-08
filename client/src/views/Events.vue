@@ -1,6 +1,6 @@
 <template>
     <div class="main bg-dark">
-        <pubcrawl-header id="header"></pubcrawl-header>
+        <pubcrawl-header></pubcrawl-header>
         <pubcrawl-calendar id="calendar"></pubcrawl-calendar>
         <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     </div>
