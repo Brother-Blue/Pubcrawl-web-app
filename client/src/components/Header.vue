@@ -74,6 +74,7 @@ export default {
 <style scoped>
 #navbar {
   box-shadow: 2px 0 2px 2px black;
+  z-index: 1000;
 }
 
 .image {
