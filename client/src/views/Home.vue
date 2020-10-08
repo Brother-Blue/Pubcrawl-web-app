@@ -4,12 +4,15 @@
     <b-row>
       <b-col>
         <bar-list
+        @directMeDaddy="getDirections"
+        @emittedBar="clickedBar"
         :barArray="bars"
         @addReview='addBarReview'>
         </bar-list>
       </b-col>
       <b-col>
         <bar-map
+        ref="barMap"
         :bars="bars">
         </bar-map>
       </b-col>
@@ -42,6 +45,12 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    clickedBar(bar) {
+      this.$refs.barMap.focusBar(bar)
+    },
+    getDirections(bar) {
+      this.$refs.barMap.getDirections(bar)
     },
     getBars() {
       Api.get('/bars')

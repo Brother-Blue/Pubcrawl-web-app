@@ -393,6 +393,20 @@ export default {
       }, 50)
     },
 
+    focusBar(bar) {
+      var focus = {
+        lat: bar.latLong[0],
+        lng: bar.latLong[1]
+      }
+      this.$refs.mapRef.$mapPromise.then((map) => {
+        map.panTo(focus)
+      })
+    },
+
+    getDirections(bar) {
+      this.end = JSON.stringify(bar.latLong[0] + ',' + bar.latLong[1])
+    },
+
     // Set place from search adress bar
     setPlace(place) {
       this.place = place
@@ -420,7 +434,6 @@ export default {
         lng: bar.latLong[1]
       }
       this.infoOptions.content = this.getInfoWindowContent(bar)
-      // this.end = JSON.stringify(this.infoWindowPos.lat + ',' + this.infoWindowPos.lng)
 
       // If same bar is clicked, close window. Else open
       if (this.currentMidx === idx) {

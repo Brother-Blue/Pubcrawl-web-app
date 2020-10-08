@@ -2,7 +2,7 @@
   <div class="bar-list-container">
     <pubcrawl-searchbar/>
     <div v-for="(bar,index) in barArray" :key="index +curKey" role="tablist">
-      <b-button squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
+      <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
         id="index"
         :img="bar.photo"
@@ -14,7 +14,7 @@
     </b-button>
     <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
       <b-button-group class="w-100">
-        <b-button v-b-modal="'' + bar._id" class="bar-button w-25 p-1" variant="primary" >
+        <b-button @click="getDirection(bar)" class="bar-button w-25 p-1" variant="primary" >
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
           <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1" variant="secondary" >
@@ -111,9 +111,14 @@ export default {
         atmosphere: this.atmosphereValue,
         comment: this.commentValue
       }
-      console.log(payload + 'what ze fuk happnd  ' + barID)
       this.$emit('addReview', barID, payload)
       this.curKey++
+    },
+    emitBar(bar) {
+      this.$emit('emittedBar', bar)
+    },
+    getDirection(bar) {
+      this.$emit('directMeDaddy', bar)
     }
   }
 }
