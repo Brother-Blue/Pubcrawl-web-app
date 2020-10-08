@@ -16,13 +16,14 @@
     >
       <b-nav
       vertical
-      class="float-left text-justify"
-      >
-        <b-nav-item class="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-fill"></b-icon> My Pages</b-nav-item>
-        <b-nav-item class="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar2"></b-icon> Events</b-nav-item>
-        <b-nav-item class="text-warning"><b-icon icon="dice3"></b-icon> I'm feeling lucky!</b-nav-item>
-        <b-nav-item class="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="person-fill"></b-icon> Sign in</b-nav-item>
-        <b-nav-item class="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="person-fill"></b-icon> Sign out</b-nav-item>
+      class="float-left text-justify w-100"
+      ><br>
+        <b-nav-item link-classes="text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
       </b-nav>
     </b-sidebar>
     <pubcrawl-signin
