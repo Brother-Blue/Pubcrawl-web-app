@@ -1,7 +1,7 @@
 <template>
   <div class="main bg-dark">
     <header-bar></header-bar>
-    <b-row>
+    <b-row no-gutters>
       <b-col>
         <bar-list
         @directMeDaddy="getDirections"
