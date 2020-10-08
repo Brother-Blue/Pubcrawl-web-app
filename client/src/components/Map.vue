@@ -460,7 +460,7 @@ export default {
 
 </script>
 <style scoped>
-  #button_over_map { position: absolute; bottom: 110px; right: 10px; z-index: 99; }
+  #button_over_map { position: absolute; bottom: 110px; right: 20px; z-index: 99; }
   #search_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
   #searchbutton_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
 </style>
