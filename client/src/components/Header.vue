@@ -1,5 +1,5 @@
 <template>
-  <b-navbar>
+  <b-navbar id="navbar">
     <b-navbar-brand href="#" class="bg-dark text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><img class="image" src="../../../images/logo_placeholder.png"></b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="text-warning"><b-button class="btn btn-warning" v-b-toggle.sidebar-menu>Menu <b-icon icon="list"></b-icon></b-button></b-nav-item>
@@ -72,6 +72,10 @@ export default {
 </script>
 
 <style scoped>
+#navbar {
+  box-shadow: 2px 0 2px 2px black;
+}
+
 .image {
   height: 45px;
   padding: 0;
