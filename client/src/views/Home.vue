@@ -1,13 +1,19 @@
 <template>
   <div class="main bg-dark">
     <header-bar></header-bar>
-    <bar-list
-    :barArray="bars"
-    @addReview='addBarReview'>
-    </bar-list>
-    <bar-map
-    :bars="bars">
-    </bar-map>
+    <b-row>
+      <b-col>
+        <bar-list
+        :barArray="bars"
+        @addReview='addBarReview'>
+        </bar-list>
+      </b-col>
+      <b-col>
+        <bar-map
+        :bars="bars">
+        </bar-map>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
