@@ -2,7 +2,7 @@
   <div class="bar-list-container" >
     <pubcrawl-searchbar/>
     <div v-for="(bar,index) in barArray" :key="index +curKey" >
-      <b-button squared v-b-toggle="'bar' + bar._id" class="bar-container border border-secondary">
+      <b-button squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark">
         <bar-item
         id="index"
         :img="bar.photo"
@@ -13,14 +13,14 @@
         ></bar-item>
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
-      <div>
-          <b-button squared v-b-modal="'' + bar._id" class="bar-button " variant="primary" >
+      <b-button-group class="w-100">
+        <b-button v-b-modal="'' + bar._id" class="bar-button w-25 p-1" variant="warning" >
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
-          <b-button squared v-b-modal="'' + bar._id" class="view-button " variant="secondary" >
+          <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1" variant="secondary" >
             <b-icon icon="list"></b-icon>
         </b-button>
-      </div>
+      </b-button-group>
       <b-modal v-bind:id="'add-review' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
@@ -123,24 +123,10 @@ export default {
 ::-webkit-scrollbar {
   width: 20px;
 }
-.bar-button:hover {
-opacity: 70%;
-}
-.bar-button {
-  width: 21.6%;
-  margin-top: 3px;
-}
-.view-button:hover {
-opacity: 70%;
-}
-.view-button {
-  width: 78.4%;
-  margin-top: 3px;
-  opacity: 70%;
-}
 .bar-list-container {
   max-width: 50%;
   max-height: 93.6vh;
+  margin-left: 10px;
   overflow: scroll;
   outline: none;
   border: none;

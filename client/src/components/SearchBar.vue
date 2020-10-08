@@ -1,6 +1,6 @@
 <template>
 <form class="searchbar">
-    <b-form-input class="searchbar-input" type="search" placeholder="Search by bar name"></b-form-input>
+    <b-form-input id="searchBar" class="searchbar-input bg-dark text-white border border-warning rounded-lg" type="search" placeholder="Search by bar name"></b-form-input>
     <a href="#" class="searchbar-clear"></a>
 </form>
 </template>
@@ -17,12 +17,10 @@ export default {
 </script>
 
 <style scoped>
-.searchbar {
-  max-width: 100%;
+#searchBar {
+  max-width: 80%;
   min-width: 50%;
-  margin-top: 0;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 10px auto;
   border-radius: 0;
 }
 </style>

@@ -57,12 +57,15 @@ export default {
 }
 
 .bar-item-container {
-  margin: 0;
+  max-width: 99%;
+  margin: 5px auto;
   padding: 0;
   border: none;
+  box-shadow: 0px 0px 3px 2px #f0ad4e
 }
 
 .bar-item-container:hover {
 color: white;
+background-color: #f0ad4e
 }
 </style>
