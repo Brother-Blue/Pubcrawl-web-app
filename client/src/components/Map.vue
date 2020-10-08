@@ -38,7 +38,7 @@
     ref="mapRef"
     :center="mapCoordinates"
     :zoom="zoom"
-    style="width:100%; position:absolute; right:0; bottom:0; top: 63px"
+    style="width:100%; position:absolute; right:0; bottom:0; top: 3px"
     :options="{
       zoomControl: true,
       mapTypeControl: false,
