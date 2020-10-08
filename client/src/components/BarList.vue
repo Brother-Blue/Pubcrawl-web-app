@@ -121,13 +121,14 @@ export default {
 
 <style scoped>
 ::-webkit-scrollbar {
+  display: none;
   width: 20px;
 }
 .bar-list-container {
   max-width: 100%;
-  max-height: 93.6vh;
+  max-height: 92.6vh;
   margin-left: 10px;
-  overflow: scroll;
+  overflow-y: scroll;
   outline: none;
   border: none;
 }
