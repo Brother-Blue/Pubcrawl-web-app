@@ -21,7 +21,42 @@
             <b-icon icon="box-arrow-up-right"></b-icon> <em>View more about "{{ bar.name }}"</em>
         </b-button>
       </b-button-group>
-      <b-modal v-bind:id="'add-review' + bar._id"
+      <b-modal
+      :id="'' + bar._id"
+      size="lg"
+      header-bg-variant="dark"
+      header-text-variant="warning"
+      body-bg-variant="dark"
+      body-text-variant="light"
+      centered
+      hide-footer
+      :title="bar.name"
+      >
+        <b-row>
+          <b-col><b-img :src="bar.photo" thumbnail class="w-100"></b-img></b-col>
+          <b-col class="container">
+            <p v-if="bar.rating > 0">Average Rating: <em>{{bar.rating}}</em></p>
+            <p v-if="bar.rating === 0" class="text-muted">No rating.</p>
+            <p>{{bar.address}}</p>
+            <p>Number of events at <em>{{bar.name}}</em>: <b-badge class="float-right" variant="primary">{{bar.events.length}}</b-badge></p>
+          </b-col>
+        </b-row><hr class="bg-secondary">
+        <h4 class="text-warning text-center"><em>Reviews</em></h4>
+        <b-row>
+          <b-col>
+            <p class="text-muted text-center" v-if="bar.reviews.length === 0">No Reviews.</p>
+            <b-list-group
+            class="w-100"
+            v-for="(review, index) in bar.reviews" :key="index"
+            >
+              <pubcrawl-review-item :id="index"/>
+            </b-list-group>
+          </b-col>
+        </b-row>
+        <b-button v-b-modal="'review' + bar._id" class="w-25 float-right btn btn-warning"><b-icon icon="plus-square"></b-icon> Add a review</b-button>
+      </b-modal>
+      <b-modal
+        :id="'review' + bar._id"
         header-bg-variant="dark"
         header-text-variant="warning"
         body-bg-variant="dark"
@@ -71,6 +106,7 @@
 <script>
 import BarItem from '@/components/BarItem'
 import SearchBar from '@/components/SearchBar'
+import ReviewItem from '@/components/ReviewItem'
 
 export default {
   name: 'bar-list',
@@ -79,7 +115,8 @@ export default {
   ],
   components: {
     'bar-item': BarItem,
-    'pubcrawl-searchbar': SearchBar
+    'pubcrawl-searchbar': SearchBar,
+    'pubcrawl-review-item': ReviewItem
   },
   data() {
     return {
