@@ -14,11 +14,11 @@
     </b-button>
     <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
       <b-button-group class="w-100">
-        <b-button @click="getDirection(bar)" class="bar-button w-25 p-1" variant="primary" >
+        <b-button @click="getDirection(bar)" class="bar-button w-25 p-1 bg-primary text-white">
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
-          <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1" variant="secondary" >
-            <b-icon icon="list"></b-icon>
+          <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1 bg-muted text-light" >
+            <em v-if="window.width > 800">View more about "{{ bar.name }}"</em>
         </b-button>
       </b-button-group>
       <b-modal v-bind:id="'add-review' + bar._id"
