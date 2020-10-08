@@ -1,9 +1,11 @@
 <template>
   <div class="main bg-dark">
     <header-bar></header-bar>
+    <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col>
         <bar-list
+        ref="barList"
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
@@ -82,6 +84,9 @@ export default {
         .catch((error) => {
           console.error(error)
         })
+    },
+    toTop() {
+      this.$refs.barList.scrollTo()
     }
   },
   created: function () {
@@ -94,5 +99,12 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+#jump-button {
+  position: fixed;
+  bottom: 10px;
+  right: 51vw;
+  z-index: 1000;
 }
 </style>

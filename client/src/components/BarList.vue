@@ -18,7 +18,7 @@
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
           <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1 bg-muted text-light" >
-            <em v-if="window.width > 800">View more about "{{ bar.name }}"</em>
+            <b-icon icon="box-arrow-up-right"></b-icon> <em>View more about "{{ bar.name }}"</em>
         </b-button>
       </b-button-group>
       <b-modal v-bind:id="'add-review' + bar._id"
@@ -119,6 +119,9 @@ export default {
     },
     getDirection(bar) {
       this.$emit('directMeDaddy', bar)
+    },
+    scrollTo() {
+      this.$el.scrollTop = 0
     }
   }
 }
