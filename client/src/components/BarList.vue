@@ -1,8 +1,8 @@
 <template>
-  <div class="bar-list-container" >
+  <div class="bar-list-container">
     <pubcrawl-searchbar/>
-    <div v-for="(bar,index) in barArray" :key="index +curKey" >
-      <b-button squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark">
+    <div v-for="(bar,index) in barArray" :key="index +curKey" role="tablist">
+      <b-button squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
         id="index"
         :img="bar.photo"
@@ -12,7 +12,7 @@
         :numEvents="bar.events.length"
         ></bar-item>
     </b-button>
-    <b-collapse v-bind:id="'bar' + bar._id">
+    <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
       <b-button-group class="w-100">
         <b-button v-b-modal="'' + bar._id" class="bar-button w-25 p-1" variant="primary" >
             <b-icon icon="cursor-fill"></b-icon>
