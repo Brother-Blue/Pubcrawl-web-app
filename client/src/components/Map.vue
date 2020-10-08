@@ -38,7 +38,7 @@
     ref="mapRef"
     :center="mapCoordinates"
     :zoom="zoom"
-    style="height:98%; width:98%; position:absolute; left:0; bottom:0; top: 3px"
+    style="height:100%; width:100%; position:absolute; left:0; bottom:0; top: 3px"
     :options="{
       zoomControl: true,
       mapTypeControl: false,
@@ -473,7 +473,7 @@ export default {
 
 </script>
 <style scoped>
-  #button_over_map { position: absolute; bottom: 110px; right: 20px; z-index: 99; }
-  #search_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
-  #searchbutton_over_map { position: absolute; top: 73px; right: 55px; z-index: 99; }
+  #button_over_map { position: absolute; bottom: 107px; right: 10px; z-index: 99; }
+  #search_over_map { position: absolute; top: 13px; right: 55px; z-index: 99; }
+  #searchbutton_over_map { position: absolute; top: 13px; right: 55px; z-index: 99; }
 </style>
