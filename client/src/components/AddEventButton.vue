@@ -215,7 +215,7 @@ export default {
     getAllBars() {
       Api.get('/bars?sortByName=asc')
         .then(response => {
-          response.data.bars.forEach(bar => {
+          response.data.forEach(bar => {
             this.bars.push({ bar: bar._id, name: bar.name })
           })
         }).catch(error => {
