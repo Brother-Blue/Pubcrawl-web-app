@@ -62,7 +62,7 @@
       <GmapCluster
       :clickable="true"
       :zoom-on-click="true"
-      :maxZoom="16"
+      :maxZoom="15"
       :animation="1">
 
       <!-- Bar marker -->
