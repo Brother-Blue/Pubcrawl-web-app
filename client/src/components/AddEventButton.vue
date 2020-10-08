@@ -16,6 +16,7 @@
         scrollable
         title="Add a new event"
         ok-title="Save & Exit"
+        ok-variant="warning"
         :ok-disabled="!invalidEvent"
         @ok="saveEvent"
         >
@@ -42,6 +43,7 @@
               <b-form-datepicker
                 id="start-date"
                 v-model="startDateValue"
+                :placeholder="startDateVal"
                 :min="minStartDate"
                 :max="maxStartDate"
                 :state="validDate"
@@ -109,9 +111,11 @@
         offset="40"
         >
           <b-dropdown-form
-          class="bg-dark text-warning text-center"
+          class="bg-dark text-warning text-justify"
           >
+            <b-form-invalid-feedback text-variant="warning" :state="validBars">At least one bar must be selected. <hr class="bg-secondary"> </b-form-invalid-feedback>
             <b-checkbox-group
+            class="p-1"
             v-model="selectedBars"
             :options="bars"
             value-field="bar"
@@ -120,27 +124,10 @@
             switches
             stacked
             >
-              <b-form-invalid-feedback :state="validBars">At least one bar must be selected.</b-form-invalid-feedback>
             </b-checkbox-group>
           </b-dropdown-form>
         </b-dropdown><br><br>
         <p class="text-warning" v-if="selectedBars.length > 0"> Selected Bars: {{selectedBars.length}}</p>
-        <b-form-group
-        label="Your Username (temporary)"
-        label-for="username"
-        description="Please verify your username."
-        :state="userExists"
-        >
-          <b-input
-          id="event-title"
-          v-model="username"
-          :state="userExists"
-          :formatter="formatter"
-          placeholder="pubcrawl"
-          >
-          </b-input>
-          <b-button class="btn btn-outline-warning" @click="findUser(username)">Verify</b-button>
-        </b-form-group>
         </b-modal>
     </div>
 </template>
@@ -150,6 +137,9 @@ import { Api } from '@/Api'
 
 export default {
   name: 'add-event-btn',
+  props: [
+    'startDateVal'
+  ],
   data() {
     const now = new Date()
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
@@ -167,7 +157,7 @@ export default {
     maxStartDate.setDate(maxEndDate.getDate())
     return {
       modalShow: false,
-      startDateValue: '',
+      startDateValue: this.startDateVal,
       startTimeValue: '',
       endDateValue: '',
       endTimeValue: '',
@@ -177,9 +167,7 @@ export default {
       maxEndDate: '',
       eventTitle: '',
       description: '',
-      username: '',
-      uid: '',
-      uExists: false,
+      uid: this.$route.query.id,
       bars: [],
       selectedBars: []
     }
@@ -206,10 +194,7 @@ export default {
       this.startTimeValue !== '' && this.endTimeValue !== '' &&
       this.eventTitle.length > 0 && this.eventTitle.length <= 30 &&
       this.description.length <= 280 && this.selectedBars.length > 0 &&
-      this.uExists === true && this.uid !== ''
-    },
-    userExists() {
-      return this.uExists
+      this.uid !== undefined
     }
   },
   methods: {
@@ -227,23 +212,8 @@ export default {
     formatter(value) {
       return value.toLowerCase()
     },
-    findUser(username) {
-      Api.get(`/users?username=${username}`)
-        .then(response => {
-          if (response.status === 200) {
-            if (response.data[0].username === this.username) {
-              this.uExists = true
-              this.uid = response.data[0]._id
-            } else {
-              this.uExists = false
-            }
-          }
-        }).catch(error => {
-          console.error(error)
-        })
-    },
     getAllBars() {
-      Api.get('/bars')
+      Api.get('/bars?sortByName=asc')
         .then(response => {
           response.data.bars.forEach(bar => {
             this.bars.push({ bar: bar._id, name: bar.name })
@@ -266,7 +236,7 @@ export default {
   max-height: 40vh;
   min-width: 50vh;
   margin-left: 35px;
-  box-shadow: 3px 3px 3px 5px black;
+  padding: 0;
   overflow-y: auto;
 }
 
