@@ -14,7 +14,7 @@
     </b-button>
     <b-collapse v-bind:id="'bar' + bar._id">
       <b-button-group class="w-100">
-        <b-button v-b-modal="'' + bar._id" class="bar-button w-25 p-1" variant="warning" >
+        <b-button v-b-modal="'' + bar._id" class="bar-button w-25 p-1" variant="primary" >
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
           <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1" variant="secondary" >
