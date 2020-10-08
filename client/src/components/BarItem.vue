@@ -25,7 +25,7 @@
     <p class="text-secondary" v-if="barRating <= 0">No reviews</p>
     </b-list-group-item>
     <b-list-group-item class="bar-attr text-light bg-dark">{{address}}</b-list-group-item>
-    <b-list-group-item class="bar-attr text-secondary bg-dark" v-if="numEvents <= 0">Events: <b-badge variant="secondary">{{numEvents}}</b-badge></b-list-group-item>
+    <b-list-group-item class="bar-attr text-secondary bg-dark" v-if="numEvents <= 0">No events</b-list-group-item>
     <b-list-group-item class="bar-attr text-light bg-dark" v-if="numEvents > 0">Events: <b-badge variant="primary">{{numEvents}}</b-badge></b-list-group-item>
   </b-list-group>
   </b-card>

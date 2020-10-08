@@ -38,10 +38,7 @@
             <p v-if="bar.rating > 0">Average Rating: <em>{{bar.rating}}</em></p>
             <p v-if="bar.rating === 0" class="text-muted">No rating.</p>
             <p>{{bar.address}}</p>
-            <p>Number of events:
-              <b-badge v-if="bar.events.length <= 0" variant="secondary">{{bar.events.length}}</b-badge>
-              <b-badge v-if="bar.events.length > 0" variant="primary">{{bar.events.length}}</b-badge>
-            </p>
+            <p v-if="bar.events.length > 0">Number of events: <b-badge v-if="bar.events.length > 0" variant="primary">{{bar.events.length}}</b-badge></p>
           </b-col>
         </b-row><hr class="bg-secondary">
         <h4 class="text-warning text-center"><em>Reviews</em></h4>
