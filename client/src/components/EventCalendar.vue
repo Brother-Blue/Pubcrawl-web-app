@@ -1,7 +1,7 @@
 <template>
   <div class="bg-dark">
     <b-calendar
-    selected-variant="warning"
+    selected-variant="danger"
     today-variant="warning"
     nav-button-variant="primary"
     class="calendar bg-dark"
