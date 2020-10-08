@@ -11,7 +11,6 @@
   <hr class="bg-secondary">
   <b-list-group horizontal class="bg-dark">
     <b-list-group-item class="bar-attr bg-dark">
-    <label for="avgRating-lg">Average rating:</label>
     <b-form-rating
     id="avgRating"
     variant="warning"
@@ -25,8 +24,9 @@
     ></b-form-rating>
     <p class="text-secondary" v-if="barRating <= 0">No reviews</p>
     </b-list-group-item>
-    <b-list-group-item class="bar-attr bg-dark"><strong>{{address}}</strong></b-list-group-item>
-    <b-list-group-item class="bar-attr bg-dark">Events: <b-badge variant="warning">{{numEvents}}</b-badge></b-list-group-item>
+    <b-list-group-item class="bar-attr text-light bg-dark">{{address}}</b-list-group-item>
+    <b-list-group-item class="bar-attr text-secondary bg-dark" v-if="barRating <= 0">Events: <b-badge variant="secondary">{{numEvents}}</b-badge></b-list-group-item>
+    <b-list-group-item class="bar-attr text-light bg-dark" v-if="barRating > 0">Events: <b-badge variant="success">{{numEvents}}</b-badge></b-list-group-item>
   </b-list-group>
   </b-card>
 </template>
@@ -57,6 +57,12 @@ export default {
 }
 
 .bar-item-container {
-  box-shadow: 3px 3px 3px 3px black;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.bar-item-container:hover {
+color: white;
 }
 </style>
