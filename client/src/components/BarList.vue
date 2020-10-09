@@ -4,17 +4,26 @@
     <div v-for="(bar,index) in barArray" :key="index +curKey" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
-        id="index"
+        :id="index"
+        class="d-none d-lg-block"
         :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
         :address="bar.address"
         :numEvents="bar.events.length"
         ></bar-item>
+        <bar-item-small
+        :id="index"
+        class="d-block d-lg-none"
+        :title="bar.name"
+        :barRating="bar.rating"
+        :address="bar.address"
+        :numEvents="bar.events.length"
+        />
     </b-button>
     <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
       <b-button-group class="w-100">
-        <b-button @click="getDirection(bar)" class="bar-button w-25 p-1 bg-primary text-white">
+        <b-button @click="getDirection(bar)" class="bar-button w-auto p-1 bg-primary text-white d-none d-lg-block">
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
           <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1 bg-muted text-light" >
@@ -105,6 +114,7 @@
 
 <script>
 import BarItem from '@/components/BarItem'
+import BarItemSmall from '@/components/BarItemSmall'
 import SearchBar from '@/components/SearchBar'
 import ReviewItem from '@/components/ReviewItem'
 
@@ -115,6 +125,7 @@ export default {
   ],
   components: {
     'bar-item': BarItem,
+    'bar-item-small': BarItemSmall,
     'pubcrawl-searchbar': SearchBar,
     'pubcrawl-review-item': ReviewItem
   },

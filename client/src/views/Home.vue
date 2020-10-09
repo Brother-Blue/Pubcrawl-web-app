@@ -12,7 +12,7 @@
         @addReview='addBarReview'>
         </bar-list>
       </b-col>
-      <b-col sm class="d-none d-md-block">
+      <b-col sm class="d-none d-lg-block">
         <bar-map
         ref="barMap"
         :bars="bars">
@@ -104,7 +104,7 @@ export default {
 #jump-button {
   position: fixed;
   bottom: 10px;
-  right: 51vw;
+  left: 2vw;
   z-index: 1000;
 }
 </style>
