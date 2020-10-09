@@ -1,15 +1,35 @@
 <template>
-    <div class="btn-group">
-      <b-button-group>
-        <router-link to="/" class="btn-link"><img class="image" src="../../../images/logo_placeholder.png"/></router-link>
-        <router-link to="/events" class="btn-link">Events</router-link>
-        <!-- <router-link to="/login" class="btn-link" >{{ message }}</router-link> -->
-        <b-button v-b-modal.signin-modal>{{message}}</b-button>
-      </b-button-group>
-      <pubcrawl-signin
+  <b-navbar id="navbar">
+    <b-navbar-brand href="#" class="bg-dark text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><img class="image" src="../../../images/logo_placeholder.png"></b-navbar-brand>
+    <b-navbar-nav class="ml-auto">
+      <b-nav-item class="text-warning"><b-button class="btn btn-warning" v-b-toggle.sidebar-menu>Menu <b-icon icon="list"></b-icon></b-button></b-nav-item>
+    </b-navbar-nav>
+    <b-sidebar
+    id="sidebar-menu"
+    backdrop
+    backdrop-variant="dark"
+    shadow
+    title="Menu"
+    bg-variant="dark"
+    text-variant="warning"
+    sidebar-class="border-right border-warning"
+    >
+      <b-nav
+      vertical
+      class="float-left text-justify w-100"
+      ><br>
+        <b-nav-item link-classes="text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
+      </b-nav>
+    </b-sidebar>
+    <pubcrawl-signin
       id="signin-modal"
-      ></pubcrawl-signin>
-    </div>
+    ></pubcrawl-signin>
+  </b-navbar>
 </template>
 
 <script>
@@ -21,28 +41,44 @@ export default {
   },
   data() {
     return {
-      message: 'Sign in'
+      message: 'Sign in',
+      signedIn: false
+    }
+  },
+  computed: {
+    getSignedIn() {
+      this.checkSignedIn()
+      return this.signedIn
     }
   },
   methods: {
-    /*
-        TODO: Finish Passport login.
-        Not actual code to be used, just here for future reference
-        of what we need to do.
-
-        if (loggedIn) {
-            this.message = `Welcome, ${Passport.getSession.user}`
-        } else {
-            this.message = 'Sign in'
-        }
-        */
+    checkSignedIn() {
+      if (this.$route.query.id) {
+        this.signedIn = true
+      } else {
+        this.signedIn = false
+      }
+    },
+    signOut() {
+      this.signedIn = false
+      this.message = 'Sign in'
+      this.$router.push('/')
+    },
+    showModal() {
+      this.$bvModal.show('signin-modal')
+    }
   }
 }
 </script>
 
 <style scoped>
+#navbar {
+  box-shadow: 2px 0 2px 2px black;
+  z-index: 1000;
+}
+
 .image {
-  height: 50px;
+  height: 45px;
   padding: 0;
 }
 .btn-group {

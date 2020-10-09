@@ -1,10 +1,24 @@
 <template>
   <div class="main bg-dark">
     <header-bar></header-bar>
-    <bar-list
-    @addReview='addBarReview'>
-    </bar-list>
-    <bar-map></bar-map>
+    <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
+    <b-row no-gutters>
+      <b-col sm>
+        <bar-list
+        ref="barList"
+        @directMeDaddy="getDirections"
+        @emittedBar="clickedBar"
+        :barArray="bars"
+        @addReview='addBarReview'>
+        </bar-list>
+      </b-col>
+      <b-col sm class="d-none d-lg-block">
+        <bar-map
+        ref="barMap"
+        :bars="bars">
+        </bar-map>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
@@ -22,6 +36,7 @@ export default {
   },
   data() {
     return {
+      bars: null
     }
   },
   methods: {
@@ -32,7 +47,50 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    clickedBar(bar) {
+      this.$refs.barMap.focusBar(bar)
+    },
+    getDirections(bar) {
+      this.$refs.barMap.getDirections(bar)
+    },
+    getBars() {
+      Api.get('/bars')
+        .then((response) => {
+          this.bars = response.data.bars
+          for (var i = 0; i < this.bars.length; i++) {
+            var review = []
+            var avg = 0
+            var count = 0
+            Api.get(`/bars/${this.bars[i]._id}/reviews`)
+              .then(response => {
+                review = response.data.reviews
+                if (review) {
+                  for (var i = 0; i < review.length; i++) {
+                    avg += review.averageRating
+                    count++
+                  }
+                }
+              }).catch(error => {
+                console.error(error)
+              })
+            if (count > 0) {
+              this.bars[i].rating = avg / count
+            } else {
+              this.bars[i].rating = 0
+            }
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    toTop() {
+      this.$refs.barList.scrollTo()
     }
+  },
+  created: function () {
+    this.getBars()
   }
 }
 </script>
@@ -41,5 +99,12 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+#jump-button {
+  position: fixed;
+  bottom: 10px;
+  left: 2vw;
+  z-index: 1000;
 }
 </style>

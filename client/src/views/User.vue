@@ -61,7 +61,7 @@
         </b-form-group>
       </b-modal>
       <b-row>
-        <b-col class="my-events">
+        <b-col class="my-events" cols="12" md="6">
           <b-collapse visible id="my-events" :key="events.length + 'b' + curKey">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
@@ -79,7 +79,7 @@
         </div>
           </b-collapse>
         </b-col>
-        <b-col class="my-reviews">
+        <b-col class="my-reviews" cols="12" md="6">
           <b-collapse visible id="my-reviews" :key="reviews.length + 'a' + curKey">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
@@ -129,13 +129,12 @@
       footer-bg-variant="dark"
       footer-text-variant="danger"
       title="Delete account"
-      ok-disabled
-      ok-title="Nice try ;)"
+      ok-title="DO NOT CLICK"
       ok-variant="danger"
       @ok="deleteAllUsers"
       centered
       >
-      <p>Are you sure you want to delete all accounts? <strong class="text-danger">That's a dick move!</strong> (<em>A very very mean thing to do</em>).</p>
+      <p>Are you sure you want to delete all accounts? <strong class="text-danger">That's a dick move! NEVER CLICK THIS BUTTON</strong> (<em>A very very mean thing to do</em>).</p>
       </b-modal>
       <!-- THIS IS ONLY FOR PROOF OF CONCEPT. NEVER USE THIS. -->
     </div>
@@ -230,7 +229,6 @@ export default {
       Api.delete(`/events/${id}`)
         .then(response => {
           console.log(response)
-          this.events = []
           this.getEvents()
           this.curKey += 1
         }).catch(error => {
@@ -240,7 +238,6 @@ export default {
     deleteReviewForever(id) {
       Api.delete(`/reviews/${id}`)
         .then(response => {
-          this.reviews = []
           this.getReviews()
           this.curKey += 1
         }).catch(error => {
@@ -252,18 +249,17 @@ export default {
       Api.patch(`/events/${id}`, payload)
         .then(response => {
           console.log(response.data)
-          this.events = []
           this.getEvents()
           this.curKey += 1
         }).catch(error => {
           console.error(error)
         })
     },
+    // Changed to PUT for milestone, recommended to have it as patch to prevent overriding unchanged data
     updateReview(id, payload) {
       console.log(id, payload)
-      Api.patch(`/reviews/${id}`, payload)
+      Api.put(`/reviews/${id}`, payload)
         .then(response => {
-          this.reviews = []
           this.getReviews()
           this.curKey += 1
         }).catch(error => {

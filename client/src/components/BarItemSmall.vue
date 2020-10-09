@@ -1,11 +1,6 @@
 <template>
   <b-card
-  class="bg-dark text-warning bar-item-container"
-  :img-src="img"
-  :img-height="200"
-  :img-width="200"
-  img-left
-  img-alt="Ape together strong but still cant find image"
+  class="bg-dark text-warning bar-item-container fluid"
   :title="title"
   >
   <hr class="bg-secondary">
@@ -57,7 +52,6 @@ export default {
 }
 
 .bar-item-container {
-  max-width: 99%;
   margin: 5px auto;
   padding: 0;
   border: none;

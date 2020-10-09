@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCookie from 'vue-cookie'
 import App from './App.vue'
 import router from './router'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
@@ -11,6 +12,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
+Vue.use(VueCookie)
 Vue.use(VueGeolocation)
 Vue.use(VueGoogleMaps, {
   load: {
