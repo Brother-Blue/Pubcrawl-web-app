@@ -18,7 +18,7 @@
             <b-icon icon="cursor-fill"></b-icon>
           </b-button>
           <b-button v-b-modal="'' + bar._id" class="view-button w-75 p-1 bg-muted text-light" >
-            <b-icon icon="box-arrow-up-right"></b-icon> <em>View more about "{{ bar.name }}"</em>
+            <em>View more about {{ bar.name }}</em> <b-icon icon="box-arrow-up-right"></b-icon>
         </b-button>
       </b-button-group>
       <b-modal
@@ -38,7 +38,7 @@
             <p v-if="bar.rating > 0">Average Rating: <em>{{bar.rating}}</em></p>
             <p v-if="bar.rating === 0" class="text-muted">No rating.</p>
             <p>{{bar.address}}</p>
-            <p>Number of events: <b-badge class="float-right" variant="primary">{{bar.events.length}}</b-badge></p>
+            <p v-if="bar.events.length > 0">Number of events: <b-badge v-if="bar.events.length > 0" variant="primary">{{bar.events.length}}</b-badge></p>
           </b-col>
         </b-row><hr class="bg-secondary">
         <h4 class="text-warning text-center"><em>Reviews</em></h4>
@@ -53,7 +53,7 @@
             </b-list-group>
           </b-col>
         </b-row>
-        <b-button v-b-modal="'review' + bar._id" class="w-25 float-right btn btn-warning"><b-icon icon="plus-square"></b-icon> Add a review</b-button>
+        <b-button v-b-modal="'review' + bar._id" class="w-20 float-right btn btn-success"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
       </b-modal>
       <b-modal
         :id="'review' + bar._id"

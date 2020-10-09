@@ -38,7 +38,7 @@
     ref="mapRef"
     :center="mapCoordinates"
     :zoom="zoom"
-    style="height:100%; width:100%; position:absolute; left:0; bottom:0; top: 3px"
+    style="height:99.9%; width:100%; position:absolute; left:0; bottom:0; top: 3px"
     :options="{
       zoomControl: true,
       mapTypeControl: false,
@@ -450,7 +450,6 @@ export default {
     <p></p>
     <h6><b>${bar.name}</b></h6>
     <p>${bar.address}</p>
-    <p>${bar.avgRating}</p>
   </div>
 </div>`)
     }
