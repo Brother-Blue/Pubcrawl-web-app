@@ -61,7 +61,7 @@
         </b-form-group>
       </b-modal>
       <b-row>
-        <b-col class="my-events">
+        <b-col class="my-events" cols="12" md="6">
           <b-collapse visible id="my-events" :key="events.length + 'b' + curKey">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
@@ -79,7 +79,7 @@
         </div>
           </b-collapse>
         </b-col>
-        <b-col class="my-reviews">
+        <b-col class="my-reviews" cols="12" md="6">
           <b-collapse visible id="my-reviews" :key="reviews.length + 'a' + curKey">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">

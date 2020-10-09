@@ -3,7 +3,7 @@
     <header-bar></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
-      <b-col>
+      <b-col sm>
         <bar-list
         ref="barList"
         @directMeDaddy="getDirections"
@@ -12,7 +12,7 @@
         @addReview='addBarReview'>
         </bar-list>
       </b-col>
-      <b-col>
+      <b-col sm class="d-none d-md-block">
         <bar-map
         ref="barMap"
         :bars="bars">
