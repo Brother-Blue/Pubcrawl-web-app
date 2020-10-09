@@ -53,7 +53,7 @@
             </b-list-group>
           </b-col>
         </b-row>
-        <b-button v-b-modal="'review' + bar._id" class="w-20 float-right btn btn-success"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
+        <b-button v-b-modal="'review' + bar._id" class="w-20 float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
       </b-modal>
       <b-modal
         :id="'review' + bar._id"
