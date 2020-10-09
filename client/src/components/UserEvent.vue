@@ -155,6 +155,14 @@ export default {
 </script>
 
 <style scoped>
+/* hr {
+  color: red;
+} */
+
+/* p {
+  font-size: 12px;
+} */
+
 .bar-list {
   list-style-type: none;
   padding: 0px;

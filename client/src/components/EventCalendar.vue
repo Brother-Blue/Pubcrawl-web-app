@@ -15,8 +15,10 @@
     @selected="getEvents(value)"
     ></b-calendar>
     <add-event-button
+    v-if="value"
     :startDateVal="value"
-    @sendingPayload="saveEvent"></add-event-button>
+    @sendingPayload="saveEvent"
+    ></add-event-button>
     <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
         <event-item
         :eventTitle="e[0]"
