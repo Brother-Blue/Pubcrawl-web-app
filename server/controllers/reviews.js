@@ -61,7 +61,7 @@ router.get('/:id/bars', function(req, res, next){
 });
 
 // Update review
-router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.put('/:id', function(req, res, next) { // router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) <-- removed authenticate temporarily for testing on localhost
     Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
         if (!review) {
