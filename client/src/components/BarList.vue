@@ -129,7 +129,6 @@ export default {
       atmosphereValue: null,
       foodQualityValue: null,
       commentValue: '',
-      userID: null,
       img: require('./../../../images/bar_placeholder.png')
     }
   },
@@ -140,7 +139,7 @@ export default {
     },
     addReview(barID) {
       const payload = {
-        users: this.userID,
+        users: this.$route.query.id,
         bars: barID,
         drinkQuality: this.drinkQualityValue,
         drinkPrice: this.drinkPriceValue,
