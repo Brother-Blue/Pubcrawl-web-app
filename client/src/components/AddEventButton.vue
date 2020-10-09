@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-button variant="outline-success" @click="modalShow = !modalShow">
+        <b-button variant="outline-warning" @click="modalShow = !modalShow">
             <b-icon icon="plus-circle"></b-icon> New event
         </b-button>
         <b-modal
