@@ -16,7 +16,7 @@ Vue.use(VueCookie)
 Vue.use(VueGeolocation)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyBt2p4bhMoBOFMJE3KVBjVhsyllqipfQ0M',
+    key: 'AIzaSyBygd0pTo5i2u2xboeedrc0ZxUBgSaaQ18',
     libraries: 'places'
   },
   installComponent: true
