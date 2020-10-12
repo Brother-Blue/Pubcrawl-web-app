@@ -5,7 +5,7 @@
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
         :id="index"
-        class="d-none d-lg-block"
+        class="d-none d-lg-flex"
         :img="bar.photo"
         :title="bar.name"
         :barRating="bar.rating"
@@ -144,10 +144,6 @@ export default {
     }
   },
   methods: {
-    calcDistance(deviceCoords, destinationCoords) {
-      // TODO: Calculate distance with Google Maps API
-      // Once Hjalle is done paying for Google Cloud subscriptionss
-    },
     addReview(barID) {
       const payload = {
         users: this.$route.query.id,
