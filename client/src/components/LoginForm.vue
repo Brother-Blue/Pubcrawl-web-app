@@ -181,9 +181,9 @@ export default {
           }
         }).catch(error => {
           if (error.status === 404) {
-            this.sendToast('Uh oh!', false, 'Something went wrong logging you in. Please try again later.')
+            this.sendToast('Faiked', false, 'Something went wrong, please try again later.')
           } else if (error.status === 401) {
-            this.sendToast('Uh oh!', false, 'Insufficient permissions.')
+            this.sendToast('Unauthorized', false, 'Insufficient permissions.')
           } else if (error.status === 500) {
             this.sendToast('Uh oh!', false, 'Invalid username or password')
           }
