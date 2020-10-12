@@ -41,12 +41,27 @@ export default {
   },
   methods: {
     addBarReview(id, payload) {
-      console.log('inside the post method call' + id)
       Api.post(`/bars/${id}/reviews`, payload)
         .then(response => {
+          if (response.status === 200) {
+            this.sendToast('Success', false, 'Successfully added review.')
+          }
         }).catch(error => {
-          console.error(error)
+          if (error.status === 404) {
+            this.sendToast('Failed', false, 'Something went wrong ,please try again later.')
+          } else if (error.status === 401) {
+            this.sendToast('Unauthorized', false, 'Insufficient permissions.')
+          }
+          console.log(error)
         })
+    },
+    sendToast(title, append = false, message) {
+      this.$bvToast.toast(message, {
+        title: title,
+        toaster: 'b-toaster-top-center',
+        solid: true,
+        appendToast: append
+      })
     },
     clickedBar(bar) {
       this.$refs.barMap.focusBar(bar)
@@ -60,24 +75,22 @@ export default {
           this.bars = response.data.bars
           for (var i = 0; i < this.bars.length; i++) {
             var review = []
-            var avg = 0
             var count = 0
-            Api.get(`/bars/${this.bars[i]._id}/reviews`)
-              .then(response => {
-                review = response.data.reviews
-                if (review) {
+            var avg = 0
+            this.bars[i].rating = 0
+            if (this.bars[i].reviews.length > 0) {
+              Api.get(`/bars/${this.bars[i]._id}/reviews`)
+                .then(response => {
+                  review = response.data
                   for (var i = 0; i < review.length; i++) {
-                    avg += review.averageRating
+                    avg += review[i].averageRating
                     count++
                   }
-                }
-              }).catch(error => {
-                console.error(error)
-              })
-            if (count > 0) {
-              this.bars[i].rating = avg / count
-            } else {
-              this.bars[i].rating = 0
+                  this.bars[i].rating = avg
+                  this.bars[i].rating /= count
+                }).catch(error => {
+                  console.error(error)
+                })
             }
           }
         })
@@ -87,10 +100,17 @@ export default {
     },
     toTop() {
       this.$refs.barList.scrollTo()
+    },
+    getCookie(name) {
+      var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
+      return matches ? decodeURIComponent(matches[1]) : undefined
     }
   },
   created: function () {
     this.getBars()
+    if (this.getCookie('jwt')) {
+      console.log('User has saved cookie')
+    }
   }
 }
 </script>
