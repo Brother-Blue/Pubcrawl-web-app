@@ -30,8 +30,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
-/* TODO: In case text start clipping */
 /* #header {
   min-width: 100%;
   position: fixed;
