@@ -17,8 +17,11 @@ router.post('', passport.authenticate('jwt', { session: false }), function(req, 
 });
 
 // Create bar review
-router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), async function(req, res, next) {
     var review = new Review(req.body);
+    await review.save(function(err) {
+        if (err) { return next(err); }
+    })
     Bar.findById({_id: req.params.id}, function(err, bar) {
         if (err) { return next(err); }
         if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
@@ -27,10 +30,7 @@ router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), fu
             if (err) { return next(err); }
         })
     })
-    review.save(function(err) {
-        if (err) { return next(err); }
-        res.status(201).json(review);
-    })
+    res.status(201).json(review);
 })
 
 // Read bar
