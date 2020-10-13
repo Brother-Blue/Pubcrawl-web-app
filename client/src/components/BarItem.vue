@@ -62,6 +62,48 @@
         </b-row>
         <b-button v-b-modal="'review' + id" class="w-20 float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
       </b-modal>
+      <b-modal
+        :id="'review' + id"
+        header-bg-variant="dark"
+        header-text-variant="warning"
+        body-bg-variant="dark"
+        body-text-variant="light"
+        footer-bg-variant="dark"
+        footer-text-variant="info"
+        size="lg"
+        centered
+        :title="'add review for:  ' + title"
+        @ok="addReview(id)"
+        :ok-disabled="commentValue.length >= 140"
+        >
+        <b-input-group class="drink-quality" prepend="Drink Quality">
+        <b-form-rating v-model="drinkQualityValue" show-clear></b-form-rating>
+        </b-input-group
+        >
+         <b-input-group class="drink-price" prepend="Drink Price">
+        <b-form-rating v-model="drinkPriceValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+          <b-input-group class="atmosphere" prepend="Atmosphere">
+        <b-form-rating v-model="atmosphereValue" show-clear></b-form-rating>
+          </b-input-group
+          >
+         <b-input-group class="food-quality" prepend="Food Quality">
+        <b-form-rating v-model="foodQualityValue" show-clear></b-form-rating>
+         </b-input-group
+         >
+        <b-form-group class="comment"
+                description="Max comment length is 140 characters"
+                >
+                  <b-form-textarea
+                  v-model="commentValue"
+                  placeholder="Your comment here :)"
+                  :state="commentValue.length <= 140"
+                  rows="3"
+                  >
+                  </b-form-textarea>
+                </b-form-group>
+      </b-modal>
   </b-card>
 </template>
 
@@ -80,7 +122,12 @@ export default {
   ],
   data() {
     return {
-      barReviews: []
+      barReviews: [],
+      drinkQualityValue: '',
+      drinkPriceValue: '',
+      foodQualityValue: '',
+      atmosphereValue: '',
+      commentValue: ''
     }
   },
 
