@@ -14,15 +14,16 @@ let BarSchema = new mongoose.Schema({
 });
 
 BarSchema.pre('save', function(next) {
-    var bar = this;
     var count = 0;
     var total = 0;
-    for (let i = 0; i < reviews.length; i++) {
-        total += reviews[i].averageRating;
-        count++;
+    if (reviews.length > 0) {
+        for (let i = 0; i < reviews.length; i++) {
+            total += reviews[i].averageRating;
+            count++;
+        }
     }
     var avg = total / count;
-    bar.averageRating = Number(avg.toFixed(1));
+    averageRating = Number(avg.toFixed(1));
 });
 
 // Compile model from BarSchema
