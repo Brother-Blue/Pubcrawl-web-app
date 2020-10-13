@@ -7,9 +7,22 @@ let BarSchema = new mongoose.Schema({
     reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'reviews' }],
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
     address: { type: String },
-    photo: { type: String }
+    photo: { type: String },
+    averageRating: { type: Number }
 }, {
     versionKey: false // Skip mongoose-version-key
+});
+
+BarSchema.pre('save', function(next) {
+    var bar = this;
+    var count = 0;
+    var total = 0;
+    for (let i = 0; i < reviews.length; i++) {
+        total += reviews[i].averageRating;
+        count++;
+    }
+    let avg = total / count;
+    bar.averageRating = Number(avg.toFixed());
 });
 
 // Compile model from BarSchema
