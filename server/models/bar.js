@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Reviews = require('./review.js')
 
 // Create bar schema
 let BarSchema = new mongoose.Schema({
@@ -16,14 +17,17 @@ let BarSchema = new mongoose.Schema({
 BarSchema.pre('save', function(next) {
     var count = 0;
     var total = 0;
-    if (reviews.length > 0) {
-        for (let i = 0; i < reviews.length; i++) {
-            total += reviews[i].averageRating;
-            count++;
+    if (this.reviews.length > 0) {
+        for (let i = 0; i < this.reviews.length; i++) {
+            Reviews.findById(this.reviews[i], function(err, review) {
+                if (err) return next(err);
+                total += review.averageRating;
+                count++;
+            })
         }
     }
     var avg = total / count;
-    averageRating = Number(avg.toFixed(1));
+    this.averageRating = Number(avg.toFixed(1));
 });
 
 // Compile model from BarSchema
