@@ -74,6 +74,7 @@ export default {
         .then((response) => {
           this.bars = response.data.bars
           for (var i = 0; i < this.bars.length; i++) {
+            console.log(this.bars[i].name + ' : ' + this.bars[i].averageRating)
             var review = []
             var count = 0
             var avg = 0

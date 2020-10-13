@@ -8,7 +8,7 @@
         class="d-none d-lg-flex"
         :img="bar.photo"
         :title="bar.name"
-        :barRating="bar.rating"
+        :barRating="bar.averageRating"
         :address="bar.address"
         :numEvents="bar.events.length"
         ></bar-item>
@@ -56,9 +56,9 @@
             <p class="text-muted text-center" v-if="bar.reviews.length === 0">No Reviews.</p>
             <b-list-group
             class="w-100"
-            v-for="(review, index) in bar.reviews" :key="index"
+            v-for="(review, index) in bar.reviews" :key="'rid'+index"
             >
-              <pubcrawl-review-item :id="index"/>
+              <pubcrawl-review-item :id="'rid'+index"/>
             </b-list-group>
           </b-col>
         </b-row>

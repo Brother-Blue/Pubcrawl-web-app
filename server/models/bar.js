@@ -23,7 +23,6 @@ BarSchema.pre('save', function(next) {
     }
     var avg = total / count;
     bar.averageRating = Number(avg.toFixed(1));
-    console.log(bar.averageRating); // For testing purposes
 });
 
 // Compile model from BarSchema

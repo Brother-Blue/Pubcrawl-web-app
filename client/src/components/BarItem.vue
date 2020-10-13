@@ -1,6 +1,7 @@
 <template>
   <b-card
   class="bg-dark text-warning bar-item-container"
+  :id="id"
   :img-src="img"
   :img-height="200"
   :img-width="200"
@@ -26,13 +27,20 @@
     <b-list-group-item class="bar-attr text-secondary bg-dark" v-if="numEvents <= 0">No events</b-list-group-item>
     <b-list-group-item class="bar-attr text-light bg-dark" v-if="numEvents > 0">Events: <b-badge variant="primary">{{numEvents}}</b-badge></b-list-group-item>
   </b-list-group>
+  <!-- <pubcrawl-review-item :id="id"/> -->
   </b-card>
 </template>
 
 <script>
+// import ReviewItem from '@/components/ReviewItem'
+
 export default {
   name: 'bar-item',
+  components: {
+    // 'pubcrawl-review-item': ReviewItem
+  },
   props: [
+    'id',
     'img',
     'title',
     'barRating',

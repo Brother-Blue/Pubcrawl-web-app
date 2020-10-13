@@ -4,7 +4,7 @@
     class="bg-secondary text-light my-1"
     >
         <b-avatar variant="primary"></b-avatar><span> Name</span><b-badge class="float-right" pill variant="primary">0</b-badge>
-        <p>{{bar.reviews}}</p>
+        <p>{{review}}</p>
     </b-list-group-item>
 </template>
 
