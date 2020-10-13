@@ -1,5 +1,6 @@
 <template>
   <b-card
+  :key="curKey"
   class="bg-dark text-warning bar-item-container"
   :id="id"
   :img-src="img"
@@ -35,6 +36,7 @@
       body-bg-variant="dark"
       body-text-variant="light"
       centered
+      scrollable
       hide-footer
       :title="title"
       @show="getBarReviews(id)"
@@ -47,8 +49,9 @@
             <p>{{address}}</p>
             <p v-if="numEvents > 0">Number of events: <b-badge v-if="numEvents > 0" variant="primary">{{numEvents}}</b-badge></p>
           </b-col>
-        </b-row><hr class="bg-secondary">
-        <h4 class="text-warning text-center"><em>Reviews</em></h4>
+        </b-row><hr class="bg-secondary mb-0">
+        <h4 class="text-warning text-center p-2 my-0"><em>Reviews</em></h4>
+        <b-button v-b-modal="'review' + id" class="w-20 sticky-top float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
         <b-row>
           <b-col>
             <p class="text-muted text-center" v-if="barReviews.length === 0">No Reviews.</p>
@@ -56,11 +59,10 @@
             class="w-100"
             v-for="(review, index) in barReviews" :key="'rid'+index"
             >
-              <pubcrawl-review-item :id="'rid'+index"/>
+              <pubcrawl-review-item :id="'rid'+index" :review="review" class="my-3"/>
             </b-list-group>
           </b-col>
         </b-row>
-        <b-button v-b-modal="'review' + id" class="w-20 float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
       </b-modal>
       <b-modal
         :id="'review' + id"
@@ -110,6 +112,7 @@
 
 <script>
 import { Api } from '@/Api'
+import ReviewItem from '@/components/ReviewItem'
 
 export default {
   name: 'bar-item',
@@ -121,6 +124,9 @@ export default {
     'address',
     'numEvents'
   ],
+  components: {
+    'pubcrawl-review-item': ReviewItem
+  },
   data() {
     return {
       barReviews: [],
@@ -129,14 +135,14 @@ export default {
       foodQualityValue: '',
       atmosphereValue: '',
       commentValue: '',
-      barID: this.id
+      barID: this.id,
+      curKey: 0
     }
   },
   methods: {
     getBarReviews(barID) {
       Api.get(`/bars/${barID}/reviews`)
         .then(response => {
-          console.log(response.data)
           this.barReviews = response.data
         }).catch(error => {
           console.error(error)
@@ -153,6 +159,7 @@ export default {
         comment: this.commentValue
       }
       this.$emit('addReview', barID, payload)
+      this.curKey++
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="bar-list-container">
     <pubcrawl-searchbar/>
-    <div v-for="(bar,index) in barArray" :key="index +curKey" role="tablist">
+    <div v-for="(bar,index) in barArray" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
         :id="bar._id"
@@ -53,7 +53,6 @@ export default {
   },
   data() {
     return {
-      curKey: null,
       bars: null,
       barReviews: [],
       barLocation: null,
@@ -66,22 +65,8 @@ export default {
     }
   },
   methods: {
-    // addReview(barID) {
-    //   const payload = {
-    //     users: this.$route.query.id,
-    //     bars: barID,
-    //     drinkQuality: this.drinkQualityValue,
-    //     drinkPrice: this.drinkPriceValue,
-    //     foodQuality: this.foodQualityValue,
-    //     atmosphere: this.atmosphereValue,
-    //     comment: this.commentValue
-    //   }
-    //   this.$emit('addReview', barID, payload)
-    //   this.curKey++
-    // },
     addBarReview(barID, payload) {
       this.$emit('addBarReview', barID, payload)
-      this.curKey++
     },
     emitBar(bar) {
       this.$emit('emittedBar', bar)
