@@ -21,8 +21,8 @@ BarSchema.pre('save', function(next) {
         total += reviews[i].averageRating;
         count++;
     }
-    let avg = total / count;
-    bar.averageRating = Number(avg.toFixed());
+    var avg = total / count;
+    bar.averageRating = Number(avg.toFixed(1));
 });
 
 // Compile model from BarSchema

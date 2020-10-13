@@ -79,6 +79,12 @@ router.put('/:id', function(req, res, next) { // router.put('/:id', passport.aut
         review.users = req.body.users;
         review.bars = req.body.bars;
         review.save();
+
+        Bar.findById(review.bars, function(err, bar) {
+            if (err) { return next(err) }
+            bar.save();
+        });
+        
         res.status(200).json(review);
     });
 });
@@ -102,6 +108,12 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), function(
         review.users = (req.body.users || review.users);
         review.bars = (req.body.bars || review.bars);
         review.save();
+
+        Bar.findById(review.bars, function(err, bar) {
+            if (err) { return next(err) }
+            bar.save();
+        });
+
         res.status(200).json(review);
     });
 });
