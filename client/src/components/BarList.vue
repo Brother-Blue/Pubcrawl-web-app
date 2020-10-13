@@ -11,6 +11,7 @@
         :barRating="bar.averageRating"
         :address="bar.address"
         :numEvents="bar.events.length"
+        @addReview="addBarReview"
         ></bar-item>
         <bar-item-small
         :id="index"
@@ -65,17 +66,21 @@ export default {
     }
   },
   methods: {
-    addReview(barID) {
-      const payload = {
-        users: this.$route.query.id,
-        bars: barID,
-        drinkQuality: this.drinkQualityValue,
-        drinkPrice: this.drinkPriceValue,
-        foodQuality: this.foodQualityValue,
-        atmosphere: this.atmosphereValue,
-        comment: this.commentValue
-      }
-      this.$emit('addReview', barID, payload)
+    // addReview(barID) {
+    //   const payload = {
+    //     users: this.$route.query.id,
+    //     bars: barID,
+    //     drinkQuality: this.drinkQualityValue,
+    //     drinkPrice: this.drinkPriceValue,
+    //     foodQuality: this.foodQualityValue,
+    //     atmosphere: this.atmosphereValue,
+    //     comment: this.commentValue
+    //   }
+    //   this.$emit('addReview', barID, payload)
+    //   this.curKey++
+    // },
+    addBarReview(barID, payload) {
+      this.$emit('addBarReview', barID, payload)
       this.curKey++
     },
     emitBar(bar) {

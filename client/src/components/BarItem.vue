@@ -75,6 +75,7 @@
         :title="'add review for:  ' + title"
         @ok="addReview(id)"
         :ok-disabled="commentValue.length >= 140"
+        class="text-justify"
         >
         <b-input-group class="drink-quality" prepend="Drink Quality">
         <b-form-rating v-model="drinkQualityValue" show-clear></b-form-rating>
@@ -127,10 +128,10 @@ export default {
       drinkPriceValue: '',
       foodQualityValue: '',
       atmosphereValue: '',
-      commentValue: ''
+      commentValue: '',
+      barID: this.id
     }
   },
-
   methods: {
     getBarReviews(barID) {
       Api.get(`/bars/${barID}/reviews`)
@@ -140,6 +141,18 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    addReview(barID) {
+      const payload = {
+        users: this.$route.query.id,
+        bars: this.barID,
+        drinkQuality: this.drinkQualityValue,
+        drinkPrice: this.drinkPriceValue,
+        foodQuality: this.foodQualityValue,
+        atmosphere: this.atmosphereValue,
+        comment: this.commentValue
+      }
+      this.$emit('addReview', barID, payload)
     }
   }
 }

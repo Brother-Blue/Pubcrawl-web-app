@@ -9,7 +9,7 @@
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
-        @addReview='addBarReview'>
+        @addBarReview="addBarReview">
         </bar-list>
       </b-col>
       <b-col sm class="d-none d-lg-block">
@@ -40,10 +40,11 @@ export default {
     }
   },
   methods: {
-    addBarReview(id, payload) {
-      Api.post(`/bars/${id}/reviews`, payload)
+    addBarReview(barID, payload) {
+      Api.post(`/bars/${barID}/reviews`, payload)
         .then(response => {
-          if (response.status === 200) {
+          console.log(response)
+          if (response.status === 201) {
             this.sendToast('Success', false, 'Successfully added review.')
           }
         }).catch(error => {
