@@ -73,27 +73,6 @@ export default {
       Api.get('/bars')
         .then((response) => {
           this.bars = response.data.bars
-          for (var i = 0; i < this.bars.length; i++) {
-            console.log(this.bars[i].name + ' : ' + this.bars[i].averageRating)
-            var review = []
-            var count = 0
-            var avg = 0
-            this.bars[i].rating = 0
-            if (this.bars[i].reviews.length > 0) {
-              Api.get(`/bars/${this.bars[i]._id}/reviews`)
-                .then(response => {
-                  review = response.data
-                  for (var i = 0; i < review.length; i++) {
-                    avg += review[i].averageRating
-                    count++
-                  }
-                  this.bars[i].rating = avg
-                  this.bars[i].rating /= count
-                }).catch(error => {
-                  console.error(error)
-                })
-            }
-          }
         })
         .catch((error) => {
           console.error(error)
