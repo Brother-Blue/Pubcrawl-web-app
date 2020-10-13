@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var Reviews = require('./review.js')
+var Review = require('./review.js')
 
 // Create bar schema
 let BarSchema = new mongoose.Schema({
@@ -9,25 +9,29 @@ let BarSchema = new mongoose.Schema({
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
     address: { type: String },
     photo: { type: String },
-    averageRating: { type: Number }
+    averageRating: { type: Number, default: 0 }
 }, {
     versionKey: false // Skip mongoose-version-key
 });
 
-BarSchema.pre('save', function(next) {
-    var count = 0;
-    var total = 0;
-    if (this.reviews.length > 0) {
-        for (let i = 0; i < this.reviews.length; i++) {
-            Reviews.findById(this.reviews[i], function(err, review) {
-                if (err) return next(err);
-                total += review.averageRating;
-                count++;
+BarSchema.pre('save', async function(next) {
+    var bar = this;
+
+    if (bar.reviews.length > 0) {
+        bar.averageRating = 0;
+        var avg = 0;
+        var divide = 0;
+
+        for (let i = 0; i < bar.reviews.length; i++) {
+            await Review.findById(bar.reviews[i], async function(err, review) {
+                avg += review.averageRating;
+                divide++;
             })
         }
+        avg /= divide;
+        bar.averageRating =  Number(avg.toFixed(1));
     }
-    var avg = total / count;
-    this.averageRating = Number(avg.toFixed(1));
+    next();
 });
 
 // Compile model from BarSchema
