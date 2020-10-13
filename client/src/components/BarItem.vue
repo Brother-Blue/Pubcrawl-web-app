@@ -50,10 +50,10 @@
             <p v-if="numEvents > 0">Number of events: <b-badge v-if="numEvents > 0" variant="primary">{{numEvents}}</b-badge></p>
           </b-col>
         </b-row><hr class="bg-secondary mb-0">
-        <h4 class="text-warning text-center p-2 my-0"><em>Reviews</em></h4>
-        <b-button v-b-modal="'review' + id" class="w-20 sticky-top float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
         <b-row>
           <b-col>
+            <h4 class="text-warning text-center p-2 my-0"><em>Reviews</em></h4>
+            <b-button v-b-modal="'review' + id" class="w-20 sticky-top float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
             <p class="text-muted text-center" v-if="barReviews.length === 0">No Reviews.</p>
             <b-list-group
             class="w-100"

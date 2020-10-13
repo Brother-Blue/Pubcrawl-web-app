@@ -6,7 +6,7 @@
         <b-avatar variant="primary"></b-avatar><span class="ml-2"> {{user}}</span><b-badge class="float-right" pill variant="primary">0</b-badge>
         <p class="mt-2">Average Rating: {{review.averageRating}}</p><hr class="bg-muted">
         <p>{{review.comment}}</p><hr class="bg-muted">
-        <b-row>
+        <b-row class="d-none d-sm-flex">
           <b-col><span>Drink Quality: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
@@ -24,7 +24,7 @@
         :value="review.drinkPrice"
         ></b-rating></b-col>
         </b-row>
-        <b-row>
+        <b-row class="d-none d-sm-flex">
           <b-col><span>Food Quality: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
