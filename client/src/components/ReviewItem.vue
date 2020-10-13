@@ -7,36 +7,32 @@
         <p class="mt-2">Average Rating: {{review.averageRating}}</p><hr class="bg-muted">
         <p>{{review.comment}}</p><hr class="bg-muted">
         <b-row class="d-none d-sm-flex">
-          <b-col><span>Drink Quality: </span><b-rating
+          <b-col v-if="review.drinkQuality"><span>Drink Quality: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
-        v-if="review.drinkQuality"
         readonly
         inline
         :value="review.drinkQuality"
         ></b-rating></b-col>
-          <b-col><span>Drink Price: </span><b-rating
+          <b-col v-if="review.drinkPrice"><span>Drink Price: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
-        v-if="review.drinkPrice"
         readonly
         inline
         :value="review.drinkPrice"
         ></b-rating></b-col>
         </b-row>
         <b-row class="d-none d-sm-flex">
-          <b-col><span>Food Quality: </span><b-rating
+          <b-col v-if="review.foodQuality"><span>Food Quality: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
-        v-if="review.foodQuality"
         readonly
         inline
         :value="review.foodQuality"
         ></b-rating></b-col>
-          <b-col><span>Atmosphere: </span><b-rating
+          <b-col v-if="review.atmosphere"><span>Atmosphere: </span><b-rating
         class="m-1 mx-auto bg-secondary border-0"
         variant="warning"
-        v-if="review.atmosphere"
         readonly
         inline
         :value="review.atmosphere"
