@@ -177,11 +177,11 @@ export default {
       Api.post('/users/login', params, { withCredentials: false })
         .then(response => {
           if (response.status === 200) {
-            this.$router.push(`/?id=${response.data._id}`)
+            // TODO: set logged to true and get login
           }
         }).catch(error => {
           if (error.status === 404) {
-            this.sendToast('Faiked', false, 'Something went wrong, please try again later.')
+            this.sendToast('Failed', false, 'Something went wrong, please try again later.')
           } else if (error.status === 401) {
             this.sendToast('Unauthorized', false, 'Insufficient permissions.')
           } else if (error.status === 500) {
