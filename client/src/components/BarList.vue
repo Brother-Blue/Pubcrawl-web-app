@@ -1,6 +1,6 @@
 <template>
   <div class="bar-list-container">
-    <pubcrawl-searchbar @updateList="refineSearch"/>
+    <pubcrawl-searchbar/>
     <div v-for="(bar,index) in bars" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
 import BarItem from '@/components/BarItem'
 import BarItemSmall from '@/components/BarItemSmall'
 import SearchBar from '@/components/SearchBar'
@@ -77,19 +76,6 @@ export default {
     },
     scrollTo() {
       this.$el.scrollTop = 0
-    },
-    async refineSearch(text) {
-      if (text.length === 0) {
-        this.bars = this.$props.barArray
-      } else {
-        await Api.get(`/bars/?name=${text}`)
-          .then(response => {
-            this.bars = response.data
-            this.$forceUpdate()
-          }).catch(error => {
-            console.error(error)
-          })
-      }
     }
   }
 }
