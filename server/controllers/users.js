@@ -30,10 +30,15 @@ router.post('/login', async (req, res, next) => {
       )(req, res, next);
 });
 
-router.get('/login', passport.authenticate('jwt', { session: false }), async (req, res) => {
-    var decrypt = await jwt.verify(req.cookies['jwt'], 'sea shanty 2 remix');
-    return res.status(200).json(decrypt.user._id);
-})
+router.get('/cookie', function (req, res) {
+    token = req.cookies['jwt'];
+    jwt.verify(token, 'sea shanty 2 remix', function(err, decoded) {
+        if (err) {
+            return res.status(401).json(err)
+        }
+        return res.status(200).json(decoded.user._id);
+      });
+});
 
 // Create user
 router.post('', function(req, res, next) {
