@@ -136,7 +136,6 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { reviews: req.params.id } },
             { multi: true }
         ).exec();
-        Bar.save();
         res.status(200).json();
     });
 });
