@@ -187,7 +187,7 @@ export default {
   },
   methods: {
     isValidUser() {
-      var id = this.$route.params.id
+      var id = localStorage.getItem('pubcrawl_user_id')
       Api.get(`/users/${id}`)
         .then(response => {
           var status = response.request.status
@@ -202,7 +202,7 @@ export default {
         })
     },
     deleteConfirmation() {
-      var id = this.$route.params.id
+      var id = localStorage.getItem('pubcrawl_user_id')
       Api.delete(`/users/${id}`)
         .then(response => {
           console.log(response)
@@ -223,7 +223,7 @@ export default {
         .then(response => {
           this.events = response.data.events
             .filter(event =>
-              event.users === this.$route.params.id)
+              event.users === localStorage.getItem('pubcrawl_user_id'))
         }).catch(error => {
           console.error(error)
         })
@@ -233,7 +233,7 @@ export default {
         .then(response => {
           this.reviews = response.data.reviews
             .filter(review =>
-              review.users === this.$route.params.id)
+              review.users === localStorage.getItem('pubcrawl_user_id'))
         }).catch(error => {
           console.error(error)
         })
