@@ -246,12 +246,7 @@ export default {
         })
     },
     deleteReviewForever(id) {
-      var barID = this.reviews.filter(review => {
-        if (review._id === id) {
-          return review.bars
-        }
-      })
-      Api.delete(`/bars/${barID}/reviews/${id}`)
+      Api.delete(`/reviews/${id}`)
         .then(response => {
           this.getReviews()
           this.curKey += 1
