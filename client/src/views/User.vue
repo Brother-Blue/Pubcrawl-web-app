@@ -267,10 +267,9 @@ export default {
           console.error(error)
         })
     },
-    // Changed to PUT for milestone, recommended to have it as patch to prevent overriding unchanged data
     updateReview(id, payload) {
       console.log(id, payload)
-      Api.put(`/reviews/${id}`, payload)
+      Api.patch(`/reviews/${id}`, payload)
         .then(response => {
           this.getReviews()
           this.curKey += 1
@@ -283,7 +282,7 @@ export default {
         email: this.email,
         password: this.password
       }
-      Api.patch(`/users/${id}`, params)
+      Api.put(`/users/${id}`, params)
         .then(response => {
           console.log(response)
         }).catch(error => {
