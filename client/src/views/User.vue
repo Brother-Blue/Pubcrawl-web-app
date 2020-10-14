@@ -169,14 +169,12 @@ export default {
     }
   },
   created: function () {
-    this.isValidUser()
     this.getEvents()
     this.getReviews()
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
-            this.validUser = true
             this.userID = response.data._id
           } else {
             this.validUser = false
@@ -184,11 +182,11 @@ export default {
           }
         }).catch(error => console.log(error))
     }
+    this.isValidUser()
   },
   methods: {
     isValidUser() {
-      var id = this.userID
-      Api.get(`/users/${id}`)
+      Api.get(`/users/${this.userID}`)
         .then(response => {
           if (response.data) {
             this.validUser = true
@@ -257,10 +255,8 @@ export default {
         })
     },
     updateEvent(id, payload) {
-      console.log(id, payload)
       Api.patch(`/events/${id}`, payload)
         .then(response => {
-          console.log(response.data)
           this.getEvents()
           this.curKey += 1
         }).catch(error => {
@@ -268,7 +264,6 @@ export default {
         })
     },
     updateReview(id, payload) {
-      console.log(id, payload)
       Api.patch(`/reviews/${id}`, payload)
         .then(response => {
           this.getReviews()

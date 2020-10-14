@@ -336,7 +336,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { bars: req.params.id } },
             { multi: true }
         ).exec();
-        res.status(200).json(bar);
+        res.status(200).json();
     });
 });
 

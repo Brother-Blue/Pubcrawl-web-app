@@ -72,7 +72,6 @@ export default {
   methods: {
     addBarReview(barID, payload) {
       this.$emit('addBarReview', barID, payload)
-      this.$forceUpdate()
     },
     emitBar(bar) {
       this.$emit('emittedBar', bar)

@@ -137,8 +137,7 @@ export default {
       foodQualityValue: '',
       atmosphereValue: '',
       commentValue: '',
-      barID: this.id,
-      curKey: 0
+      barID: this.id
     }
   },
   methods: {
@@ -161,7 +160,7 @@ export default {
         comment: this.commentValue
       }
       this.$emit('addReview', barID, payload)
-      this.curKey++
+      this.$forceUpdate()
     }
   }
 }

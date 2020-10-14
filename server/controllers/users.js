@@ -153,7 +153,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $set: { users: null } },
             { multi: true }
         ).exec();
-        res.status(200).json(user);
+        res.status(200).json();
     });
 });
 

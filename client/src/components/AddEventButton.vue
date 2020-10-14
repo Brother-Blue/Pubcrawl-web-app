@@ -43,7 +43,6 @@
               <b-form-datepicker
                 id="start-date"
                 v-model="startDateValue"
-                :placeholder="startDateVal"
                 :min="minStartDate"
                 :max="maxStartDate"
                 :state="validDate"
@@ -168,7 +167,7 @@ export default {
       maxEndDate: '',
       eventTitle: '',
       description: '',
-      uid: '',
+      uid: this.uID,
       bars: [],
       selectedBars: []
     }
@@ -194,8 +193,7 @@ export default {
       this.startDateValue !== '' && this.endDateValue !== '' &&
       this.startTimeValue !== '' && this.endTimeValue !== '' &&
       this.eventTitle.length > 0 && this.eventTitle.length <= 30 &&
-      this.description.length <= 280 && this.selectedBars.length > 0 &&
-      this.uid !== ''
+      this.description.length <= 280 && this.selectedBars.length > 0 && this.uid
     }
   },
   methods: {
