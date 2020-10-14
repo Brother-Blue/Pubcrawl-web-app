@@ -19,7 +19,6 @@ export default {
   },
   data() {
     return {
-      logged: false
     }
   },
   methods: {
@@ -35,12 +34,10 @@ export default {
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
-          if (response.status === 200) {
-            this.logged = true
+          if (response.data) {
             console.log('Has valid cookie')
             localStorage.setItem('pubcrawl_user_id', response.data)
-          } else if (response.status === 401) {
-            this.logged = false
+          } else {
             console.log('Has invalid cookie')
             document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
