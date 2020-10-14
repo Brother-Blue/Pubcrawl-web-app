@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar></header-bar>
+    <header-bar @force-update="force"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
@@ -85,6 +85,9 @@ export default {
     getCookie(name) {
       var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
       return matches ? decodeURIComponent(matches[1]) : undefined
+    },
+    force() {
+      this.$forceUpdate()
     }
   },
   created: function () {
