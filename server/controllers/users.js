@@ -40,7 +40,7 @@ router.post('', function(req, res, next) {
 });  
 
 // Read user
-router.get('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.get('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
