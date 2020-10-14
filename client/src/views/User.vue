@@ -169,8 +169,6 @@ export default {
     }
   },
   created: function () {
-    this.getEvents()
-    this.getReviews()
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
@@ -183,6 +181,8 @@ export default {
         }).catch(error => console.log(error))
     }
     this.isValidUser()
+    this.getEvents()
+    this.getReviews()
   },
   methods: {
     isValidUser() {
@@ -246,7 +246,12 @@ export default {
         })
     },
     deleteReviewForever(id) {
-      Api.delete(`/reviews/${id}`)
+      var barID = this.reviews.filter(review => {
+        if (review._id === id) {
+          return review.bars
+        }
+      })
+      Api.delete(`/bars/${barID}/reviews/${id}`)
         .then(response => {
           this.getReviews()
           this.curKey += 1
