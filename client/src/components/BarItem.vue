@@ -53,7 +53,7 @@
         <b-row>
           <b-col>
             <h4 class="text-warning text-center p-2 my-0"><em>Reviews</em></h4>
-            <b-button v-b-modal="'review' + id" class="w-20 sticky-top float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
+            <b-button v-if="checkLoggedIn" v-b-modal="'review' + id" class="w-20 sticky-top float-right bg-dark btn btn-outline-warning"><b-icon icon="plus-circle"></b-icon> Add a review</b-button>
             <p class="text-muted text-center" v-if="barReviews.length === 0">No Reviews.</p>
             <b-list-group
             class="w-100"
@@ -136,7 +136,14 @@ export default {
       atmosphereValue: '',
       commentValue: '',
       barID: this.id,
-      curKey: 0
+      curKey: 0,
+      loggedIn: false
+    }
+  },
+  computed: {
+    checkLoggedIn() {
+      this.getLoggedIn()
+      return this.loggedIn
     }
   },
   methods: {
@@ -150,7 +157,7 @@ export default {
     },
     addReview(barID) {
       const payload = {
-        users: this.$route.query.id,
+        users: localStorage.getItem('pubcrawl_user_id'),
         bars: this.barID,
         drinkQuality: this.drinkQualityValue,
         drinkPrice: this.drinkPriceValue,
@@ -160,6 +167,13 @@ export default {
       }
       this.$emit('addReview', barID, payload)
       this.curKey++
+    },
+    getLoggedIn() {
+      if (localStorage.getItem('pubcrawl_user_id')) {
+        this.loggedIn = true
+      } else {
+        this.loggedIn = false
+      }
     }
   }
 }

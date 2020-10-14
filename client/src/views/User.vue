@@ -61,7 +61,7 @@
         </b-form-group>
       </b-modal>
       <b-row>
-        <b-col class="my-events" cols="12" md="6">
+        <b-col class="my-events">
           <b-collapse visible id="my-events" :key="events.length + 'b' + curKey">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
@@ -79,7 +79,7 @@
         </div>
           </b-collapse>
         </b-col>
-        <b-col class="my-reviews" cols="12" md="6">
+        <b-col class="my-reviews">
           <b-collapse visible id="my-reviews" :key="reviews.length + 'a' + curKey">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
@@ -188,7 +188,7 @@ export default {
   },
   methods: {
     isValidUser() {
-      var id = this.$route.params.id
+      var id = localStorage.getItem('pubcrawl_user_id')
       Api.get(`/users/${id}`)
         .then(response => {
           var status = response.request.status
@@ -203,7 +203,7 @@ export default {
         })
     },
     deleteConfirmation() {
-      var id = this.$route.params.id
+      var id = localStorage.getItem('pubcrawl_user_id')
       Api.delete(`/users/${id}`)
         .then(response => {
           console.log(response)
@@ -224,7 +224,7 @@ export default {
         .then(response => {
           this.events = response.data.events
             .filter(event =>
-              event.users === this.$route.params.id)
+              event.users === localStorage.getItem('pubcrawl_user_id'))
         }).catch(error => {
           console.error(error)
         })
@@ -234,7 +234,7 @@ export default {
         .then(response => {
           this.reviews = response.data.reviews
             .filter(review =>
-              review.users === this.$route.params.id)
+              review.users === localStorage.getItem('pubcrawl_user_id'))
         }).catch(error => {
           console.error(error)
         })

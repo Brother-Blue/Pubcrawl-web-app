@@ -167,7 +167,7 @@ export default {
       maxEndDate: '',
       eventTitle: '',
       description: '',
-      uid: this.$route.query.id,
+      uid: localStorage.getItem('pubcrawl_user_id'),
       bars: [],
       selectedBars: []
     }
