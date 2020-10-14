@@ -73,7 +73,7 @@ export default {
     getBars() {
       Api.get('/bars?sortByName=asc')
         .then((response) => {
-          this.bars = response.data.bars
+          this.bars = response.data
         })
         .catch((error) => {
           console.error(error)
