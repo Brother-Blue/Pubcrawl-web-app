@@ -53,9 +53,9 @@ export default {
   methods: {
     checkSignedIn() {
       if (localStorage.getItem('pubcrawl_user_id')) {
-        this.signedIn = true;
+        this.signedIn = true
       } else {
-        this.signedIn = false;
+        this.signedIn = false
       }
     },
     signOut() {

@@ -156,7 +156,7 @@ export default {
     },
     addReview(barID) {
       const payload = {
-        users: localstorage.getItem('pubcrawl_user_id'),
+        users: this.localstorage.getItem('pubcrawl_user_id'),
         bars: this.barID,
         drinkQuality: this.drinkQualityValue,
         drinkPrice: this.drinkPriceValue,

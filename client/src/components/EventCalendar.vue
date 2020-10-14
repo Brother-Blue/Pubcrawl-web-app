@@ -123,7 +123,7 @@ export default {
           console.error(error)
         })
     },
-    getLoggedIn() {
+    checkedLoggedIn() {
       if (localStorage.getItem('pubcrawl_user_id')) {
         this.loggedIn = true
       } else {
