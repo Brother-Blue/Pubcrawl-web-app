@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar @force-update="force"></header-bar>
+    <header-bar @force-update="force" :loggedIn="loggedIn"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
@@ -9,7 +9,9 @@
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
-        @addBarReview="addBarReview">
+        @addBarReview="addBarReview"
+        :loggedIn="loggedIn"
+        >
         </bar-list>
       </b-col>
       <b-col sm class="d-none d-lg-block">
@@ -36,7 +38,8 @@ export default {
   },
   data() {
     return {
-      bars: null
+      bars: null,
+      loggedIn: false
     }
   },
   methods: {
@@ -92,9 +95,14 @@ export default {
   },
   created: function () {
     this.getBars()
+  },
+  mounted: function () {
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
+          if (response.data._id) {
+            this.loggedIn = true
+          }
           if (!response.data) {
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
           }

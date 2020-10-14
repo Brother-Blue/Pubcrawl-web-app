@@ -1,7 +1,7 @@
 <template>
   <div class="bar-list-container">
     <pubcrawl-searchbar/>
-    <div v-for="(bar,index) in bars" :key="index" role="tablist">
+    <div v-for="(bar,index) in barArray" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
         :id="bar._id"
@@ -12,6 +12,7 @@
         :address="bar.address"
         :numEvents="bar.events.length"
         @addReview="addBarReview"
+        :loggedIn="loggedIn"
         ></bar-item>
         <bar-item-small
         :id="index"
@@ -20,6 +21,7 @@
         :barRating="bar.averageRating"
         :address="bar.address"
         :numEvents="bar.events.length"
+        :loggedIn="loggedIn"
         />
     </b-button>
     <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
@@ -44,7 +46,7 @@ import SearchBar from '@/components/SearchBar'
 export default {
   name: 'bar-list',
   props: [
-    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray'
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray', 'loggedIn'
   ],
   components: {
     'bar-item': BarItem,

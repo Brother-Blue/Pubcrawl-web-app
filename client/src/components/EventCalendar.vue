@@ -15,7 +15,7 @@
     @selected="getEvents(value)"
     ></b-calendar>
     <add-event-button
-    v-if="getLoggedIn"
+    v-if="loggedIn"
     :startDateVal="value"
     @sendingPayload="saveEvent"
     ></add-event-button>
@@ -39,6 +39,9 @@ import { Api } from '@/Api'
 
 export default {
   name: 'event-calendar',
+  props: [
+    'loggedIn'
+  ],
   components: {
     'event-item': EventItem,
     'add-event-button': AddEventButton
@@ -57,12 +60,8 @@ export default {
       events: null,
       value: '',
       min: minDate,
-      max: maxDate,
-      loggedIn: false
+      max: maxDate
     }
-  },
-  created() {
-    this.checkLoggedIn()
   },
   computed: {
     getLoggedIn() {
@@ -124,22 +123,6 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-    },
-    checkLoggedIn() {
-      Api.get('/users/cookie')
-        .then(response => {
-          if (response.data) {
-            this.loggedIn = true
-          }
-        }).catch(error => {
-          this.loggedIn = false
-          console.error(error)
-        })
-      // if (localStorage.getItem('pubcrawl_user_id')) {
-      //   this.loggedIn = true
-      // } else {
-      //   this.loggedIn = false
-      // }
     }
   }
 }

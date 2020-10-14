@@ -19,11 +19,11 @@
       class="float-left text-justify w-100"
       ><br>
         <b-nav-item link-classes="text-warning" :to="{path: '/'}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="lo" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" :to="{path: '/events'}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="!loggedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="loggedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
       </b-nav>
     </b-sidebar>
     <pubcrawl-signin
@@ -33,42 +33,24 @@
 </template>
 
 <script>
-import { Api } from '@/Api'
 import LoginForm from '@/components/LoginForm'
 
 export default {
   name: 'header',
+  props: [
+    'loggedIn'
+  ],
   components: {
     'pubcrawl-signin': LoginForm
   },
   data() {
     return {
-      signedIn: false,
       uID: ''
     }
   },
-  computed: {
-    getSignedIn() {
-      this.checkSignedIn()
-      return this.signedIn
-    }
-  },
   methods: {
-    checkSignedIn() {
-      Api.get('/users/cookie')
-        .then(response => {
-          if (response.data) {
-            this.uID = response.data._id
-            this.signedIn = true
-          }
-        }).catch(error => {
-          console.error(error)
-          this.signedIn = false
-        })
-    },
     signOut() {
       document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-      this.signedIn = false
       this.$router.push('/')
       this.$emit('force-update')
     },

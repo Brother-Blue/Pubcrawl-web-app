@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <pubcrawl-header/>
+    <pubcrawl-header :loggedIn="validUser"/>
     <div v-if="!validUser" class="text-center text-light">
       <h1>Uh oh!</h1>
       <p>This user does not exist. If you believe this to be an error please <a href="#" class="text-warning">contact the developers.</a></p>

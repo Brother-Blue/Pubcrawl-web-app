@@ -1,7 +1,7 @@
 <template>
     <div class="main bg-dark">
-        <pubcrawl-header ref="header"></pubcrawl-header>
-        <pubcrawl-calendar id="calendar"></pubcrawl-calendar>
+        <pubcrawl-header ref="header" :loggedIn="loggedIn"></pubcrawl-header>
+        <pubcrawl-calendar id="calendar" :loggedIn="loggedIn"></pubcrawl-calendar>
         <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     </div>
 </template>
@@ -19,6 +19,7 @@ export default {
   },
   data() {
     return {
+      loggedIn: false
     }
   },
   methods: {
@@ -34,6 +35,9 @@ export default {
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
+          if (response.data._id) {
+            this.loggedIn = true
+          }
           if (!response.data) {
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
           }
