@@ -189,7 +189,6 @@ export default {
           }
           console.log(error)
         })
-      // localStorage.pubcrawlCookie = 'test' <-- dumbass test
       this.$bvModal.hide(this.id)
     },
     sendToast(title, append = false, message) {

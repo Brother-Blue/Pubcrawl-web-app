@@ -156,8 +156,9 @@ export default {
   },
   data() {
     return {
-      validUser: '',
+      validUser: false,
       user: null,
+      userID: '',
       email: '',
       password: '',
       deleteModalShow: false,
@@ -175,20 +176,18 @@ export default {
       Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
-            var id = response.data._id
-            console.log('Has valid cookie')
-            localStorage.setItem('pubcrawl_user_id', id)
+            this.validUser = true
+            this.userID = response.data._id
           } else {
-            console.log('Has invalid cookie')
+            this.validUser = false
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-            localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))
     }
   },
   methods: {
     isValidUser() {
-      var id = localStorage.getItem('pubcrawl_user_id')
+      var id = this.userID
       Api.get(`/users/${id}`)
         .then(response => {
           var status = response.request.status
@@ -203,7 +202,7 @@ export default {
         })
     },
     deleteConfirmation() {
-      var id = localStorage.getItem('pubcrawl_user_id')
+      var id = this.userID
       Api.delete(`/users/${id}`)
         .then(response => {
           console.log(response)
@@ -224,7 +223,7 @@ export default {
         .then(response => {
           this.events = response.data.events
             .filter(event =>
-              event.users === localStorage.getItem('pubcrawl_user_id'))
+              event.users === this.userID)
         }).catch(error => {
           console.error(error)
         })
@@ -234,7 +233,7 @@ export default {
         .then(response => {
           this.reviews = response.data.reviews
             .filter(review =>
-              review.users === localStorage.getItem('pubcrawl_user_id'))
+              review.users === this.userID)
         }).catch(error => {
           console.error(error)
         })

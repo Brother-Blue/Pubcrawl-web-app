@@ -34,7 +34,7 @@ router.get('/cookie', function (req, res) {
     token = req.cookies['jwt'];
     jwt.verify(token, 'sea shanty 2 remix', function(err, decoded) {
         if (err) {
-            return res.status(200).json(null);
+            return res.status(404).json(null);
         }
         return res.status(200).json(decoded.user);
       });

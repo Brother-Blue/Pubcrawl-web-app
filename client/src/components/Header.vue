@@ -33,7 +33,9 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
 import LoginForm from '@/components/LoginForm'
+
 export default {
   name: 'header',
   components: {
@@ -52,11 +54,15 @@ export default {
   },
   methods: {
     checkSignedIn() {
-      if (localStorage.getItem('pubcrawl_user_id')) {
-        this.signedIn = true
-      } else {
-        this.signedIn = false
-      }
+      Api.get('/users/cookie')
+        .then(response => {
+          if (response.status === 200) {
+            this.signedIn = true
+          }
+        }).catch(error => {
+          console.error(error)
+          this.signedIn = false
+        })
     },
     signOut() {
       this.signedIn = false

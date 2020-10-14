@@ -168,11 +168,20 @@ export default {
       this.curKey++
     },
     getLoggedIn() {
-      if (localStorage.getItem('pubcrawl_user_id')) {
-        this.loggedIn = true
-      } else {
-        this.loggedIn = false
-      }
+      Api.get('/users/cookie')
+        .then(response => {
+          if (response.status === 200) {
+            this.loggedIn = true
+          }
+        }).catch(error => {
+          console.error(error)
+          this.loggedIn = false
+        })
+      // if (localStorage.getItem('pubcrawl_user_id')) {
+      //   this.loggedIn = true
+      // } else {
+      //   this.loggedIn = false
+      // }
     }
   }
 }
