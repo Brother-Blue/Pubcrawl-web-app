@@ -1,6 +1,6 @@
 <template>
   <b-navbar id="navbar">
-    <b-navbar-brand href="#" class="bg-dark text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><img class="image" src="../../../images/logo_placeholder.png"></b-navbar-brand>
+    <b-navbar-brand href="#" class="bg-dark text-warning" :to="{path: '/'}"><img class="image" src="../../../images/logo_placeholder.png"></b-navbar-brand>
     <b-navbar-nav class="ml-auto">
       <b-nav-item class="text-warning"><b-button class="btn btn-warning" v-b-toggle.sidebar-menu>Menu <b-icon icon="list"></b-icon></b-button></b-nav-item>
     </b-navbar-nav>
@@ -18,9 +18,9 @@
       vertical
       class="float-left text-justify w-100"
       ><br>
-        <b-nav-item link-classes="text-warning" :to="{path: '/', query: {id: this.$route.query.id}}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+this.$route.query.id}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" :to="{path: '/events', query: {id: this.$route.query.id}}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" :to="{path: '/'}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+localStorage.getItem('pubcrawl_user_id')}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" :to="{path: '/events'}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="getSignedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
@@ -41,7 +41,6 @@ export default {
   },
   data() {
     return {
-      message: 'Sign in',
       signedIn: false
     }
   },
@@ -53,15 +52,14 @@ export default {
   },
   methods: {
     checkSignedIn() {
-      if (this.$route.query.id) {
-        this.signedIn = true
+      if (localStorage.getItem('pubcrawl_user_id')) {
+        this.signedIn = true;
       } else {
-        this.signedIn = false
+        this.signedIn = false;
       }
     },
     signOut() {
       this.signedIn = false
-      this.message = 'Sign in'
       this.$router.push('/')
     },
     showModal() {
