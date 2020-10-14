@@ -92,7 +92,7 @@ export default {
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
-          console.log(response.data)
+          console.log('response data: ' + response.data)
           if (response.data) {
             console.log('Has valid cookie')
             localStorage.setItem('pubcrawl_user_id', response.data)
