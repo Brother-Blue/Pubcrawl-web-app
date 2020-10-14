@@ -69,6 +69,7 @@ export default {
     signOut() {
       document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       this.signedIn = false
+      this.$router.push('/')
       this.$emit('force-update')
     },
     showModal() {

@@ -87,7 +87,7 @@ export default {
       return matches ? decodeURIComponent(matches[1]) : undefined
     },
     force() {
-      this.$forceUpdate()
+      this.$refs.barList.$forceUpdate()
     }
   },
   created: function () {
