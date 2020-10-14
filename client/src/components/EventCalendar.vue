@@ -61,9 +61,11 @@ export default {
       loggedIn: false
     }
   },
+  created() {
+    this.checkLoggedIn()
+  },
   computed: {
     getLoggedIn() {
-      this.checkLoggedIn()
       return this.loggedIn
     }
   },

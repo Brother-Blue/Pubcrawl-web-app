@@ -71,7 +71,7 @@ export default {
       this.$refs.barMap.getDirections(bar)
     },
     getBars() {
-      Api.get('/bars')
+      Api.get('/bars?sortByName=asc')
         .then((response) => {
           this.bars = response.data.bars
         })
