@@ -17,6 +17,7 @@
     <add-event-button
     v-if="loggedIn"
     :startDateVal="value"
+    :uID="uID"
     @sendingPayload="saveEvent"
     ></add-event-button>
     <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
@@ -40,7 +41,8 @@ import { Api } from '@/Api'
 export default {
   name: 'event-calendar',
   props: [
-    'loggedIn'
+    'loggedIn',
+    'uID'
   ],
   components: {
     'event-item': EventItem,

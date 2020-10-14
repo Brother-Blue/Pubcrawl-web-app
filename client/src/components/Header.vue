@@ -19,11 +19,11 @@
       class="float-left text-justify w-100"
       ><br>
         <b-nav-item link-classes="text-warning" :to="{path: '/'}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="lo" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="loggedIn === true" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" :to="{path: '/events'}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="!loggedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="loggedIn" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="loggedIn === false" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="loggedIn === true" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
       </b-nav>
     </b-sidebar>
     <pubcrawl-signin
@@ -51,8 +51,7 @@ export default {
   methods: {
     signOut() {
       document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
-      this.$router.push('/')
-      this.$emit('force-update')
+      this.$emit('force-update', false)
     },
     showModal() {
       this.$bvModal.show('signin-modal')

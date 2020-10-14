@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <pubcrawl-header :loggedIn="validUser"/>
+    <pubcrawl-header @force-update="force(val)" :loggedIn="validUser"/>
     <div v-if="!validUser" class="text-center text-light">
       <h1>Uh oh!</h1>
       <p>This user does not exist. If you believe this to be an error please <a href="#" class="text-warning">contact the developers.</a></p>
@@ -293,6 +293,10 @@ export default {
     getCookie(name) {
       var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
       return matches ? decodeURIComponent(matches[1]) : undefined
+    },
+    force(val) {
+      this.validUser = false
+      this.$router.push('/')
     }
   }
 }

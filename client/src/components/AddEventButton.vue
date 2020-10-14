@@ -138,7 +138,8 @@ import { Api } from '@/Api'
 export default {
   name: 'add-event-btn',
   props: [
-    'startDateVal'
+    'startDateVal',
+    'uID'
   ],
   data() {
     const now = new Date()
@@ -167,7 +168,7 @@ export default {
       maxEndDate: '',
       eventTitle: '',
       description: '',
-      uid: localStorage.getItem('pubcrawl_user_id'),
+      uid: '',
       bars: [],
       selectedBars: []
     }
@@ -194,7 +195,7 @@ export default {
       this.startTimeValue !== '' && this.endTimeValue !== '' &&
       this.eventTitle.length > 0 && this.eventTitle.length <= 30 &&
       this.description.length <= 280 && this.selectedBars.length > 0 &&
-      this.uid !== undefined
+      this.uid !== ''
     }
   },
   methods: {
@@ -204,7 +205,7 @@ export default {
         description: this.description,
         startDate: this.startDateValue + 'T' + this.startTimeValue + '.000Z',
         endDate: this.endDateValue + 'T' + this.endTimeValue + '.000Z',
-        users: this.uid,
+        users: this.$props.uID,
         bars: this.selectedBars
       }
       this.$emit('sendingPayload', payload)

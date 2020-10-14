@@ -123,7 +123,8 @@ export default {
     'barRating',
     'address',
     'numEvents',
-    'loggedIn'
+    'loggedIn',
+    'uID'
   ],
   components: {
     'pubcrawl-review-item': ReviewItem
@@ -151,7 +152,7 @@ export default {
     },
     addReview(barID) {
       const payload = {
-        users: localStorage.getItem('pubcrawl_user_id'),
+        users: this.$props.uID,
         bars: this.barID,
         drinkQuality: this.drinkQualityValue,
         drinkPrice: this.drinkPriceValue,

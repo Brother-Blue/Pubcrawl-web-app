@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar @force-update="force" :loggedIn="loggedIn"></header-bar>
+    <header-bar @force-update="force(val)" :loggedIn="loggedIn"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
@@ -11,6 +11,7 @@
         :barArray="bars"
         @addBarReview="addBarReview"
         :loggedIn="loggedIn"
+        :uID="uID"
         >
         </bar-list>
       </b-col>
@@ -39,7 +40,8 @@ export default {
   data() {
     return {
       bars: null,
-      loggedIn: false
+      loggedIn: false,
+      uID: ''
     }
   },
   methods: {
@@ -89,7 +91,8 @@ export default {
       var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
       return matches ? decodeURIComponent(matches[1]) : undefined
     },
-    force() {
+    force(val) {
+      this.loggedIn = val
       this.$refs.barList.$forceUpdate()
     }
   },
@@ -102,6 +105,7 @@ export default {
         .then(response => {
           if (response.data._id) {
             this.loggedIn = true
+            this.uID = response.data._id
           }
           if (!response.data) {
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'

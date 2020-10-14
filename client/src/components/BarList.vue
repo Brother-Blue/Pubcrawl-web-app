@@ -13,6 +13,7 @@
         :numEvents="bar.events.length"
         @addReview="addBarReview"
         :loggedIn="loggedIn"
+        :uID="uID"
         ></bar-item>
         <bar-item-small
         :id="index"
@@ -22,6 +23,7 @@
         :address="bar.address"
         :numEvents="bar.events.length"
         :loggedIn="loggedIn"
+        :uID="uID"
         />
     </b-button>
     <b-collapse accordion="bar-accordian" v-bind:id="'bar' + bar._id" role="tabpanel">
@@ -46,7 +48,7 @@ import SearchBar from '@/components/SearchBar'
 export default {
   name: 'bar-list',
   props: [
-    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray', 'loggedIn'
+    'barID', 'drinkPrice', 'drinkQuality', 'atmosphere', 'foodQuality', 'comment', 'barName', 'createdAt', 'createdOn', 'barArray', 'loggedIn', 'uID'
   ],
   components: {
     'bar-item': BarItem,
