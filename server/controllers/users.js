@@ -36,7 +36,7 @@ router.get('/cookie', function (req, res) {
         if (err) {
             return res.status(200).json(null);
         }
-        return res.status(200).json(decoded.user._id);
+        return res.status(200).json(decoded.user);
       });
 });
 
