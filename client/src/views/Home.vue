@@ -90,7 +90,7 @@ export default {
   created: function () {
     this.getBars()
     if (this.getCookie('jwt')) {
-      Api.get('/login')
+      Api.get('/users/login')
         .then(response => {
           if (response.status === 200) {
             console.log('Has valid cookie')

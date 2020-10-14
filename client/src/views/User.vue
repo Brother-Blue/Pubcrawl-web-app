@@ -173,7 +173,7 @@ export default {
     this.getEvents()
     this.getReviews()
     if (this.getCookie('jwt')) {
-      Api.get('/login')
+      Api.get('/users/login')
         .then(response => {
           if (response.status === 200) {
             console.log('Has valid cookie')
