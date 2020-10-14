@@ -164,13 +164,27 @@ export default {
       deleteAllShow: false, // Temporary
       events: [],
       reviews: [],
-      curKey: 0
+      curKey: 0,
+      logged: false
     }
   },
   created: function () {
     this.isValidUser()
     this.getEvents()
     this.getReviews()
+    if (this.getCookie('jwt')) {
+      Api.get('/login')
+        .then(response => {
+          if (response.status === 200) {
+            console.log('Has valid cookie')
+            localStorage.setItem('pubcrawl_user_id', response.data)
+          } else if (response.status === 401) {
+            console.log('Has invalid cookie')
+            document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            localStorage.removeItem('pubcrawl_user_id')
+          }
+        }).catch(error => console.log(error))
+    }
   },
   methods: {
     isValidUser() {
@@ -277,6 +291,10 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    getCookie(name) {
+      var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
+      return matches ? decodeURIComponent(matches[1]) : undefined
     }
   }
 }
