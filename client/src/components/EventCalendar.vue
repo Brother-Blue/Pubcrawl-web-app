@@ -15,7 +15,7 @@
     @selected="getEvents(value)"
     ></b-calendar>
     <add-event-button
-    v-if="value"
+    v-if="getLoggedIn"
     :startDateVal="value"
     @sendingPayload="saveEvent"
     ></add-event-button>
@@ -57,7 +57,14 @@ export default {
       events: null,
       value: '',
       min: minDate,
-      max: maxDate
+      max: maxDate,
+      loggedIn: false
+    }
+  },
+  computed: {
+    getLoggedIn() {
+      this.checkLoggedIn()
+      return this.loggedIn
     }
   },
   methods: {
@@ -115,6 +122,13 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+    },
+    getLoggedIn() {
+      if (localStorage.getItem('pubcrawl_user_id')) {
+        this.loggedIn = true
+      } else {
+        this.loggedIn = false
+      }
     }
   }
 }
