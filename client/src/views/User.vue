@@ -176,11 +176,13 @@ export default {
         .then(response => {
           console.log('response data: ' + response.data)
           if (response.data) {
+            var userID = response.data
+            console.log('userid: ' + userID)
             console.log('Has valid cookie')
-            localStorage.setItem('pubcrawl_user_id', response.data)
+            localStorage.setItem('pubcrawl_user_id', userID)
           } else {
             console.log('Has invalid cookie')
-            document.cookie = 'jwt=; jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            document.cookie = 'name=jwt; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))
