@@ -19,7 +19,7 @@
       class="float-left text-justify w-100"
       ><br>
         <b-nav-item link-classes="text-warning" :to="{path: '/'}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+localStorage.getItem('pubcrawl_user_id')}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" v-if="getSignedIn" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" :to="{path: '/events'}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="!getSignedIn" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
@@ -43,7 +43,8 @@ export default {
   },
   data() {
     return {
-      signedIn: false
+      signedIn: false,
+      uID: ''
     }
   },
   computed: {
@@ -56,7 +57,8 @@ export default {
     checkSignedIn() {
       Api.get('/users/cookie')
         .then(response => {
-          if (response.status === 200) {
+          if (response.data) {
+            this.uID = response.data._id
             this.signedIn = true
           }
         }).catch(error => {

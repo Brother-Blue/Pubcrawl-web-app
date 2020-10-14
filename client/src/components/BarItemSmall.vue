@@ -170,7 +170,7 @@ export default {
     getLoggedIn() {
       Api.get('/users/cookie')
         .then(response => {
-          if (response.status === 200) {
+          if (response.data) {
             this.loggedIn = true
           }
         }).catch(error => {

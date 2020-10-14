@@ -190,8 +190,7 @@ export default {
       var id = this.userID
       Api.get(`/users/${id}`)
         .then(response => {
-          var status = response.request.status
-          if (status === 200) {
+          if (response.data) {
             this.validUser = true
             this.user = response.data
           } else {
