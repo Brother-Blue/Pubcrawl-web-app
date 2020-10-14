@@ -18,7 +18,7 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error);
   
                 var body = { _id: user._id, username: user.username };
-                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '2m' });
+                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '2m' }); // TODO: change expires
                 res.cookie('jwt', token, { httpOnly: false, secure: false }).send(body);
                 res.status(200).json(body);
               }

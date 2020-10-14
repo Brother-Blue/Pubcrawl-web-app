@@ -92,12 +92,13 @@ export default {
     if (this.getCookie('jwt')) {
       Api.get('/users/cookie')
         .then(response => {
+          console.log(response.data)
           if (response.data) {
             console.log('userid: ' + response.data._id)
-            console.log('Has valid cookie')
+            console.log('Yes cookie')
             localStorage.setItem('pubcrawl_user_id', response.data._id)
           } else {
-            console.log('Has invalid cookie')
+            console.log('No cookie')
             localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))
