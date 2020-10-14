@@ -43,15 +43,15 @@ export default {
     addBarReview(barID, payload) {
       Api.post(`/bars/${barID}/reviews`, payload)
         .then(response => {
-          console.log(response)
           if (response.status === 201) {
             this.sendToast('Success', false, 'Successfully added review.')
           }
         }).catch(error => {
           if (error.status === 404) {
-            this.sendToast('Failed', false, 'Something went wrong ,please try again later.')
+            this.sendToast('Failed', false, 'Something went wrong, please try again later.')
           } else if (error.status === 401) {
-            this.sendToast('Unauthorized', false, 'Insufficient permissions.')
+            // TODO: set logged to false and redirect to login page
+            this.sendToast('Unauthorized', false, 'Session ended, please sign in again.')
           }
           console.log(error)
         })
@@ -90,10 +90,21 @@ export default {
   created: function () {
     this.getBars()
     if (this.getCookie('jwt')) {
-      console.log('User has saved cookie')
+      Api.get('/login')
+        .then(response => {
+          if (response.status === 200) {
+            console.log('Has valid cookie')
+            localStorage.setItem('pubcrawl_user_id', response.data)
+          } else if (response.status === 401) {
+            console.log('Has invalid cookie')
+            document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            localStorage.removeItem('pubcrawl_user_id')
+          }
+        }).catch(error => console.log(error))
     }
   }
 }
+
 </script>
 <style scoped>
 .main {
