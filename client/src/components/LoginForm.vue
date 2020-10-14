@@ -177,7 +177,7 @@ export default {
       Api.post('/users/login', params, { withCredentials: false })
         .then(response => {
           if (response.status === 200) {
-            this.$router.push('/')
+            this.$router.push(`/user/${response.data._id}`)
             this.sendToast('Success!', false, 'You\'ve been signed in.')
             this.$bvModal.hide('signin-modal')
           }

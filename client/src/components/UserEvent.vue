@@ -155,12 +155,12 @@ export default {
 </script>
 
 <style scoped>
-/* hr {
-  color: red;
+/* em {
+  font-size: 1rem;
 } */
 
 /* p {
-  font-size: 12px;
+  font-size: 1rem;
 } */
 
 .bar-list {
