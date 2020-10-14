@@ -97,7 +97,7 @@ export default {
             localStorage.setItem('pubcrawl_user_id', response.data)
           } else {
             console.log('Has invalid cookie')
-            document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            document.cookie = 'username=jwt; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))
