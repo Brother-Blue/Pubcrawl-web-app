@@ -35,12 +35,12 @@ export default {
       Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
-            console.log('userid: ' + response.data._id)
+            var id = response.data._id
             console.log('Has valid cookie')
-            localStorage.setItem('pubcrawl_user_id', response.data._id)
+            localStorage.setItem('pubcrawl_user_id', id)
           } else {
             console.log('Has invalid cookie')
-            document.cookie = 'name=jwt; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))

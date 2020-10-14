@@ -94,12 +94,12 @@ export default {
         .then(response => {
           console.log(response.data)
           if (response.data) {
-            console.log('userid: ' + response.data._id)
-            console.log('Yes cookie')
-            localStorage.setItem('pubcrawl_user_id', response.data._id)
+            var id = response.data._id
+            console.log('Has valid cookie')
+            localStorage.setItem('pubcrawl_user_id', id)
           } else {
-            console.log('No cookie')
-            document.cookie = 'name=jwt; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+            console.log('Has invalid cookie')
+            document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
           }
         }).catch(error => console.log(error))
