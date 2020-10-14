@@ -33,12 +33,14 @@ export default {
   },
   created: function () {
     if (this.getCookie('jwt')) {
-      Api.get('/users/login')
+      Api.get('/users/cookie')
         .then(response => {
           if (response.status === 200) {
+            this.logged = true
             console.log('Has valid cookie')
             localStorage.setItem('pubcrawl_user_id', response.data)
           } else if (response.status === 401) {
+            this.logged = false
             console.log('Has invalid cookie')
             document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
             localStorage.removeItem('pubcrawl_user_id')
