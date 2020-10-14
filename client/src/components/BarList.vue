@@ -22,6 +22,7 @@
         :barRating="bar.averageRating"
         :address="bar.address"
         :numEvents="bar.events.length"
+        @addReview="addBarReview"
         :loggedIn="loggedIn"
         :uID="uID"
         />
@@ -71,6 +72,7 @@ export default {
   methods: {
     addBarReview(barID, payload) {
       this.$emit('addBarReview', barID, payload)
+      this.$forceUpdate()
     },
     emitBar(bar) {
       this.$emit('emittedBar', bar)

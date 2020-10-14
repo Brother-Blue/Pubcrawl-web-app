@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar @force-update="force(val)" :loggedIn="loggedIn"></header-bar>
+    <header-bar @force-update="force(val)" :loggedIn="loggedIn" :uID="uID"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
@@ -93,7 +93,7 @@ export default {
     },
     force(val) {
       this.loggedIn = val
-      this.$refs.barList.$forceUpdate()
+      this.$forceUpdate()
     }
   },
   created: function () {

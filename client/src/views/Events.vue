@@ -1,6 +1,6 @@
 <template>
     <div class="main bg-dark">
-        <pubcrawl-header @force-update="force(val)" ref="header" :loggedIn="loggedIn"></pubcrawl-header>
+        <pubcrawl-header @force-update="force(val)" ref="header" :loggedIn="loggedIn" :uID="uID"></pubcrawl-header>
         <pubcrawl-calendar id="calendar" :loggedIn="loggedIn" :uID="uID"></pubcrawl-calendar>
         <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     </div>

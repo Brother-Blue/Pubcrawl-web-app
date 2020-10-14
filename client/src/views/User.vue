@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <pubcrawl-header @force-update="force(val)" :loggedIn="validUser"/>
+    <pubcrawl-header @force-update="force(val)" :loggedIn="validUser" :uID="uID"/>
     <div v-if="!validUser" class="text-center text-light">
       <h1>Uh oh!</h1>
       <p>This user does not exist. If you believe this to be an error please <a href="#" class="text-warning">contact the developers.</a></p>

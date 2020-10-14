@@ -38,15 +38,11 @@ import LoginForm from '@/components/LoginForm'
 export default {
   name: 'header',
   props: [
-    'loggedIn'
+    'loggedIn',
+    'uID'
   ],
   components: {
     'pubcrawl-signin': LoginForm
-  },
-  data() {
-    return {
-      uID: ''
-    }
   },
   methods: {
     signOut() {
