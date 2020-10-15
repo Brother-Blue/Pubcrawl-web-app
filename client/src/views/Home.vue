@@ -93,8 +93,9 @@ export default {
     },
     force(val) {
       this.loggedIn = val
-      this.$refs.pubcrawlHeader.$forceUpdate()
-      this.$refs.barList.$forceUpdate()
+      // this.$refs.pubcrawlHeader.$forceUpdate()
+      // this.$refs.barList.$forceUpdate()
+      location.reload()
     }
   },
   created: function () {
