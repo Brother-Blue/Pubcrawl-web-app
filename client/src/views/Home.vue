@@ -2,7 +2,7 @@
   <div class="main bg-dark">
     <header-bar @force-update="force(val)" :loggedIn="loggedIn" :uID="uID" ref="pubcrawlHeader"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
-    <b-row no-gutters>
+    <b-row id="row" no-gutters>
       <b-col sm>
         <bar-list
         :key="curKey"
@@ -140,6 +140,9 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+#row {
+  min-height: 100vh;
 }
 
 #jump-button {
