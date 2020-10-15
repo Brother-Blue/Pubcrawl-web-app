@@ -218,11 +218,9 @@ export default {
       this.force(false)
     },
     getEvents() {
-      Api.get('/events')
+      Api.get(`/users/${this.userID}/events`)
         .then(response => {
-          this.events = response.data.events
-            .filter(event =>
-              event.users === this.userID)
+          this.events = response.data
         }).catch(error => {
           console.error(error)
         })

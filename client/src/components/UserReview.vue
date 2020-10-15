@@ -152,12 +152,14 @@ export default {
   },
   methods: {
     getBarName(id) {
-      Api.get(`/reviews/${id}/bars`)
-        .then(response => {
-          this.name = response.data.name
-        }).catch(error => {
-          if (error.status === 404) {} // eat error message
-        })
+      if (id) {
+        Api.get(`/reviews/${id}/bars`)
+          .then(response => {
+            this.name = response.data.name
+          }).catch(error => {
+            if (error.status === 404) {} // eat error message
+          })
+      }
     },
     deleteReview(id) {
       this.$emit('yeetReviewByID', id)
