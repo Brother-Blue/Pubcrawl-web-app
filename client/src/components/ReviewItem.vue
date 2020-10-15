@@ -62,11 +62,11 @@ export default {
     async getUsername(id) {
       if (id !== null) {
         await Api.get(`/users/${id}`)
-        .then(response => {
-          this.user = response.data.username
-        }).catch(error => {
-          console.error(error)
-        })
+          .then(response => {
+            this.user = response.data.username
+          }).catch(error => {
+            console.error(error)
+          })
       }
     }
   }
