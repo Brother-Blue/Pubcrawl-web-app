@@ -19,17 +19,12 @@
       :title="barName[0]"
       >
         <h5 class="text-center text-light">{{eventTitle}}</h5>
-        <p class="text-justify"><b>This is some filler. Replace with event description.</b>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          Dolorum eos ducimus quod illum accusamus, ad voluptas,
-          nobis culpa earum assumenda esse, voluptatem modi!
-          Ipsum aperiam rerum fugiat. Repudiandae, pariatur incidunt.
-        </p>
+        <p class="text-justify">{{eventDescription}}</p>
         <b-button class="btn btn-outline-warning" v-b-toggle.bar-list-dropdown>View bars for this event</b-button>
         <b-collapse id="bar-list-dropdown">
           <b-card class="bg-dark text-light border-0">
               <ul class="bar-list" v-for="bar in barName" :key="bar">
-                <li>{{bar}} | 4 stars</li>
+                <li>{{bar}} | {{bar.averageRating}}</li>
               </ul>
           </b-card>
         </b-collapse>
@@ -42,7 +37,7 @@
 <script>
 export default {
   name: 'event-item',
-  props: ['bar-name', 'event-title', 'start-date', 'end-date', 'creation-date', 'created-by'],
+  props: ['barName', 'eventTitle', 'startDate', 'endDate', 'creationDate', 'createdBy', 'eventDescription'],
   data() {
     return {
       modalShow: false,

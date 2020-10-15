@@ -28,6 +28,7 @@
         :creationDate="e[3]"
         :barName="e[4]"
         :createdBy="username"
+        :eventDescription="e[5]"
         ></event-item>
     </div>
   </div>
@@ -84,7 +85,8 @@ export default {
                 e[i].endDate.substring(0, 10) + ' @' + e[i].endDate.substring(11, 16),
                 e[i].createdAt.substring(0, 10),
                 this.getBarsByID(e[i].bars),
-                this.getUserByID(e[i].users)
+                this.getUserByID(e[i].users),
+                e[i].description
               ])
             } else {
               continue
