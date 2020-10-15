@@ -1,6 +1,7 @@
 var Bar = require('../models/bar');
 var Review = require('../models/review');
 var Event = require('../models/event');
+var User = require('../models/user');
 var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
@@ -27,6 +28,14 @@ router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), fu
         if (!bar) { return res.status(404).json({'message': 'bar not found'}) }
         bar.reviews.push(review._id)
         bar.save(function(err) {
+            if (err) { return next(err); }
+        })
+    })
+    User.findById({_id: req.body.users}, function(err, user) {
+        if (err) { return next(err); }
+        if (!user) { return res.status(404).json({'message': 'user not found'}) }
+        user.reviews.push(review._id)
+        user.save(function(err) {
             if (err) { return next(err); }
         })
     })
