@@ -126,10 +126,6 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             return res.status(404).json(
                 {'message': 'review not found'});
         }
-        Bar.findById(review.bars, function(err, bar) {
-            if (err) { return next(err) }
-            bar.save();
-        });
         User.updateMany(
             { },
             { $pull: { reviews: req.params.id } },
@@ -140,6 +136,10 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { reviews: req.params.id } },
             { multi: true }
         ).exec();
+        Bar.findById(review.bars, function(err, bar) {
+            if (err) { return next(err) }
+            bar.save();
+        });
 
         res.status(200).json();
     });
