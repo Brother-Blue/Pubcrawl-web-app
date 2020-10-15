@@ -19,7 +19,7 @@ router.post('', passport.authenticate('jwt', { session: false }), function(req, 
 // Create bar review
 router.post('/:id/reviews', passport.authenticate('jwt', { session: false }), async function(req, res, next) {
     var review = new Review(req.body);
-    await review.save(function(err) {
+    review.save(function(err) {
         if (err) { return next(err); }
     })
     Bar.findById({_id: req.params.id}, function(err, bar) {
