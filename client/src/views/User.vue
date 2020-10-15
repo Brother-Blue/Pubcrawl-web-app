@@ -202,7 +202,6 @@ export default {
       var id = this.userID
       Api.delete(`/users/${id}`)
         .then(response => {
-          console.log(response)
         }).catch(error => {
           console.error(error)
         })
@@ -211,7 +210,6 @@ export default {
     deleteAllUsers() {
       Api.delete('/users')
         .then(response => {
-          console.log(response)
         }).catch(error => {
           console.error(error)
         })
@@ -236,7 +234,6 @@ export default {
     async deleteEventForever(id) {
       await Api.delete(`/events/${id}`)
         .then(response => {
-          console.log(response)
         }).catch(error => {
           console.error(error)
         })
@@ -254,7 +251,6 @@ export default {
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
         .then(response => {
-          this.curKey += 1
           this.getEvents()
         }).catch(error => {
           console.error(error)
@@ -263,7 +259,6 @@ export default {
     updateReview(id, payload) {
       Api.patch(`/reviews/${id}`, payload)
         .then(response => {
-          this.curKey += 1
           this.getReviews()
         }).catch(error => {
           console.error(error)
@@ -278,7 +273,6 @@ export default {
       }
       Api.put(`/users/${id}`, params)
         .then(response => {
-          console.log(response)
         }).catch(error => {
           console.error(error)
         })
