@@ -28,7 +28,7 @@
         :creationDate="e[3]"
         :barName="e[4]"
         :createdBy="username"
-        :eventDescription="e[5]"
+        :eventDescription="e[6]"
         ></event-item>
     </div>
   </div>
@@ -112,7 +112,7 @@ export default {
       for (var i = 0; i < ids.length; i++) {
         Api.get(`/bars/${ids[i]}`)
           .then(response => {
-            bars.push(response.data.name)
+            bars.push(response.data)
           })
           .catch(error => {
             console.error(error)

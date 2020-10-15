@@ -24,7 +24,7 @@
         <b-collapse id="bar-list-dropdown">
           <b-card class="bg-dark text-light border-0">
               <ul class="bar-list" v-for="bar in barName" :key="bar">
-                <li>{{bar}} | {{bar.averageRating}}</li>
+                <li>{{bar.name}} | {{bar.averageRating}}</li>
               </ul>
           </b-card>
         </b-collapse>
