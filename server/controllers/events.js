@@ -172,6 +172,11 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { events: req.params.id } },
             { multi: true }
         ).exec();
+        User.updateMany(
+            { },
+            { $pull: { events: req.params.id } },
+            { multi: true }
+        ).exec();
         res.status(200).json();
     });
 });
