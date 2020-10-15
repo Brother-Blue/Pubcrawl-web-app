@@ -269,7 +269,11 @@ export default {
         _id: this.userID,
         username: this.user.username,
         email: this.email,
-        password: this.password
+        password: this.password,
+        createdAt: this.user.createdAt,
+        isVerified: this.user.isVerified,
+        reviews: this.user.reviews,
+        events: this.user.events
       }
       Api.put(`/users/${id}`, params)
         .then(response => {
