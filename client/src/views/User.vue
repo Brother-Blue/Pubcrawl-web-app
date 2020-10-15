@@ -241,7 +241,7 @@ export default {
           console.error(error)
         })
       this.curKey += 1
-      setTimeout(this.getEvents(), {}, 100)
+      setTimeout(this.getEvents(), {}, 10000)
     },
     async deleteReviewForever(id) {
       await Api.delete(`/reviews/${id}`)
@@ -250,8 +250,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      this.curKey += 1
-      setTimeout(this.getReviews(), {}, 100)
+      setTimeout(this.getReviews(), {}, 10000)
     },
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
