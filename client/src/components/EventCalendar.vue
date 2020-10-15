@@ -20,7 +20,7 @@
     :uID="uID"
     @sendingPayload="saveEvent"
     ></add-event-button>
-    <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
+    <div class="event-item bg-dark text-light rounded border border-warning" v-for="(e, index) in events" :key="index">
         <event-item
         :eventTitle="e[0]"
         :startDate="e[1]"

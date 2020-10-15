@@ -156,7 +156,7 @@ export default {
         .then(response => {
           this.name = response.data.name
         }).catch(error => {
-          console.error(error)
+          if (error.status === 404) {} // eat error message
         })
     },
     deleteReview(id) {
