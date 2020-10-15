@@ -1,16 +1,21 @@
 <template>
 <form class="searchbar">
-    <b-form-input
-    id="searchBar"
-    class="searchbar-input bg-dark text-white border border-warning rounded-lg"
-    type="search"
-    placeholder="Search by bar name"
-    v-model="inputText"
-    debounce="500"
-    @update="emitText(inputText)"
-    v-on:submit.prevent="onSubmit"
-    ></b-form-input>
-    <a href="#" class="searchbar-clear"></a>
+    <b-input-gourp>
+      <b-input-group-prepend>
+        <b-button class="btn btn-warning" @click="barRoulette"><b-icon icon="dice6"></b-icon> Bar Roulette</b-button>
+      </b-input-group-prepend>
+      <b-form-input
+      id="searchBar"
+      class="searchbar-input bg-dark text-white border border-warning rounded-lg"
+      type="search"
+      placeholder="Search by bar name"
+      v-model="inputText"
+      debounce="500"
+      @update="emitText(inputText)"
+      v-on:submit.prevent="onSubmit"
+      ></b-form-input>
+      <a href="#" class="searchbar-clear"></a>
+    </b-input-gourp>
 </form>
 </template>
 
@@ -25,6 +30,9 @@ export default {
   methods: {
     emitText(text) {
       this.$emit('updateList', text)
+    },
+    barRoulette() {
+      this.$emit('barRoulette')
     }
   }
 }

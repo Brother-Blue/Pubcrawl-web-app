@@ -12,6 +12,7 @@
         @emittedBar="clickedBar"
         :barArray="bars"
         @addBarReview="addBarReview"
+        @barRoulette="barRoulette"
         :loggedIn="loggedIn"
         :uID="uID"
         >
