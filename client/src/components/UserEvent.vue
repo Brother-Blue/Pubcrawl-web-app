@@ -155,13 +155,13 @@ export default {
 </script>
 
 <style scoped>
-/* em {
+em {
   font-size: 1rem;
-} */
+}
 
-/* p {
+p {
   font-size: 1rem;
-} */
+}
 
 .bar-list {
   list-style-type: none;
