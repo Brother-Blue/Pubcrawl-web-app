@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar></header-bar>
+    <header-bar @force-update="force(val)" :loggedIn="loggedIn" :uID="uID" ref="pubcrawlHeader"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
@@ -9,7 +9,10 @@
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
-        @addReview='addBarReview'>
+        @addBarReview="addBarReview"
+        :loggedIn="loggedIn"
+        :uID="uID"
+        >
         </bar-list>
       </b-col>
       <b-col sm class="d-none d-lg-block">
@@ -36,17 +39,35 @@ export default {
   },
   data() {
     return {
-      bars: null
+      bars: null,
+      loggedIn: false,
+      uID: ''
     }
   },
   methods: {
-    addBarReview(id, payload) {
-      console.log('inside the post method call' + id)
-      Api.post(`/bars/${id}/reviews`, payload)
+    addBarReview(barID, payload) {
+      Api.post(`/bars/${barID}/reviews`, payload)
         .then(response => {
+          if (response.status === 201) {
+            this.sendToast('Success', false, 'Successfully added review.')
+          }
         }).catch(error => {
-          console.error(error)
+          if (error.status === 404) {
+            this.sendToast('Failed', false, 'Something went wrong, please try again later.')
+          } else if (error.status === 401) {
+            // TODO: set logged to false and redirect to login page
+            this.sendToast('Unauthorized', false, 'Session ended, please sign in again.')
+          }
+          console.log(error)
         })
+    },
+    sendToast(title, append = false, message) {
+      this.$bvToast.toast(message, {
+        title: title,
+        toaster: 'b-toaster-top-center',
+        solid: true,
+        appendToast: append
+      })
     },
     clickedBar(bar) {
       this.$refs.barMap.focusBar(bar)
@@ -55,31 +76,9 @@ export default {
       this.$refs.barMap.getDirections(bar)
     },
     getBars() {
-      Api.get('/bars')
+      Api.get('/bars?sortByName=asc')
         .then((response) => {
-          this.bars = response.data.bars
-          for (var i = 0; i < this.bars.length; i++) {
-            var review = []
-            var avg = 0
-            var count = 0
-            Api.get(`/bars/${this.bars[i]._id}/reviews`)
-              .then(response => {
-                review = response.data.reviews
-                if (review) {
-                  for (var i = 0; i < review.length; i++) {
-                    avg += review.averageRating
-                    count++
-                  }
-                }
-              }).catch(error => {
-                console.error(error)
-              })
-            if (count > 0) {
-              this.bars[i].rating = avg / count
-            } else {
-              this.bars[i].rating = 0
-            }
-          }
+          this.bars = response.data
         })
         .catch((error) => {
           console.error(error)
@@ -87,12 +86,36 @@ export default {
     },
     toTop() {
       this.$refs.barList.scrollTo()
+    },
+    getCookie(name) {
+      var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
+      return matches ? decodeURIComponent(matches[1]) : undefined
+    },
+    force(val) {
+      this.loggedIn = val
+      this.$refs.pubcrawlHeader.$forceUpdate()
+      this.$refs.barList.$forceUpdate()
     }
   },
   created: function () {
     this.getBars()
+  },
+  mounted: function () {
+    if (this.getCookie('jwt')) {
+      Api.get('/users/cookie')
+        .then(response => {
+          if (response.data._id) {
+            this.loggedIn = true
+            this.uID = response.data._id
+          }
+          if (!response.data) {
+            document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          }
+        }).catch(error => console.log(error))
+    }
   }
 }
+
 </script>
 <style scoped>
 .main {

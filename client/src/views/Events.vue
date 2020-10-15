@@ -1,12 +1,13 @@
 <template>
     <div class="main bg-dark">
-        <pubcrawl-header></pubcrawl-header>
-        <pubcrawl-calendar id="calendar"></pubcrawl-calendar>
+        <pubcrawl-header @force-update="force(val)" ref="header" :loggedIn="loggedIn" :uID="uID"></pubcrawl-header>
+        <pubcrawl-calendar id="calendar" :loggedIn="loggedIn" :uID="uID"></pubcrawl-calendar>
         <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     </div>
 </template>
 
 <script>
+import { Api } from '@/Api'
 import Header from '@/components/Header'
 import EventCalendar from '@/components/EventCalendar'
 
@@ -16,9 +17,37 @@ export default {
     'pubcrawl-header': Header,
     'pubcrawl-calendar': EventCalendar
   },
+  data() {
+    return {
+      loggedIn: false,
+      uID: ''
+    }
+  },
   methods: {
     toTop() {
       window.scrollTo(0, 0)
+    },
+    getCookie(name) {
+      var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
+      return matches ? decodeURIComponent(matches[1]) : undefined
+    },
+    force(val) {
+      this.loggedIn = val
+      this.$router.push('/')
+    }
+  },
+  created: function () {
+    if (this.getCookie('jwt')) {
+      Api.get('/users/cookie')
+        .then(response => {
+          if (response.data._id) {
+            this.loggedIn = true
+            this.uID = response.data._id
+          }
+          if (!response.data) {
+            document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          }
+        }).catch(error => console.log(error))
     }
   }
 }
@@ -30,8 +59,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
-/* TODO: In case text start clipping */
 /* #header {
   min-width: 100%;
   position: fixed;

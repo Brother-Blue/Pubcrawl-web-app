@@ -1,17 +1,29 @@
 <template>
 <form class="searchbar">
-    <b-form-input id="searchBar" class="searchbar-input bg-dark text-white border border-warning rounded-lg" type="search" placeholder="Search by bar name"></b-form-input>
+    <b-form-input
+    id="searchBar"
+    class="searchbar-input bg-dark text-white border border-warning rounded-lg"
+    type="search"
+    placeholder="Search by bar name"
+    v-model="inputText"
+    @change="emitText(inputText)"
+    ></b-form-input>
     <a href="#" class="searchbar-clear"></a>
 </form>
 </template>
 
-<!--  TODO: add sortByBarName method. -->
-
 <script>
 export default {
   name: 'searchbar',
+  data() {
+    return {
+      inputText: ''
+    }
+  },
   methods: {
-    // Something
+    emitText(text) {
+      this.$emit('updateList', text)
+    }
   }
 }
 </script>

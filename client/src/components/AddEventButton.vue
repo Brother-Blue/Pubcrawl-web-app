@@ -43,7 +43,6 @@
               <b-form-datepicker
                 id="start-date"
                 v-model="startDateValue"
-                :placeholder="startDateVal"
                 :min="minStartDate"
                 :max="maxStartDate"
                 :state="validDate"
@@ -138,7 +137,8 @@ import { Api } from '@/Api'
 export default {
   name: 'add-event-btn',
   props: [
-    'startDateVal'
+    'startDateVal',
+    'uID'
   ],
   data() {
     const now = new Date()
@@ -167,7 +167,7 @@ export default {
       maxEndDate: '',
       eventTitle: '',
       description: '',
-      uid: this.$route.query.id,
+      uid: this.uID,
       bars: [],
       selectedBars: []
     }
@@ -193,8 +193,7 @@ export default {
       this.startDateValue !== '' && this.endDateValue !== '' &&
       this.startTimeValue !== '' && this.endTimeValue !== '' &&
       this.eventTitle.length > 0 && this.eventTitle.length <= 30 &&
-      this.description.length <= 280 && this.selectedBars.length > 0 &&
-      this.uid !== undefined
+      this.description.length <= 280 && this.selectedBars.length > 0 && this.uid
     }
   },
   methods: {
@@ -204,7 +203,7 @@ export default {
         description: this.description,
         startDate: this.startDateValue + 'T' + this.startTimeValue + '.000Z',
         endDate: this.endDateValue + 'T' + this.endTimeValue + '.000Z',
-        users: this.uid,
+        users: this.$props.uID,
         bars: this.selectedBars
       }
       this.$emit('sendingPayload', payload)

@@ -15,8 +15,9 @@
     @selected="getEvents(value)"
     ></b-calendar>
     <add-event-button
-    v-if="value"
+    v-if="loggedIn"
     :startDateVal="value"
+    :uID="uID"
     @sendingPayload="saveEvent"
     ></add-event-button>
     <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
@@ -39,6 +40,10 @@ import { Api } from '@/Api'
 
 export default {
   name: 'event-calendar',
+  props: [
+    'loggedIn',
+    'uID'
+  ],
   components: {
     'event-item': EventItem,
     'add-event-button': AddEventButton
@@ -58,6 +63,11 @@ export default {
       value: '',
       min: minDate,
       max: maxDate
+    }
+  },
+  computed: {
+    getLoggedIn() {
+      return this.loggedIn
     }
   },
   methods: {

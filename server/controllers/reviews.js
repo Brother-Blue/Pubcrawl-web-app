@@ -61,8 +61,8 @@ router.get('/:id/bars', function(req, res, next){
 });
 
 // Update review
-router.put('/:id', function(req, res, next) { // router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) <-- removed authenticate temporarily for testing on localhost
-    Review.findById(req.params.id, function(err, review) {
+router.put('/:id', passport.authenticate('jwt', { session: false }), async function(req, res, next) { 
+    await Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
         if (!review) {
             return res.status(404).json(
@@ -79,13 +79,19 @@ router.put('/:id', function(req, res, next) { // router.put('/:id', passport.aut
         review.users = req.body.users;
         review.bars = req.body.bars;
         review.save();
+
+        Bar.findById(review.bars, function(err, bar) {
+            if (err) { return next(err) }
+            bar.save();
+        });
+        
         res.status(200).json(review);
     });
 });
 
 // Update review partially
-router.patch('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
-    Review.findById(req.params.id, function(err, review) {
+router.patch('/:id', passport.authenticate('jwt', { session: false }), async function(req, res, next) {
+    await Review.findById(req.params.id, function(err, review) {
         if (err) { return next(err); }
         if (!review) {
             return res.status(404).json(
@@ -102,6 +108,12 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), function(
         review.users = (req.body.users || review.users);
         review.bars = (req.body.bars || review.bars);
         review.save();
+
+        Bar.findById(review.bars, function(err, bar) {
+            if (err) { return next(err) }
+            bar.save();
+        });
+
         res.status(200).json(review);
     });
 });
@@ -124,7 +136,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { reviews: req.params.id } },
             { multi: true }
         ).exec();
-        res.status(200).json(review);
+        res.status(200).json();
     });
 });
 

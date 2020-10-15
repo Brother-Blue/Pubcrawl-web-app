@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <pubcrawl-header/>
+    <pubcrawl-header @force-update="force(val)" :loggedIn="validUser" :uID="uID"/>
     <div v-if="!validUser" class="text-center text-light">
       <h1>Uh oh!</h1>
       <p>This user does not exist. If you believe this to be an error please <a href="#" class="text-warning">contact the developers.</a></p>
@@ -61,7 +61,7 @@
         </b-form-group>
       </b-modal>
       <b-row>
-        <b-col class="my-events" cols="12" md="6">
+        <b-col class="my-events">
           <b-collapse visible id="my-events" :key="events.length + 'b' + curKey">
             <h2 class="text-warning"><em>Events</em></h2>
         <div class="text-light" v-for="(e, index) in events" :key="index">
@@ -79,7 +79,7 @@
         </div>
           </b-collapse>
         </b-col>
-        <b-col class="my-reviews" cols="12" md="6">
+        <b-col class="my-reviews">
           <b-collapse visible id="my-reviews" :key="reviews.length + 'a' + curKey">
             <h2 class="text-warning"><em>Reviews</em></h2>
           <div class="text-light" v-for="(r, index) in reviews" :key="index">
@@ -156,8 +156,9 @@ export default {
   },
   data() {
     return {
-      validUser: '',
+      validUser: false,
       user: null,
+      userID: '',
       email: '',
       password: '',
       deleteModalShow: false,
@@ -168,17 +169,26 @@ export default {
     }
   },
   created: function () {
+    if (this.getCookie('jwt')) {
+      Api.get('/users/cookie')
+        .then(response => {
+          if (response.data) {
+            this.userID = response.data._id
+          } else {
+            this.validUser = false
+            document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
+          }
+        }).catch(error => console.log(error))
+    }
     this.isValidUser()
     this.getEvents()
     this.getReviews()
   },
   methods: {
     isValidUser() {
-      var id = this.$route.params.id
-      Api.get(`/users/${id}`)
+      Api.get(`/users/${this.userID}`)
         .then(response => {
-          var status = response.request.status
-          if (status === 200) {
+          if (response.data) {
             this.validUser = true
             this.user = response.data
           } else {
@@ -189,7 +199,7 @@ export default {
         })
     },
     deleteConfirmation() {
-      var id = this.$route.params.id
+      var id = this.userID
       Api.delete(`/users/${id}`)
         .then(response => {
           console.log(response)
@@ -210,7 +220,7 @@ export default {
         .then(response => {
           this.events = response.data.events
             .filter(event =>
-              event.users === this.$route.params.id)
+              event.users === this.userID)
         }).catch(error => {
           console.error(error)
         })
@@ -220,7 +230,7 @@ export default {
         .then(response => {
           this.reviews = response.data.reviews
             .filter(review =>
-              review.users === this.$route.params.id)
+              review.users === this.userID)
         }).catch(error => {
           console.error(error)
         })
@@ -245,20 +255,16 @@ export default {
         })
     },
     updateEvent(id, payload) {
-      console.log(id, payload)
       Api.patch(`/events/${id}`, payload)
         .then(response => {
-          console.log(response.data)
           this.getEvents()
           this.curKey += 1
         }).catch(error => {
           console.error(error)
         })
     },
-    // Changed to PUT for milestone, recommended to have it as patch to prevent overriding unchanged data
     updateReview(id, payload) {
-      console.log(id, payload)
-      Api.put(`/reviews/${id}`, payload)
+      Api.patch(`/reviews/${id}`, payload)
         .then(response => {
           this.getReviews()
           this.curKey += 1
@@ -271,12 +277,20 @@ export default {
         email: this.email,
         password: this.password
       }
-      Api.patch(`/users/${id}`, params)
+      Api.put(`/users/${id}`, params)
         .then(response => {
           console.log(response)
         }).catch(error => {
           console.error(error)
         })
+    },
+    getCookie(name) {
+      var matches = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.$?|{}()[]\/+^])/g, '$1') + '=([^;])'))
+      return matches ? decodeURIComponent(matches[1]) : undefined
+    },
+    force(val) {
+      this.validUser = false
+      this.$router.push('/')
     }
   }
 }

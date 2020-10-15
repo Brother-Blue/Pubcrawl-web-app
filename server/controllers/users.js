@@ -18,7 +18,7 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error);
   
                 var body = { _id: user._id, username: user.username };
-                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '12h' });
+                var token = jwt.sign({ user: body }, 'sea shanty 2 remix', { expiresIn: '1hr' });
                 res.cookie('jwt', token, { httpOnly: false, secure: false }).send(body);
                 res.status(200).json(body);
               }
@@ -28,6 +28,16 @@ router.post('/login', async (req, res, next) => {
           }
         }
       )(req, res, next);
+});
+
+router.get('/cookie', function (req, res) {
+    token = req.cookies['jwt'];
+    jwt.verify(token, 'sea shanty 2 remix', function(err, decoded) {
+        if (err) {
+            return res.status(200).json(null);
+        }
+        return res.status(200).json(decoded.user);
+      });
 });
 
 // Create user
@@ -40,7 +50,7 @@ router.post('', function(req, res, next) {
 });  
 
 // Read user
-router.get('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.get('/:id', function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
@@ -143,7 +153,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $set: { users: null } },
             { multi: true }
         ).exec();
-        res.status(200).json(user);
+        res.status(200).json();
     });
 });
 
