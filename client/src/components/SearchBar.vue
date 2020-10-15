@@ -1,12 +1,9 @@
 <template>
 <form class="searchbar">
-    <b-input-gourp>
-      <b-input-group-prepend>
-        <b-button class="btn btn-warning" @click="barRoulette"><b-icon icon="dice6"></b-icon> Bar Roulette</b-button>
-      </b-input-group-prepend>
+    <b-input-group class="my-3 mx-auto rounded-lg">
       <b-form-input
       id="searchBar"
-      class="searchbar-input bg-dark text-white border border-warning rounded-lg"
+      class="searchbar-input bg-dark text-white border border-primary"
       type="search"
       placeholder="Search by bar name"
       v-model="inputText"
@@ -14,8 +11,11 @@
       @update="emitText(inputText)"
       v-on:submit.prevent="onSubmit"
       ></b-form-input>
+      <b-input-group-append>
+        <b-button variant="primary" @click="barRoulette"><b-icon icon="dice6"></b-icon> Bar Roulette</b-button>
+      </b-input-group-append>
       <a href="#" class="searchbar-clear"></a>
-    </b-input-gourp>
+    </b-input-group>
 </form>
 </template>
 
@@ -40,9 +40,8 @@ export default {
 
 <style scoped>
 #searchBar {
-  max-width: 80%;
-  min-width: 50%;
-  margin: 10px auto;
-  border-radius: 0;
+  max-width: 75%;
+  min-width: 75%;
+  margin: auto 0;
 }
 </style>
