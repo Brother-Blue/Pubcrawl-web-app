@@ -1,6 +1,6 @@
 <template>
   <div class="main bg-dark">
-    <header-bar @force-update="force(val)" :loggedIn="loggedIn" :uID="uID" ref="pubcrawlHeader"></header-bar>
+    <header-bar @force-update="force(val)" @barRoulette="barRoulette" :loggedIn="loggedIn" :uID="uID" ref="pubcrawlHeader"></header-bar>
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row class="h-100" no-gutters>
       <b-col sm>
@@ -113,6 +113,12 @@ export default {
       this.loggedIn = val
       document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       location.reload()
+    },
+    barRoulette() {
+      if (this.bars !== null) {
+        var id = this.bars[Math.floor(Math.random() * this.bars.length)]._id
+        this.$root.$emit('bv::show::modal', '' + id)
+      }
     }
   },
   created: function () {

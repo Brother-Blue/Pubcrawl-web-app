@@ -21,7 +21,7 @@
         <b-nav-item link-classes="text-warning" :to="{path: '/'}"><b-icon icon="house-fill"></b-icon> Home<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="loggedIn === true" :to="{path: '/user/'+uID}"><b-icon icon="person-circle"></b-icon> My Pages<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" :to="{path: '/events'}"><b-icon icon="calendar2"></b-icon> Events<hr class="bg-secondary"></b-nav-item>
-        <b-nav-item link-classes="text-warning"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
+        <b-nav-item link-classes="text-warning" @click="barRoulette"><b-icon icon="dice6"></b-icon> Bar Roulette<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="loggedIn === false" @click="showModal"><b-icon icon="gear-fill"></b-icon> Sign in<hr class="bg-secondary"></b-nav-item>
         <b-nav-item link-classes="text-warning" v-if="loggedIn === true" @click="signOut"><b-icon icon="gear-fill"></b-icon> Sign out<hr class="bg-secondary"></b-nav-item>
       </b-nav>
@@ -51,6 +51,9 @@ export default {
     },
     showModal() {
       this.$bvModal.show('signin-modal')
+    },
+    barRoulette() {
+      this.$emit('barRoulette')
     }
   }
 }
