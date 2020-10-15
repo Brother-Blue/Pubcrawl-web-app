@@ -52,7 +52,6 @@ export default {
       Api.get(`/bars?name=${text}`)
         .then(response => {
           this.bars = response.data
-          this.$refs.barList.updateBarItem()
         })
         .catch(error => {
           console.error(error)

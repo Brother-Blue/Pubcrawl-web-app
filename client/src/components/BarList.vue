@@ -71,9 +71,6 @@ export default {
     }
   },
   methods: {
-    updateBarItem() {
-      this.$refs.barItem.$forceReload()
-    },
     getNewArray(text) {
       this.$emit('updateList', text)
     },
