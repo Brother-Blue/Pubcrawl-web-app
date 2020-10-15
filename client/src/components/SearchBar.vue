@@ -6,7 +6,7 @@
     type="search"
     placeholder="Search by bar name"
     v-model="inputText"
-    @change="emitText(inputText)"
+    @input="emitText(inputText)"
     ></b-form-input>
     <a href="#" class="searchbar-clear"></a>
 </form>
