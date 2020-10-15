@@ -240,7 +240,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      this.curKey += 1
+      this.getEvents()
     },
     async deleteReviewForever(id) {
       await Api.delete(`/reviews/${id}`)
@@ -249,7 +249,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      this.curKey += 1
+      this.getReviews()
     },
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
