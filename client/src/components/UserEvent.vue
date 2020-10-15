@@ -133,12 +133,14 @@ export default {
   },
   methods: {
     getBars(eventID) {
-      Api.get(`events/${eventID}/bars`)
-        .then(response => {
-          response.data.forEach(bar => this.names.push(bar.name))
-        }).catch(error => {
-          console.error(error)
-        })
+      if (eventID) {
+        Api.get(`events/${eventID}/bars`)
+          .then(response => {
+            response.data.forEach(bar => this.names.push(bar.name))
+          }).catch(error => {
+            console.error(error)
+          })
+      }
     },
     deleteEvent(id) {
       this.$emit('yeetTheEvent', id)
