@@ -137,7 +137,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), function(
 });
 
 // Delete user
-router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.delete('/:id', function(req, res, next) {
     User.findByIdAndDelete({_id: req.params.id}, function(err, user) {
         if (err) { return next(err); }
         if (!user) {
