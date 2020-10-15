@@ -12,6 +12,7 @@
         @emittedBar="clickedBar"
         :barArray="bars"
         @addBarReview="addBarReview"
+        @barRoulette="barRoulette"
         :loggedIn="loggedIn"
         :uID="uID"
         >
@@ -67,7 +68,6 @@ export default {
           if (response.status === 201) {
             this.sendToast('Success', false, 'Successfully added review.')
             this.curKey++
-            this.$refs.barList.$forceReload()
           }
         }).catch(error => {
           if (error.status === 404) {

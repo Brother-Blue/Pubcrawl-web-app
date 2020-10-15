@@ -1,7 +1,9 @@
 <template>
   <div class="bar-list-container">
     <pubcrawl-searchbar
-    @updateList="getNewArray"/>
+    @updateList="getNewArray"
+    @barRoulette="barRoulette"
+    />
     <div v-for="(bar,index) in barArray" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
@@ -85,6 +87,9 @@ export default {
     },
     scrollTo() {
       this.$el.scrollTop = 0
+    },
+    barRoulette() {
+      this.$emit('barRoulette')
     }
   }
 }
