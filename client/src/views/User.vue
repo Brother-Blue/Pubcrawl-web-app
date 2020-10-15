@@ -230,6 +230,7 @@ export default {
         })
     },
     getReviews() {
+      console.log(this.userID)
       Api.get(`/users/${this.userID}/reviews`)
         .then(response => {
           this.reviews = response.data
