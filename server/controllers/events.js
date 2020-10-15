@@ -26,7 +26,7 @@ router.post('', passport.authenticate('jwt', { session: false }), function(req, 
     User.findById({_id: req.body.users}, function(err, user) {
         if (err) { return next(err); }
         if (!user) { return res.status(404).json({'message': 'user not found'}) }
-        user.reviews.push(review._id)
+        user.events.push(event._id)
         user.save(function(err) {
             if (err) { return next(err); }
         })
@@ -168,6 +168,11 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
                 {'message': 'event not found'});
         }
         Bar.updateMany(
+            { },
+            { $pull: { events: req.params.id } },
+            { multi: true }
+        ).exec();
+        User.updateMany(
             { },
             { $pull: { events: req.params.id } },
             { multi: true }

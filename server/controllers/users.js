@@ -111,6 +111,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), function(re
         user.passwordResetToken = req.body.passwordResetToken;
         user.passwordResetExpires = req.body.passwordResetExpires;
         user.reviews = req.body.reviews;
+        user.events = req.body.events;
         user.save();
         res.status(200).json(user);
     });
@@ -131,6 +132,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), function(
         user.passwordResetToken = (req.body.passwordResetToken || user.passwordResetToken);
         user.passwordResetExpires = (req.body.passwordResetExpires || user.passwordResetExpires);
         user.reviews = (req.body.reviews || user.reviews);
+        user.events = (req.body.events || user.events);
         user.save();
         res.status(200).json(user);
     });
