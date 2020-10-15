@@ -5,6 +5,7 @@
     <b-row no-gutters>
       <b-col sm>
         <bar-list
+        :key="curKey"
         ref="barList"
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
@@ -41,7 +42,8 @@ export default {
     return {
       bars: null,
       loggedIn: false,
-      uID: ''
+      uID: '',
+      curKey: 0
     }
   },
   methods: {
@@ -50,6 +52,7 @@ export default {
         .then(response => {
           if (response.status === 201) {
             this.sendToast('Success', false, 'Successfully added review.')
+            this.curKey++
           }
         }).catch(error => {
           if (error.status === 404) {
