@@ -7,7 +7,7 @@
     placeholder="Search by bar name"
     v-model="inputText"
     @update="emitText(inputText)"
-    v-on="keyup.enter=''"
+    debounce="1"
     ></b-form-input>
     <a href="#" class="searchbar-clear"></a>
 </form>
