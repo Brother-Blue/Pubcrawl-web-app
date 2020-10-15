@@ -238,20 +238,21 @@ export default {
       await Api.delete(`/events/${id}`)
         .then(response => {
           console.log(response)
-          this.curKey += 1
-          this.getEvents()
         }).catch(error => {
           console.error(error)
         })
+      this.curKey += 1
+      this.getEvents()
     },
     async deleteReviewForever(id) {
       await Api.delete(`/reviews/${id}`)
         .then(response => {
-          this.curKey += 1
-          this.getReviews()
+
         }).catch(error => {
           console.error(error)
         })
+      this.curKey += 1
+      this.getReviews()
     },
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
