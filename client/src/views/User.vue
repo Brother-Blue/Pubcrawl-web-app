@@ -226,7 +226,6 @@ export default {
         })
     },
     getReviews() {
-      console.log(this.userID)
       Api.get(`/users/${this.userID}/reviews`)
         .then(response => {
           this.reviews = response.data
@@ -241,8 +240,8 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      setTimeout(this.curKey += 1, 10000)
-      setTimeout(this.getEvents(), 10000)
+      this.curKey += 1
+      setTimeout(this.getEvents(), {}, 10000)
     },
     async deleteReviewForever(id) {
       await Api.delete(`/reviews/${id}`)
@@ -251,8 +250,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
-      setTimeout(this.curKey += 1, 10000)
-      setTimeout(this.getReviews(), 10000)
+      setTimeout(this.getReviews(), {}, 10000)
     },
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
