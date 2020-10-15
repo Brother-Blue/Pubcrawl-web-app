@@ -42,7 +42,6 @@ export default {
       Api.get('/users/cookie')
         .then(response => {
           if (response.data._id) {
-            console.log(response.data)
             this.loggedIn = true
             this.uID = response.data._id
           }
