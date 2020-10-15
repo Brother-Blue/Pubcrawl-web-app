@@ -52,7 +52,7 @@ export default {
   ],
   data() {
     return {
-      user: 'Fix'
+      user: '[deleted]'
     }
   },
   mounted() {

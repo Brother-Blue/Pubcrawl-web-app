@@ -206,6 +206,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+      this.force(false)
     },
     deleteAllUsers() {
       Api.delete('/users')
@@ -214,6 +215,7 @@ export default {
         }).catch(error => {
           console.error(error)
         })
+      this.force(false)
     },
     getEvents() {
       Api.get('/events')
