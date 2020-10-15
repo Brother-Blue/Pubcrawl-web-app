@@ -276,7 +276,7 @@ export default {
     },
     updateUser(id) {
       const params = {
-        _id: id,
+        _id: this.userID,
         username: this.user.username,
         email: this.email,
         password: this.password
