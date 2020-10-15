@@ -179,12 +179,10 @@ export default {
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
           }
         }).catch(error => console.log(error))
+      this.isValidUser()
+      this.getEvents()
+      this.getReviews()
     }
-  },
-  mounted: function () {
-    this.isValidUser()
-    this.getEvents()
-    this.getReviews()
   },
   methods: {
     isValidUser() {
