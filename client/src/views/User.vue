@@ -355,7 +355,7 @@ export default {
 
 .update-account-btn {
   position: fixed;
-  top: 25vh;
+  top: 15vh;
   right: 20px;
 }
 </style>
