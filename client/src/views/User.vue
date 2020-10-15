@@ -235,11 +235,11 @@ export default {
         })
     },
     async deleteEventForever(id) {
-      Api.delete(`/events/${id}`)
+      await Api.delete(`/events/${id}`)
         .then(response => {
           console.log(response)
           this.curKey += 1
-          await this.getEvents()
+          this.getEvents()
         }).catch(error => {
           console.error(error)
         })
