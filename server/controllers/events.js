@@ -1,5 +1,6 @@
 var Event = require('../models/event');
 var Bar = require('../models/bar');
+var User = require('../models/user');
 var passport = require('passport');
 var express = require('express');
 
@@ -21,6 +22,14 @@ router.post('', passport.authenticate('jwt', { session: false }), function(req, 
     event.save(function(err) {
         if (err) { return next(err); }
         res.status(201).json(event);
+    })
+    User.findById({_id: req.body.users}, function(err, user) {
+        if (err) { return next(err); }
+        if (!user) { return res.status(404).json({'message': 'user not found'}) }
+        user.reviews.push(review._id)
+        user.save(function(err) {
+            if (err) { return next(err); }
+        })
     })
 });
 
