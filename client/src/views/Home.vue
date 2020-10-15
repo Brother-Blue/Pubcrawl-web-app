@@ -4,10 +4,11 @@
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
+        <pubcrawl-searchbar
+        @updateList="getFilteredBarArray"/>
         <bar-list
         :key="curKey"
         ref="barList"
-        @updateList="getFilteredBarArray"
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
