@@ -30,7 +30,7 @@ BarSchema.pre("save", async function () {
 
     var average = result / reviews.length;
     bar.averageRating = Number(average.toFixed(1));
-  }
+  } else bar.averageRating = 0;
 });
 
 // Compile model from BarSchema
