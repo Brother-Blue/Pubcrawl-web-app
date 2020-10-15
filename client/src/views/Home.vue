@@ -95,6 +95,7 @@ export default {
       this.loggedIn = val
       this.$refs.pubcrawlHeader.$forceUpdate()
       this.$refs.barList.$forceUpdate()
+      location.reload()
     }
   },
   created: function () {
