@@ -1,6 +1,7 @@
 <template>
   <div class="bar-list-container">
-    <pubcrawl-searchbar/>
+    <pubcrawl-searchbar
+    @updateList="getNewArray"/>
     <div v-for="(bar,index) in barArray" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
@@ -70,6 +71,9 @@ export default {
     }
   },
   methods: {
+    getNewArray(text) {
+      this.$emit('updateList', text)
+    },
     addBarReview(barID, payload) {
       this.$emit('addBarReview', barID, payload)
     },

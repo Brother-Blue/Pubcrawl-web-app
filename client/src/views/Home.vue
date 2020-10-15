@@ -7,6 +7,7 @@
         <bar-list
         :key="curKey"
         ref="barList"
+        @updateList="getFilteredBarArray"
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
@@ -47,6 +48,16 @@ export default {
     }
   },
   methods: {
+    getFilteredBarArray(text) {
+      Api.get(`/bars?name=${text}`)
+        .then(response => {
+          this.bars = response.data
+          this.$refs.barList.$forceReload()
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
     addBarReview(barID, payload) {
       Api.post(`/bars/${barID}/reviews`, payload)
         .then(response => {

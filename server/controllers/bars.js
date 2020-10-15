@@ -61,7 +61,7 @@ router.get('', function(req, res, next) {
         name: req.query.sortByName
     }).exec(function(err,results){
         if(err) { return next(err)}
-        if(!results) {return res.status(404).json({'message': 'no reviews found'})}
+        if(!results) {return res.status(404).json({'message': 'no bars found'})}
         res.status(200).json(results);
     })
 });
@@ -145,7 +145,7 @@ router.get('', function(req, res, next) {
         function(err, bars) {
             if (err) { return next(err); }
             if (!bars) { return res.status(404).json(
-                {'message': 'no reviews found'});
+                {'message': 'no Bars found'});
             }
         res.status(200).json(bars);
     });
