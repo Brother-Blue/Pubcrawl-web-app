@@ -4,7 +4,7 @@
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
-        <b-row>
+        <b-row id="searchBarContainer">
         <pubcrawl-searchbar
         @updateList="getFilteredBarArray"/>
         </b-row>
@@ -142,6 +142,10 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.searchbarContainer {
+  min-height: 5vh;
 }
 
 #jump-button {
