@@ -241,8 +241,8 @@ export default {
       Api.delete(`/events/${id}`)
         .then(response => {
           console.log(response)
-          this.getEvents()
           this.curKey += 1
+          this.getEvents()
         }).catch(error => {
           console.error(error)
         })
@@ -250,8 +250,8 @@ export default {
     deleteReviewForever(id) {
       Api.delete(`/reviews/${id}`)
         .then(response => {
-          this.getReviews()
           this.curKey += 1
+          this.getReviews()
         }).catch(error => {
           console.error(error)
         })
@@ -259,8 +259,8 @@ export default {
     updateEvent(id, payload) {
       Api.patch(`/events/${id}`, payload)
         .then(response => {
-          this.getEvents()
           this.curKey += 1
+          this.getEvents()
         }).catch(error => {
           console.error(error)
         })
@@ -268,8 +268,8 @@ export default {
     updateReview(id, payload) {
       Api.patch(`/reviews/${id}`, payload)
         .then(response => {
-          this.getReviews()
           this.curKey += 1
+          this.getReviews()
         }).catch(error => {
           console.error(error)
         })
@@ -292,6 +292,7 @@ export default {
     },
     force(val) {
       this.validUser = false
+      document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       this.$router.push('/')
     }
   }

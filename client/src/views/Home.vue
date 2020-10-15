@@ -96,8 +96,7 @@ export default {
     },
     force(val) {
       this.loggedIn = val
-      // this.$refs.pubcrawlHeader.$forceUpdate()
-      // this.$refs.barList.$forceUpdate()
+      document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
       location.reload()
     }
   },
