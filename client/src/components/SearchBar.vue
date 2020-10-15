@@ -6,6 +6,7 @@
     type="search"
     placeholder="Search by bar name"
     v-model="inputText"
+    debounce="500"
     @update="emitText(inputText)"
     v-on:submit.prevent="onSubmit"
     ></b-form-input>
