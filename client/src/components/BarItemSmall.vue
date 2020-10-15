@@ -15,7 +15,7 @@
     <b-list-group-item class="bar-attr bg-dark">
     <b-form-rating
     id="avgRating"
-    variant="danger"
+    variant="warning"
     class="bg-dark border-0"
     v-if="barRating > 0"
     readonly
