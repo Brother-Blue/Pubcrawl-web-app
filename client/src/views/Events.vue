@@ -73,8 +73,8 @@ export default {
 
 #jump-button {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
-  z-index: 1000;
+  bottom: 1vw;
+  left: 1vw;
+  z-index: 999;
 }
 </style>
