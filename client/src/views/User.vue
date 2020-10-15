@@ -234,18 +234,18 @@ export default {
           console.error(error)
         })
     },
-    deleteEventForever(id) {
+    async deleteEventForever(id) {
       Api.delete(`/events/${id}`)
         .then(response => {
           console.log(response)
           this.curKey += 1
-          this.getEvents()
+          await this.getEvents()
         }).catch(error => {
           console.error(error)
         })
     },
-    deleteReviewForever(id) {
-      Api.delete(`/reviews/${id}`)
+    async deleteReviewForever(id) {
+      await Api.delete(`/reviews/${id}`)
         .then(response => {
           this.curKey += 1
           this.getReviews()
