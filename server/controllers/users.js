@@ -96,6 +96,18 @@ router.get('/:id/reviews', passport.authenticate('jwt', { session: false }), fun
     })
 });
 
+// Read all user events
+router.get('/:id/events', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+    User.findById(req.params.id).populate('events').exec(function(err, user) {
+        if (err) { return next(err); }
+        if (!user) {
+            return res.status(404).json(
+                {'message': 'user not found'});
+        }
+        res.status(200).json(user.events);
+    })
+});
+
 // Update user
 router.put('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     User.findById(req.params.id, function(err, user) {
