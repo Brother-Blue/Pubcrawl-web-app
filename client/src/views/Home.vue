@@ -4,14 +4,10 @@
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
-        <b-row id="searchBarContainer">
-        <pubcrawl-searchbar
-        @updateList="getFilteredBarArray"/>
-        </b-row>
-        <b-row>
         <bar-list
         :key="curKey"
         ref="barList"
+        @updateList="getFilteredBarArray"
         @directMeDaddy="getDirections"
         @emittedBar="clickedBar"
         :barArray="bars"
@@ -20,7 +16,6 @@
         :uID="uID"
         >
         </bar-list>
-        </b-row>
       </b-col>
       <b-col sm class="d-none d-lg-block">
         <bar-map
@@ -57,7 +52,6 @@ export default {
       Api.get(`/bars?name=${text}`)
         .then(response => {
           this.bars = response.data
-          this.$refs.barList.$forceReload()
         })
         .catch(error => {
           console.error(error)
@@ -142,10 +136,6 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.searchbarContainer {
-  min-height: 5vh;
 }
 
 #jump-button {
