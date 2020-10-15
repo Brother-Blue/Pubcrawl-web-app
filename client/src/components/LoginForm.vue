@@ -254,27 +254,27 @@ export default {
       }
       Api.post('/users', params)
         .then(response => {
-        const params2 = {
-          username: params.username,
-          password: params.password
-        }
-        Api.post('/users/login', params2, { withCredentials: false })
-          .then(response => {
-            if (response.status === 200) {
-              this.$router.push(`/user/${response.data._id}`)
-              this.sendToast('Success!', false, 'You\'ve been signed in.')
-              this.$bvModal.hide('signin-modal')
-            }
-          }).catch(error => {
-            if (error.status === 404) {
-              this.sendToast('Failed', false, 'Something went wrong, please try again later.')
-            } else if (error.status === 401) {
-              this.sendToast('Unauthorized', false, 'Insufficient permissions.')
-            } else if (error.status === 500) {
-              this.sendToast('Uh oh!', false, 'Invalid username or password')
-            }
-            console.log(error)
-          })
+          const params2 = {
+            username: params.username,
+            password: params.password
+          }
+          Api.post('/users/login', params2, { withCredentials: false })
+            .then(response => {
+              if (response.status === 200) {
+                this.$router.push(`/user/${response.data._id}`)
+                this.sendToast('Success!', false, 'You\'ve been signed in.')
+                this.$bvModal.hide('signin-modal')
+              }
+            }).catch(error => {
+              if (error.status === 404) {
+                this.sendToast('Failed', false, 'Something went wrong, please try again later.')
+              } else if (error.status === 401) {
+                this.sendToast('Unauthorized', false, 'Insufficient permissions.')
+              } else if (error.status === 500) {
+                this.sendToast('Uh oh!', false, 'Invalid username or password')
+              }
+              console.log(error)
+            })
         }).catch(error => {
           console.error(error)
         })
