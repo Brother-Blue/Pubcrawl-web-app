@@ -4,8 +4,11 @@
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
+        <b-row id="searchBarContainer">
         <pubcrawl-searchbar
         @updateList="getFilteredBarArray"/>
+        </b-row>
+        <b-row>
         <bar-list
         :key="curKey"
         ref="barList"
@@ -17,6 +20,7 @@
         :uID="uID"
         >
         </bar-list>
+        </b-row>
       </b-col>
       <b-col sm class="d-none d-lg-block">
         <bar-map
@@ -140,10 +144,14 @@ export default {
   flex-direction: column;
 }
 
+.searchbarContainer {
+  min-height: 5vh;
+}
+
 #jump-button {
   position: fixed;
-  bottom: 10px;
-  left: 2vw;
-  z-index: 1000;
+  bottom: 1vw;
+  left: 1vw;
+  z-index: 999;
 }
 </style>
