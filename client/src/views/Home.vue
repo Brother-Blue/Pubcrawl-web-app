@@ -142,7 +142,7 @@ export default {
   flex-direction: column;
 }
 #row {
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 #jump-button {
