@@ -49,13 +49,17 @@ export default {
   },
   methods: {
     getFilteredBarArray(text) {
-      Api.get(`/bars?name=${text}`)
-        .then(response => {
-          this.bars = response.data
-        })
-        .catch(error => {
-          console.error(error)
-        })
+      if (text.length > 0) {
+        Api.get(`/bars?name=${text}`)
+          .then(response => {
+            this.bars = response.data
+          })
+          .catch(error => {
+            console.error(error)
+          })
+      } else {
+        this.getBars()
+      }
     },
     addBarReview(barID, payload) {
       Api.post(`/bars/${barID}/reviews`, payload)
