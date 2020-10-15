@@ -228,11 +228,9 @@ export default {
         })
     },
     getReviews() {
-      Api.get('/reviews')
+      Api.get(`/users/${this.userID}/reviews`)
         .then(response => {
-          this.reviews = response.data.reviews
-            .filter(review =>
-              review.users === this.userID)
+          this.reviews = response.data
         }).catch(error => {
           console.error(error)
         })
