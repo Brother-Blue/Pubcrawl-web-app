@@ -60,12 +60,14 @@ export default {
   },
   methods: {
     async getUsername(id) {
-      await Api.get(`/users/${id}`)
+      if (id !== null) {
+        await Api.get(`/users/${id}`)
         .then(response => {
           this.user = response.data.username
         }).catch(error => {
           console.error(error)
         })
+      }
     }
   }
 }
