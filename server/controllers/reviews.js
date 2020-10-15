@@ -120,7 +120,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), async fun
 
 // Delete review
 router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
-    Review.findByIdAndDelete({_id: req.params.id}, function(err, review) {
+    Review.findByIdAndDelete({_id: req.params.id}, async function(err, review) {
         if (err) { return next(err); }
         if (!review) {
             return res.status(404).json(
@@ -131,7 +131,7 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             { $pull: { reviews: req.params.id } },
             { multi: true }
         ).exec();
-        Bar.updateMany(
+        await Bar.updateMany(
             { },
             { $pull: { reviews: req.params.id } },
             { multi: true }
@@ -140,7 +140,6 @@ router.delete('/:id', passport.authenticate('jwt', { session: false }), function
             if (err) { return next(err) }
             bar.save();
         });
-
         res.status(200).json();
     });
 });
