@@ -168,12 +168,11 @@ export default {
       curKey: 0
     }
   },
-  created: function () {
+  created: async function () {
     if (this.getCookie('jwt')) {
-      Api.get('/users/cookie')
+      await Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
-            console.log(response.data._id)
             this.userID = response.data._id
           } else {
             this.validUser = false
@@ -181,6 +180,8 @@ export default {
           }
         }).catch(error => console.log(error))
     }
+  },
+  mounted: function () {
     this.isValidUser()
     this.getEvents()
     this.getReviews()
