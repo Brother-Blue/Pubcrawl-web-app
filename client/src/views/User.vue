@@ -173,6 +173,7 @@ export default {
       Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
+            console.log(response.data._id)
             this.userID = response.data._id
           } else {
             this.validUser = false
