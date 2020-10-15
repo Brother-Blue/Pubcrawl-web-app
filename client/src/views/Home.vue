@@ -4,8 +4,11 @@
     <b-button id="jump-button" @click="toTop" variant="warning"><b-icon icon="triangle-half"></b-icon></b-button>
     <b-row no-gutters>
       <b-col sm>
+        <b-row>
         <pubcrawl-searchbar
         @updateList="getFilteredBarArray"/>
+        </b-row>
+        <b-row>
         <bar-list
         :key="curKey"
         ref="barList"
@@ -17,6 +20,7 @@
         :uID="uID"
         >
         </bar-list>
+        </b-row>
       </b-col>
       <b-col sm class="d-none d-lg-block">
         <bar-map
