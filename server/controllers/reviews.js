@@ -120,7 +120,7 @@ router.patch('/:id', passport.authenticate('jwt', { session: false }), async fun
 
 // Delete review
 router.delete('/:id', passport.authenticate('jwt', { session: false }), function(req, res, next) {
-    Bar.findById(req.params.bars, function(err, bar) {
+    Bar.findById(req.body.bars, function(err, bar) {
         if (err) { return next(err) }
         bar.save();
     });
