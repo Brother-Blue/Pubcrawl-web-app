@@ -14,7 +14,8 @@ let UserSchema = new mongoose.Schema({
     isVerified: { type: Boolean, default: false }, // Stores if user is email verified
     passwordResetToken: String, // Will be used to send password resets
     passwordResetExpires: Date, // Will be used to resend password resets
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'reviews' }]
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'reviews' }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }]
 }, {
     versionKey: false // Skip mongoose-version-key
 });
