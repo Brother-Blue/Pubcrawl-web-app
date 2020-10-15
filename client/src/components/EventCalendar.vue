@@ -20,7 +20,7 @@
     :uID="uID"
     @sendingPayload="saveEvent"
     ></add-event-button>
-    <div class="event-item bg-dark text-light rounded border border-warning" v-for="e in events" :key="e">
+    <div class="event-item bg-dark text-light rounded border border-warning" v-for="(e, index) in events" :key="index">
         <event-item
         :eventTitle="e[0]"
         :startDate="e[1]"
@@ -28,6 +28,7 @@
         :creationDate="e[3]"
         :barName="e[4]"
         :createdBy="username"
+        :eventDescription="e[6]"
         ></event-item>
     </div>
   </div>
@@ -84,7 +85,8 @@ export default {
                 e[i].endDate.substring(0, 10) + ' @' + e[i].endDate.substring(11, 16),
                 e[i].createdAt.substring(0, 10),
                 this.getBarsByID(e[i].bars),
-                this.getUserByID(e[i].users)
+                this.getUserByID(e[i].users),
+                e[i].description
               ])
             } else {
               continue
@@ -110,7 +112,7 @@ export default {
       for (var i = 0; i < ids.length; i++) {
         Api.get(`/bars/${ids[i]}`)
           .then(response => {
-            bars.push(response.data.name)
+            bars.push(response.data)
           })
           .catch(error => {
             console.error(error)
