@@ -168,9 +168,9 @@ export default {
       curKey: 0
     }
   },
-  created: function () {
+  created: async function () {
     if (this.getCookie('jwt')) {
-      Api.get('/users/cookie')
+      await Api.get('/users/cookie')
         .then(response => {
           if (response.data) {
             this.userID = response.data._id
@@ -179,10 +179,10 @@ export default {
             document.cookie = 'jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'
           }
         }).catch(error => console.log(error))
+      this.isValidUser()
+      this.getEvents()
+      this.getReviews()
     }
-    this.isValidUser()
-    this.getEvents()
-    this.getReviews()
   },
   methods: {
     isValidUser() {
@@ -228,6 +228,7 @@ export default {
         })
     },
     getReviews() {
+      console.log(this.userID)
       Api.get(`/users/${this.userID}/reviews`)
         .then(response => {
           this.reviews = response.data

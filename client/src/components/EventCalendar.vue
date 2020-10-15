@@ -121,8 +121,6 @@ export default {
       return bars
     },
     saveEvent(payload) {
-      console.log('REMOVE THESE')
-      console.log(payload)
       Api.post('/events', payload)
         .then(response => {
           console.log(response)

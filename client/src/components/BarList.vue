@@ -1,6 +1,5 @@
 <template>
   <div class="bar-list-container">
-    <pubcrawl-searchbar/>
     <div v-for="(bar,index) in barArray" :key="index" role="tablist">
       <b-button @click="emitBar(bar)" squared v-b-toggle="'bar' + bar._id" class="bar-container btn btn-dark" role="tab">
         <bar-item
@@ -44,8 +43,6 @@
 <script>
 import BarItem from '@/components/BarItem'
 import BarItemSmall from '@/components/BarItemSmall'
-import SearchBar from '@/components/SearchBar'
-
 export default {
   name: 'bar-list',
   props: [
@@ -53,8 +50,7 @@ export default {
   ],
   components: {
     'bar-item': BarItem,
-    'bar-item-small': BarItemSmall,
-    'pubcrawl-searchbar': SearchBar
+    'bar-item-small': BarItemSmall
   },
   data() {
     return {
