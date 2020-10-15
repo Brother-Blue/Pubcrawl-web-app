@@ -123,7 +123,6 @@ export default {
     saveEvent(payload) {
       Api.post('/events', payload)
         .then(response => {
-          console.log(response)
         }).catch(error => {
           console.error(error)
         })
