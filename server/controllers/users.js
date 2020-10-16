@@ -172,7 +172,7 @@ router.delete('/:id', function(req, res, next) {
 });
 
 // Delete all users
-router.delete('', passport.authenticate('jwt', { session: false }), function(req, res, next) {
+router.delete('', function(req, res, next) {
     User.deleteMany({}, function(err, user) {
         if (err) { return next(err)};
         if (!user) { 
