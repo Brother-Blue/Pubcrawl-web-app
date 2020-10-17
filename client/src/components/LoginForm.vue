@@ -81,10 +81,10 @@
         class="text-light"
         id="fieldset-1"
         label="Enter username"
-        label-for="username"
+        label-for="regUsername"
         >
           <b-form-input
-          id="username"
+          id="regUsername"
           class="bg-dark text-light"
           v-model="registerUsername"
           type="text"
@@ -100,10 +100,10 @@
         class="text-light"
         id="fieldset-1"
         label="Enter password"
-        label-for="password"
+        label-for="regPassword"
         >
          <b-form-input
-          id="password"
+          id="regPassword"
           class="bg-dark text-light"
           v-model="registerPassword"
           type="password"
@@ -111,7 +111,7 @@
           trim
           ></b-form-input>
         </b-form-group>
-        <b-button class="btn" variant="outline-warning" @click="registerUser" :disabled="validRegister">Register</b-button>
+        <b-button class="btn" variant="outline-warning" @click="registerUser" :disabled="!validRegister">Register</b-button>
           </b-tab>
         </b-tabs>
       </b-modal>
@@ -155,7 +155,7 @@ export default {
       return this.username.length >= 4 && this.username.length <= 15 && this.password.length >= 6 && this.password.length <= 128
     },
     validRegister() {
-      return this.registerPassword.length >= 6 && this.registerPassword.length <= 128 && this.uAvailable() && this.eAvailable()
+      return this.registerPassword.length >= 6 && this.registerPassword.length <= 128 && this.usernameAvailable(this.registerUsername) && this.emailAvailable(this.registerEmail)
     },
     uAvailable() {
       var b = this.registerUsername.length >= 4 && this.registerUsername.length <= 15
