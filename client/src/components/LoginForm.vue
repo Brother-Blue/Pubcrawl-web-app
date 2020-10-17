@@ -155,7 +155,7 @@ export default {
       return this.username.length >= 4 && this.username.length <= 15 && this.password.length >= 6 && this.password.length <= 128
     },
     validRegister() {
-      return this.registerPassword.length >= 6 && this.registerPassword.length <= 128 && this.availableUsername && this.availableEmail
+      return this.registerPassword.length >= 6 && this.registerPassword.length <= 128 && this.uAvailable() && this.eAvailable()
     },
     uAvailable() {
       var b = this.registerUsername.length >= 4 && this.registerUsername.length <= 15
