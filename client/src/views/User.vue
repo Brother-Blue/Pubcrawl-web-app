@@ -14,7 +14,7 @@
             <b-button class="btn btn-outline-warning" v-b-toggle.my-reviews>Show/Hide reviews</b-button>
           </b-button-group>
           <b-col>
-            <b-button class="btn btn-warning float-right update-account-btn" v-b-modal.update-user-modal><b-icon icon="person-circle"></b-icon> Update your account</b-button>
+            <b-button class="btn btn-warning float-right update-account-btn" v-b-modal.update-user-modal><b-icon icon="person-circle"></b-icon> <span class="d-none d-lg-flex">Update your account</span></b-button>
           </b-col>
         </b-col>
       </b-row>
