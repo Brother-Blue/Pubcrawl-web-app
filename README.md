@@ -75,5 +75,8 @@ Our system will provide information about local bars based on the user location 
 ![ER Diagram](./images/er_diagram.png)
 
 ## Teaser (MS3)
-
+Created by:
+[Christian O'Neill](https://git.chalmers.se/oneillc)
+[Hugo Hempel](https://git.chalmers.se/hugohe)
+[Hjalmar Thunberg](https://git.chalmers.se/hjathu)
 ![Teaser](./images/teaser.png)
